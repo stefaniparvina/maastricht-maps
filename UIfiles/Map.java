@@ -1,3 +1,5 @@
+package UIfiles;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,10 +21,10 @@ public class Map extends JFrame {
     public Map() {
         this.setSize(1000, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Map");
+        this.setTitle("UIfiles.Map");
         this.setLayout(null);
 
-        ImageIcon imageIcon = new ImageIcon("Maastricht.png");
+        ImageIcon imageIcon = new ImageIcon("UIfiles/Maastricht.png");
         image = imageIcon.getImage();
 
         JPanel controlPanel = createControlPanel();
@@ -37,6 +39,7 @@ public class Map extends JFrame {
     }
 
     private JPanel createControlPanel() {
+
         JPanel controlPanel = new JPanel(); 
         JButton button = new JButton("Submit");
         JTextField textfield1 = new JTextField(5);
