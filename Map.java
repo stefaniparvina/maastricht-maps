@@ -22,7 +22,7 @@ public class Map extends JFrame {
         this.setTitle("Map");
         this.setLayout(null);
 
-        ImageIcon imageIcon = new ImageIcon("Maastricht2.png");
+        ImageIcon imageIcon = new ImageIcon("Maastricht.png");
         image = imageIcon.getImage();
 
         JPanel controlPanel = createControlPanel();
