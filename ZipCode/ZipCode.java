@@ -7,7 +7,6 @@ public class ZipCode extends Reader {
     private double[] coordinates;
 
 
-
     public ZipCode(String zipCode) {
 
         this.zipCode = zipCode;

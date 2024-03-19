@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import ZipCode.*;
 
 //east 50.864239, 5.762940
 //north 50.911792, 5.705905
@@ -14,7 +15,8 @@ import java.awt.event.ActionListener;
 
 public class Map extends JFrame {
 
-    private double x1, y1, x2, y2;
+    private String start, end;
+    public static double zipStartX, zipStartY, zipEndX, zipEndY;
     private JPanel drawPanel;
     private Image image;
 
@@ -38,35 +40,32 @@ public class Map extends JFrame {
         this.setVisible(true);
     }
 
+
     private JPanel createControlPanel() {
 
         JPanel controlPanel = new JPanel(); 
-        JButton button = new JButton("Submit");
-        JTextField textfield1 = new JTextField(5);
-        JTextField textfield2 = new JTextField(5);
-        JTextField textfield3 = new JTextField(5);
-        JTextField textfield4 = new JTextField(5);
+        JButton submitButton = new JButton("Submit");
 
-        button.addActionListener(new ActionListener() {
+        JTextField zipStartField = new JTextField(5);
+        JTextField zipEndField = new JTextField(5);
+
+
+        submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    y1 = Double.parseDouble(textfield1.getText());
-                    x1 = Double.parseDouble(textfield2.getText());
-                    y2 = Double.parseDouble(textfield3.getText());
-                    x2 = Double.parseDouble(textfield4.getText());
-                    drawPanel.repaint(); 
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(Map.this, "Please provide correct numeric values.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+
+                    start = zipStartField.getText().toUpperCase();
+                    end = zipEndField.getText().toUpperCase();
+                    Coordinates.extractCoordinates(start, end);
+
+                    drawPanel.repaint();
             }
         });
 
-        controlPanel.add(textfield1); 
-        controlPanel.add(textfield2);
-        controlPanel.add(textfield3);
-        controlPanel.add(textfield4);
-        controlPanel.add(button);
+        controlPanel.add(zipStartField);
+        controlPanel.add(zipEndField);
+
+        controlPanel.add(submitButton);
         return controlPanel;
     }
 
@@ -82,7 +81,7 @@ public class Map extends JFrame {
                 }
                 g2.setStroke(new BasicStroke(3));
                 g2.setColor(Color.RED);
-                g2.drawLine( (int) Math.round(((x1-5.638854)/0.124086)*396),(int) Math.round(((50.911792-y1)/0.107978)*545), (int) Math.round(((x2-5.638854)/0.124086)*396),(int) Math.round(((50.911792-y2)/0.107978)*545));
+                g2.drawLine(Coordinates.startLineX(), Coordinates.startLineY(), Coordinates.endLineX(), Coordinates.endtLineY());
             }
         };
 

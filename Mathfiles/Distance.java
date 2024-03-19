@@ -1,44 +1,21 @@
 package Mathfiles;
 
-import ZipCode.ZipCode;
+import UIfiles.Map;
+import ZipCode.*;
 
-public class Distance {
+public class Distance extends Coordinates {
     private static final double EARTH_RADIUS = 6371; // Earth's radius in kilometers
-    private double startLatitudeRad;
-    private double startLongitudeRad;
-    private double finishLatitudeRad;
-    private double finishLongitudeRad;
 
-    public Distance(ZipCode start, ZipCode end) {
+
+    protected double calculateDistance(String start, String end) {
 
         convertCoordinatesToRadians(start, end);
-    }
-
-    private void convertCoordinatesToRadians(ZipCode start, ZipCode end) {
-
-        startLatitudeRad = Math.toRadians(start.getLatitude());
-        startLongitudeRad = Math.toRadians(start.getLongitude());
-        finishLatitudeRad = Math.toRadians(end.getLatitude());
-        finishLongitudeRad = Math.toRadians(end.getLongitude());
-    }
-
-    public double calculateDistance() {
-
         double deltaX = (finishLongitudeRad - startLongitudeRad) * Math.cos((startLatitudeRad + finishLatitudeRad) / 2);
         double deltaY = (finishLatitudeRad - startLatitudeRad);
+        double distanceKM = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * EARTH_RADIUS;
 
-        double distanceInKm = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * EARTH_RADIUS;
-        return distanceInKm;
+
+        return distanceKM;
     }
 
-    public static void main(String[] args) {
-
-        ZipCode start = new ZipCode("6216RD");
-        ZipCode end = new ZipCode("6228CN");
-
-        Distance distance = new Distance(start, end);
-        double calculatedDistance = distance.calculateDistance();
-
-        System.out.println("Distance in Km: " + calculatedDistance);
-    }
 }
