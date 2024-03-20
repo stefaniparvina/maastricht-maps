@@ -83,6 +83,7 @@ public class Map extends JFrame {
 
 
     private void submitActionPerformed(java.awt.event.ActionEvent e) {
+        clearWaypoints();
         addWaypoint(new MyWaypoint(event, new GeoPosition(Coordinates.zipStartY, Coordinates.zipStartX)));
         addWaypoint(new MyWaypoint(event, new GeoPosition(Coordinates.zipEndY, Coordinates.zipEndX)));
     }
@@ -90,11 +91,15 @@ public class Map extends JFrame {
 
     private void addWaypoint(MyWaypoint waypoint) {
 
+        waypoints.add(waypoint);
+        initWaypoint();
+    }
+    private void clearWaypoints() {
         for (MyWaypoint point : waypoints) {
             jXMapViewer.remove(point.getButton());
         }
-        waypoints.add(waypoint);
-        initWaypoint();
+        waypoints.clear();
+        jXMapViewer.repaint();
     }
 
     private void initWaypoint() {
