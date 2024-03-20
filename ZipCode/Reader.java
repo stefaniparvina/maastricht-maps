@@ -5,10 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Reader {
-    private static final String DATABASE = "Data/MassZipLatLon.csv";
+    private static final String DATABASE = "Data\\MassZipLatLon.csv";
 
     public static double[] readCoordinates(String zipCode) {
         double[] coordinates = new double[2];
+        double[] error = new double[2];
+        error[0] = 0;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DATABASE))) {
             String line;
@@ -30,6 +32,6 @@ public class Reader {
 
         // Handle case when zip code is not found
         System.err.println("Zip code not found: " + zipCode);
-        return null;
+        return error;
     }
 }
