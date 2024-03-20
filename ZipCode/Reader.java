@@ -22,7 +22,6 @@ public class Reader {
                     coordinates[0] = Double.parseDouble(values[1]); // Latitude
                     coordinates[1] = Double.parseDouble(values[2]); // Longitude
 
-
                     return coordinates; // Return coordinates if zip code found
                 }
             }
