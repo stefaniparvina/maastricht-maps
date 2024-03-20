@@ -66,7 +66,7 @@ public class Map extends JFrame {
                 
                 int choice = JOptionPane.showOptionDialog(null, "Choose time type: ", "Time type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-                int time = -1;
+                double time = -1;
                 switch(choice) {
                     case 0: 
                         time = WalkSpeed.calculateWalkingTime(start, end);
