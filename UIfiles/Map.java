@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+
 import ZipCode.*;
+import Mathfiles.*;
 
 //east 50.864239, 5.762940
 //north 50.911792, 5.705905
@@ -16,6 +19,7 @@ import ZipCode.*;
 public class Map extends JFrame {
 
     private String start, end;
+    private String[] options = {"Walking", "Bike"};
     public static double zipStartX, zipStartY, zipEndX, zipEndY;
     private JPanel drawPanel;
     private Image image;
@@ -54,11 +58,26 @@ public class Map extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                    start = zipStartField.getText().toUpperCase();
-                    end = zipEndField.getText().toUpperCase();
-                    Coordinates.extractCoordinates(start, end);
+                start = zipStartField.getText().toUpperCase();
+                end = zipEndField.getText().toUpperCase();
+                Coordinates.extractCoordinates(start, end);
 
-                    drawPanel.repaint();
+                drawPanel.repaint();
+                
+                int choice = JOptionPane.showOptionDialog(null, "Choose time type: ", "Time type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+                int time = -1;
+                switch(choice) {
+                    case 0: 
+                        time = WalkSpeed.calculateWalkingTime(start, end);
+                        break;
+                    case 1:
+                        time = BikeSpeed.calculateCyclingTime(start, end);
+                        break;
+                    default:
+                        break;
+                }
+                JOptionPane.showMessageDialog(null, "Distance: " + Distance.calculateDistance(start, end) + " km\nTime: " + time + " minutes");
             }
         });
 

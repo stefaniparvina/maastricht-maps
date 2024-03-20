@@ -3,7 +3,7 @@ package ZipCode;
 public class Coordinates {
 
     public static double zipStartX, zipStartY, zipEndX, zipEndY;
-    protected double startLatitudeRad, startLongitudeRad, finishLatitudeRad, finishLongitudeRad;
+    public static double startLatitudeRad, startLongitudeRad, finishLatitudeRad, finishLongitudeRad;
 
     public static void extractCoordinates(String start, String end){
 
@@ -16,7 +16,7 @@ public class Coordinates {
         zipEndX = zipEnd.getLongitude();
     }
 
-    protected void convertCoordinatesToRadians(String start, String end) {
+    public static void convertCoordinatesToRadians(String start, String end) {
 
         startLatitudeRad = Math.toRadians(zipStartY);
         startLongitudeRad = Math.toRadians(zipStartX);
