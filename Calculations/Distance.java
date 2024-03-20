@@ -1,6 +1,6 @@
-package Mathfiles;
+package Calculations;
 
-import UIfiles.Map;
+import UI.Map;
 import ZipCode.*;
 
 public class Distance extends Coordinates {

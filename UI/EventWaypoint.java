@@ -1,4 +1,4 @@
-package UIfiles;
+package UI;
 
 public interface EventWaypoint {
 

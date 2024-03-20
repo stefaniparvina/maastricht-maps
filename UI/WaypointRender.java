@@ -1,4 +1,4 @@
-package UIfiles;
+package UI;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

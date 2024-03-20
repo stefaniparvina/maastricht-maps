@@ -1,4 +1,4 @@
-package Mathfiles;
+package Calculations;
 
 public class WalkSpeed {
     // this is the average speed in kh/m

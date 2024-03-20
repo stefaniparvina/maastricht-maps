@@ -1,16 +1,11 @@
-package UIfiles;
+package UI;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import Mathfiles.BikeSpeed;
-import Mathfiles.Distance;
-import Mathfiles.WalkSpeed;
 import ZipCode.*;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -19,6 +14,10 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
+
+import Calculations.BikeSpeed;
+import Calculations.Distance;
+import Calculations.WalkSpeed;
 
 
 //east 50.864239, 5.762940
