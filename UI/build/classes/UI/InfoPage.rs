@@ -1,0 +1,9 @@
+newui.InfoPage
+newui.InfoPage$3$2
+newui.InfoPage$2$1
+newui.InfoPage$2$2
+newui.InfoPage$3$1
+newui.InfoPage$2
+newui.InfoPage$1
+newui.InfoPage$4
+newui.InfoPage$3
