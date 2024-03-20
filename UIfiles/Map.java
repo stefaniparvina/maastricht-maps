@@ -66,19 +66,24 @@ public class Map extends JFrame {
 
     private void initComponents() {
 
+        JFrame frame = new JFrame("Maapstricht");
         JPanel controlPanel = createControlPanel();
-
         jXMapViewer = new org.jxmapviewer.JXMapViewer();
         drawPanel = createDrawPanel();
 
+        controlPanel.setBackground(Color.RED);
+        drawPanel.setBackground(Color.BLUE);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(controlPanel, BorderLayout.NORTH);
         getContentPane().add(jXMapViewer, BorderLayout.CENTER);
         getContentPane().add(drawPanel, BorderLayout.SOUTH);
-        controlPanel.setBackground(Color.RED);
-        drawPanel.setBackground(Color.BLUE);
 
+        frame.add(getContentPane());
+        frame.setSize(1100,800);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 
@@ -117,7 +122,7 @@ public class Map extends JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Map().setVisible(true);
+                new Map();
             }
         });
     }

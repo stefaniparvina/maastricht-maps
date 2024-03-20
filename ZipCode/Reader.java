@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Reader {
-    private static final String DATABASE = "C:\\Users\\User\\Desktop\\project-1-2-2\\project-1-2-2\\Data\\MassZipLatLon.csv";
+    private static final String DATABASE = "Data\\MassZipLatLon.csv";
 
     public static double[] readCoordinates(String zipCode) {
         double[] coordinates = new double[2];
