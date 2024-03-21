@@ -11,7 +11,7 @@ public class ZipCode extends Reader {
 
         this.zipCode = zipCode;
         this.coordinates = readCoordinates(zipCode);
-        assert this.coordinates != null;
+        assert this.coordinates != null && (this.coordinates != new double[]{-1,-1});
         this.latitude = this.coordinates[0];
         this.longitude = this.coordinates[1];
     }

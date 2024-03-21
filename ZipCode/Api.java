@@ -1,39 +1,72 @@
 package ZipCode;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
 public class Api {
-    
+
+    private static long lastRequestTime = -1;
+    private static int requestCount = 0;
+
+    private static boolean rateLimit() {
+        long currentTime = System.currentTimeMillis();
+        if (lastRequestTime == -1 || (currentTime - lastRequestTime) > 5000) { // reset every 5 seconds
+            lastRequestTime = currentTime;
+            requestCount = 1;
+            return false; // no need to wait
+        } else {
+            if (requestCount < 1) { // only 1 request per 5 seconds allowed
+                requestCount++;
+                return false; // no need to wait
+            } else {
+                return true; // rate limit exceeded, must wait
+            }
+        }
+    }
+
     public static double[] apiResponse(String postcode) {
         String responseBody;
-        String apiUrl = "computescience.dacs.unimaas.nl/get_coordinates";
-        String inputString = "{"+"\"postcode\":" + "\"" + postcode + "\"}"; // input string to send to the API
+
+        // Rate limiting check
+        if (rateLimit()) {
+            System.out.println("Rate limit exceeded. Please wait before making another request.");
+            return new double[]{-1, -1};
+        }
+
+        String apiUrl = "https://computerscience.dacs.unimaas.nl/get_coordinates";
+        String inputString = "{\"postcode\":\"" + postcode + "\"}";
+
         try {
-            URL url = new URL(apiUrl + "?postcode=" + inputString);
+            URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-         
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            // Write the JSON data to the request
+            try(OutputStream os = conn.getOutputStream()) {
+                byte[] input = inputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
             int responseCode = conn.getResponseCode();
-            //if the request was successful we read the response line by line and append it all in the response variable 
-            if (responseCode == HttpURLConnection.HTTP_OK) { 
+            // Read the response
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader responseReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String inputLine;
-                StringBuilder  response = new StringBuilder();
+                StringBuilder response = new StringBuilder();
 
-                while ((inputLine = responseReader.readLine()) != null) { //if it is null we have reached the end of the response
+                while ((inputLine = responseReader.readLine()) != null) {
                     response.append(inputLine);
                 }
                 responseReader.close();
                 responseBody = response.toString();
 
-            } else { //if the request was not successful we read the response line by line and append it all in the errorResponse variable 
+            } else {
                 BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 String errorLine;
                 StringBuilder errorResponse = new StringBuilder();
@@ -46,16 +79,13 @@ public class Api {
                 responseBody = errorResponse.toString();
             }
 
-            // parse JSON response body
-            JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject(); //make it a JSON object to extract data from it in a structured manner
+            JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
 
-            // check for errors
             if (jsonObject.has("error")) {
                 String errorMessage = jsonObject.get("error").getAsString();
                 System.out.println("Error: " + errorMessage);
-                return null;
+                return new double[]{-1, -1};
             } else {
-                // the response must contains latitude and longitude
                 double latitude = jsonObject.get("latitude").getAsDouble();
                 double longitude = jsonObject.get("longitude").getAsDouble();
 
@@ -63,7 +93,8 @@ public class Api {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null; 
+            System.out.println("API error.");
+            return new double[]{-1, -1};
         }
     }
 }
