@@ -24,6 +24,9 @@ public class Reader {
 
                     return coordinates; // Return coordinates if zip code found
                 }
+                else{
+                    Api.apiResponse(zipCode);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
