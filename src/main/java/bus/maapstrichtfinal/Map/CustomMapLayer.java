@@ -19,6 +19,7 @@ public class CustomMapLayer extends MapLayer {
         path = new Polyline();
 
         getChildren().addAll(startMarker, endMarker, path);
+        
     }
 
     @Override

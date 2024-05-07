@@ -80,6 +80,7 @@ public class HomepageController {
 
     private String csvPath = "C:\\Users\\User\\Desktop\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
 
+
     @FXML
     private void beginBtnClicked(ActionEvent event) {
         if (toggleGroup.getSelectedToggle() == null) {
