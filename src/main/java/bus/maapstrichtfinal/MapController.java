@@ -1,5 +1,7 @@
 package bus.maapstrichtfinal;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 import com.gluonhq.maps.MapView;
@@ -40,7 +42,7 @@ public class MapController {
     @FXML
     private Button contactUsBtn;
     @FXML
-    private TextField startTxtField; 
+    private TextField startTxtField;
     @FXML
     private TextField endTxtField;
     @FXML
@@ -93,19 +95,18 @@ public class MapController {
     private Theme themeHandler;
 
     @FXML
-    private void beginBtnClicked(ActionEvent event) {    
+    private void beginBtnClicked(ActionEvent event) {
         if (toggleGroup.getSelectedToggle() == null) {
             mainTxt.setText("Choose a transport option to continue.");
-            adjustFontSize(mainTxt, 28);
+            CommonController.adjustFontSize(mainTxt, 28);
             return;
         }
-        if (isValidZipCode(startTxtField.getText()) && isValidZipCode(endTxtField.getText())) {
+        if (CommonController.isValidZipCode(startTxtField.getText()) && CommonController.isValidZipCode(endTxtField.getText())) {
             mainTxt.setText("Calculating Route...");
             invalidInputCount = 0;
-            correctWorkingInput = true;
         } else {
             invalidInputCount++;
-            displayWarning();
+            CommonController.displayWarning(invalidInputCount,mainTxt,secondaryTxt);
         }
     }
 
@@ -178,59 +179,6 @@ public class MapController {
         themeHandler.applyTheme(parent, themeBtnImg);
         isLightThemeOn = !isLightThemeOn;
         ThemeInfo.setLightTheme(isLightThemeOn);
-    }
-
-    private boolean isValidZipCode(String zipCode) {
-        return zipCode.matches("^[1-9][0-9]{3}\\s?[a-zA-Z]{2}$");
-        //TODO change to check valid zipcodes from the hashmap
-    }
-
-    private void displayWarning() {
-        switch (invalidInputCount) {
-            case 1:
-                mainTxt.setText("Incorrect input.");
-                break;
-            case 2:
-                mainTxt.setText("Please input a correct zipcode.");
-                break;
-            case 3:
-                mainTxt.setText("Your postal code shouldn't be a secret code.");
-                adjustFontSize(mainTxt, 25);
-                break;
-            case 4:
-                mainTxt.setText("Are we playing guess the zipcode?");
-                adjustFontSize(mainTxt, 30);
-                break;
-            case 5:
-                mainTxt.setText("To Tatooine, mailing yourself, are you? No, hm?");
-                adjustFontSize(mainTxt, 23);
-                break;
-            case 6:
-                mainTxt.setText("Are we setting a new record today?");
-                adjustFontSize(mainTxt, 30);
-                break;
-            case 7:
-                mainTxt.setText("You must be using the Force to input those zipcodes.");
-                secondaryTxt.setText("Try using your eyes instead.");
-                adjustFontSize(mainTxt, 20);
-                adjustFontSize(secondaryTxt, 20);
-                break;
-            case 8:
-                mainTxt.setText("Error 404: Correct zipcode not found.");
-                secondaryTxt.setText("Maybe check a droid for help?");
-                adjustFontSize(mainTxt, 30);
-                adjustFontSize(secondaryTxt, 30);
-                break;
-            default:
-                mainTxt.setText("If you're trying to test my patience, you're succeeding!");
-                secondaryTxt.setText(null);
-                adjustFontSize(mainTxt,20);
-                break;
-        }
-    }
-
-    private void adjustFontSize(Label label, double fontSize) {
-        label.setStyle("-fx-font-size:" + fontSize + "px;"); 
     }
 
     private boolean startAndEndInfoAvailable(){

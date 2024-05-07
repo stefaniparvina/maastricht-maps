@@ -1,7 +1,12 @@
 package bus.maapstrichtfinal;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.BreakIterator;
 
+import bus.maapstrichtfinal.Map.CustomMapLayer;
+import com.gluonhq.maps.MapPoint;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +51,10 @@ public class HomepageController {
     private TextField startTxtField;
     @FXML
     private TextField endTxtField;
+    public static double startLat = 0.0;
+    public static double startLong = 00;
+    public static double endLat = 0.0;
+    public static double endLong = 0.0;
     @FXML
     private Button switchBtn;
     @FXML
@@ -68,22 +77,26 @@ public class HomepageController {
     private TranslateTransition menuAnimation;
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
-    
 
+    private String csvPath = "C:\\Users\\User\\Desktop\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
 
     @FXML
-    private void beginBtnClicked(ActionEvent event) {    
+    private void beginBtnClicked(ActionEvent event) {
         if (toggleGroup.getSelectedToggle() == null) {
             mainTxt.setText("Choose a transport option to continue.");
-            adjustFontSize(mainTxt, 28);
+            CommonController.adjustFontSize(mainTxt, 28);
             return;
         }
-        if (isValidZipCode(startTxtField.getText()) && isValidZipCode(endTxtField.getText())) {
+        if (CommonController.isValidZipCode(startTxtField.getText()) && CommonController.isValidZipCode(endTxtField.getText())) {
+            setStartLocation(startTxtField.getText());
+            setEndLocation(endTxtField.getText());
+
             mainTxt.setText("Calculating Route...");
             invalidInputCount = 0;
             setDestinationPoints(startTxtField.getText(), endTxtField.getText());
             setSelectedTransportOption();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
             try {
                 FileInitializer initializer = new FileInitializer();
                 initializer.initializeFXML(stage, "map");
@@ -91,10 +104,48 @@ public class HomepageController {
                 e.printStackTrace();
             }
         } else invalidInput();
-
-        
     }
 
+    private void setStartLocation(String zipCode) {
+        startLat = 0.0;
+        startLong = 0.0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvPath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3 && parts[0].trim().equalsIgnoreCase(zipCode)) {
+                    startLat = Double.parseDouble(parts[1].trim());
+                    startLong = Double.parseDouble(parts[2].trim());
+                    System.out.println("Start location updated:");
+                    System.out.println("Latitude: " + startLat + ", Longitude: " + startLong);
+                    return;
+                }
+            }
+            System.out.println("Zip code not found in CSV file: " + zipCode);
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setEndLocation(String zipCode) {
+        endLat = 0.0;
+        endLong = 0.0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvPath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3 && parts[0].trim().equalsIgnoreCase(zipCode)) {
+                    endLat = Double.parseDouble(parts[1].trim());
+                    endLong = Double.parseDouble(parts[2].trim());
+                    System.out.println("End location updated:");
+                    System.out.println("Latitude: " + endLat + ", Longitude: " + endLong);
+                    return;
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void maapBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -112,10 +163,6 @@ public class HomepageController {
         startTxtField.setText(endTxtField.getText());
         endTxtField.setText(temp);
     }
-
-    private void adjustFontSize(Label label, double fontSize) {
-        label.setStyle("-fx-font-size:" + fontSize + "px;"); 
-    }    
 
     @FXML
     private void menuBtnClicked(ActionEvent event) {
@@ -157,7 +204,7 @@ public class HomepageController {
             return true;
         } else {
             invalidInputCount++;
-            displayWarning();
+            CommonController.displayWarning(invalidInputCount,mainTxt,secondaryTxt);
             return true;
         }
     }    
@@ -167,54 +214,6 @@ public class HomepageController {
         DestinationInfo.setEndDestination(end);
     }
 
-    private boolean isValidZipCode(String zipCode) {
-        return zipCode.matches("^[1-9][0-9]{3}\\s?[a-zA-Z]{2}$");
-        //TODO change to check valid zipcodes from the hashmap
-    }
-
-    private void displayWarning() {
-        switch (invalidInputCount) {
-            case 1:
-                mainTxt.setText("Incorrect input.");
-                break;
-            case 2:
-                mainTxt.setText("Please input a correct zipcode.");
-                break;
-            case 3:
-                mainTxt.setText("Your postal code shouldn't be a secret code.");
-                adjustFontSize(mainTxt, 25);
-                break;
-            case 4:
-                mainTxt.setText("Are we playing guess the zipcode?");
-                adjustFontSize(mainTxt, 30);
-                break;
-            case 5:
-                mainTxt.setText("To Tatooine, mailing yourself, are you? No, hm?");
-                adjustFontSize(mainTxt, 23);
-                break;
-            case 6:
-                mainTxt.setText("Are we setting a new record today?");
-                adjustFontSize(mainTxt, 30);
-                break;
-            case 7:
-                mainTxt.setText("You must be using the Force to input those zipcodes.");
-                secondaryTxt.setText("Try using your eyes instead.");
-                adjustFontSize(mainTxt, 20);
-                adjustFontSize(secondaryTxt, 20);
-                break;
-            case 8:
-                mainTxt.setText("Error 404: Correct zipcode not found.");
-                secondaryTxt.setText("Maybe check a droid for help?");
-                adjustFontSize(mainTxt, 30);
-                adjustFontSize(secondaryTxt, 30);
-                break;
-            default:
-                mainTxt.setText("If you're trying to test my patience, you're succeeding!");
-                secondaryTxt.setText(null);
-                adjustFontSize(mainTxt,20);
-                break;
-        }
-    }
     
     private void setSelectedTransportOption() {
         if (toggleGroup.getSelectedToggle() != null) {

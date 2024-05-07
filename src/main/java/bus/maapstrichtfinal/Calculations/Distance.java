@@ -1,7 +1,7 @@
 package bus.maapstrichtfinal.Calculations;
 
-import UI.Map;
-import ZipCode.*;
+import bus.maapstrichtfinal.Map.*;
+import bus.maapstrichtfinal.ZipCode.*;
 
 public class Distance extends Coordinates {
     private static final double EARTH_RADIUS = 6371; // Earth's radius in kilometers
