@@ -5,6 +5,7 @@ module bus.maapstrichtfinal {
     requires java.net.http;
     requires com.google.gson;
     requires java.sql;
+    requires javafx.graphics;
 
 
     opens bus.maapstrichtfinal to javafx.fxml;
