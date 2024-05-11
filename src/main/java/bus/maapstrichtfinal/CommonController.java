@@ -57,11 +57,13 @@ public class CommonController {
                 adjustFontSize(mainTxt, 30);
                 break;
             case 5:
-                mainTxt.setText("To Tatooine, mailing yourself, are you? No, hm?");
-                adjustFontSize(mainTxt, 23);
+                mainTxt.setText("To Tatooine, mailing yourself, are you?");
+                secondaryTxt.setText("No, hm?");
+                adjustFontSize(mainTxt, 22);
                 break;
             case 6:
                 mainTxt.setText("Are we setting a new record today?");
+                secondaryTxt.setText(null);
                 adjustFontSize(mainTxt, 30);
                 break;
             case 7:
@@ -73,7 +75,7 @@ public class CommonController {
             case 8:
                 mainTxt.setText("Error 404: Correct zipcode not found.");
                 secondaryTxt.setText("Maybe check a droid for help?");
-                adjustFontSize(mainTxt, 30);
+                adjustFontSize(mainTxt, 28);
                 adjustFontSize(secondaryTxt, 30);
                 break;
             default:

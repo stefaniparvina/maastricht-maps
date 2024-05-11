@@ -85,8 +85,6 @@ public class MapController {
     private int invalidInputCount;
     private boolean isMenuVisible = false;
     private boolean isDiscoverPanelVisible = true;
-    private boolean correctWorkingInput = false;
-    private boolean isResultPanelVisible = false;
     private boolean isLightThemeOn = true;
     private TranslateTransition menuAnimation;
     private TranslateTransition discoverPanelAnimation;

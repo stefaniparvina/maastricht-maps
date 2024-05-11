@@ -1,6 +1,5 @@
 package bus.maapstrichtfinal.Calculations;
 
-import bus.maapstrichtfinal.Map.*;
 import bus.maapstrichtfinal.ZipCode.*;
 
 public class Distance extends Coordinates {
