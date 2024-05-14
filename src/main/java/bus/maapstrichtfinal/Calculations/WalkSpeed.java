@@ -1,14 +1,16 @@
 package bus.maapstrichtfinal.Calculations;
 
 public class WalkSpeed {
-    // this is the average speed in kh/m
-    private final static double AVERAGE_WALKING_SPEED = 0.08;
+    // this is the average speed in km/h
+    private final static double AVERAGE_WALKING_SPEED_KM_PER_HOUR = 5.0;
 
-    public static double calculateWalkingTime(String start, String end) {
+    public static String calculateWalkingTime(String start, String end) {
         double distanceKM = Distance.calculateDistance(start, end);
-        double timeMinutes = distanceKM / AVERAGE_WALKING_SPEED;
+        double timeHours = distanceKM / AVERAGE_WALKING_SPEED_KM_PER_HOUR; 
 
-        double roundedWalkTime = Math.round(timeMinutes * 100.0) / 100.0;
-        return roundedWalkTime;
+        int minutes = (int) (timeHours * 60); 
+        int seconds = (int) ((timeHours * 3600) % 60); 
+
+        return minutes + " minutes " + seconds + " seconds";
     }
 }

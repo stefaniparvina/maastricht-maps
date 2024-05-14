@@ -75,7 +75,7 @@ public class HomepageController {
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
 
-    private String csvPath = "C:\\Users\\User\\Desktop\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
+    private String csvPath = "src/main/java/bus/maapstrichtfinal/Map/data/MassZipLatLon.csv";
 
 
     @FXML

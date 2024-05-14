@@ -18,7 +18,7 @@ public class CommonController {
      * @return {@code true} if the zip code is valid, {@code false} otherwise.
      */
     static boolean isValidZipCode(String zipCode) {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\User\\Desktop\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/bus/maapstrichtfinal/Map/data/MassZipLatLon.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
