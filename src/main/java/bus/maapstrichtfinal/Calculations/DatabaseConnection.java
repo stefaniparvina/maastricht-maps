@@ -17,10 +17,11 @@ public class DatabaseConnection {
      */
     
     private static final String url = "jdbc:mysql://localhost:3306/gtfs";
-    private static final String user = "username";
+    private static final String user = "root";
     private static final String password = "pass";
 
     
+    @SuppressWarnings("exports")
     public static Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(url, user, password);

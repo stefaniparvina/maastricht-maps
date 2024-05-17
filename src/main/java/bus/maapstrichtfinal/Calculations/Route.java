@@ -5,8 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import bus.maapstrichtfinal.ZipCode.ZipCode;
 
 public class Route {
     // Route attributes
@@ -57,7 +58,7 @@ public class Route {
 
         //The query returns a table with the possible routes from the start bus stop to the end bus stop
         String query = "SELECT DISTINCT r.route_short_name, r.route_id, a.stop_id AS start_stop_id, b.stop_id AS end_stop_id," +
-                " (TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time)) / 60 AS travel_time_minutes, b.shape_dist_traveled - a.shape_dist_traveled AS distance" +
+                " (TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time)) as travel_time_seconds, b.shape_dist_traveled - a.shape_dist_traveled AS distance" +
                 " FROM routes r JOIN trips t ON r.route_id = t.route_id JOIN stop_times a ON t.trip_id = a.trip_id JOIN stop_times b ON" +
                 " a.trip_id = b.trip_id JOIN shapes sh ON t.shape_id = sh.shape_id WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence";
 
@@ -75,7 +76,7 @@ public class Route {
                         rs.getString("route_short_name"),
                         rs.getString("start_stop_id"),
                         rs.getString("end_stop_id"),
-                        rs.getInt("travel_time_minutes"),
+                        rs.getInt("travel_time_seconds"),
                         rs.getInt("distance")
                     );
                     routes.add(route);
@@ -86,17 +87,26 @@ public class Route {
         }
         return routes;
     }
-    public static List<Route> findAllRoutes(List<String> startStops, List<String> endStops){
+    
+    public static List<Route> findAllRoutes(ZipCode startZipCode, ZipCode endZipCode){
         //Make a list that contains all possble routes between the two zip codes
-        //Take a list with the possible start bus stops and a list with the end bus stops
+        //Make a list with the possible start bus stops and a list with the end bus stops
         //Check for the routes for every possible pair and add them
-
-        List<Route> allRoutes = new ArrayList<Route>();
-
-        for(int i = 0; i < startStops.size(); i++){
-            for(int j = 0; j < endStops.size(); j++){
-                allRoutes.addAll(findRoutesBetweenStops(startStops.get(i), endStops.get(j)));
+        
+        List<Route> allRoutes = new ArrayList<>();
+        try {
+            List<String> startStops = ClosestStopFinder.findStops(startZipCode.getLatitude(), startZipCode.getLongitude());
+            List<String> endStops = ClosestStopFinder.findStops(endZipCode.getLatitude(), endZipCode.getLongitude());
+            
+            for (int i = 0; i < startStops.size(); i++) {
+                for (int j = 0; j < endStops.size(); j++) {
+                    allRoutes.addAll(findRoutesBetweenStops(startStops.get(i), endStops.get(j)));
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong with the closest bus stops finder.");
+            e.printStackTrace();  
+            return allRoutes;
         }
         return allRoutes;
     }
@@ -128,16 +138,21 @@ public class Route {
             return quickest;
         }
     }
-
-    public static void main(String[] args){
-        List<String> startStops = new ArrayList<>(Arrays.asList("2578420"));
-        List<String> endStops = new ArrayList<>(Arrays.asList("2578423"));
-        List<Route> allRoutes = findAllRoutes(startStops,endStops);
-        List<Route> fastest = findQuickestRoute(allRoutes);
-        for(Route route: fastest){
-            System.out.println("Route id: " + route.routeId);
-            System.out.println("Travel time: " + route.travelTime + " minutes");
-            System.out.println("Distance: " + route.distance + "m");
-        }
-    }
+    // public static void main(String[] args){
+    //     // List<String> startStops = new ArrayList<>(Arrays.asList("2578420"));
+    //     // List<String> endStops = new ArrayList<>(Arrays.asList("2578423"));
+    //     ZipCode start = new ZipCode("6217la");
+    //     ZipCode end = new ZipCode("6211gl");
+    //     List<Route> allRoutes = findAllRoutes(start,end);
+    //     List<Route> fastest = findQuickestRoute(allRoutes);
+    //     for(Route route: fastest){
+    //         System.out.println("Route id: " + route.routeId);
+    //         System.out.println("Travel time: " + route.travelTime + " seconds");
+    //         System.out.println("Distance: " + route.distance + "m");
+    //         System.out.println(route.startStopId);
+    //         System.out.println(route.endStopId);
+    //         System.out.println(route.routeShortName);
+    //         System.out.println("-----------------------------");
+    //     }
+    // }
 }

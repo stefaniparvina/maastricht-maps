@@ -1,7 +1,4 @@
 package bus.maapstrichtfinal;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 import javafx.animation.TranslateTransition;
@@ -23,6 +20,7 @@ import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
 import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
 import bus.maapstrichtfinal.ThemeStrategy.Theme;
+import bus.maapstrichtfinal.ZipCode.ZipCode;
 import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
 
 
@@ -49,7 +47,7 @@ public class HomepageController {
     @FXML
     private TextField endTxtField;
     public static double startLat = 0.0;
-    public static double startLong = 00;
+    public static double startLong = 0.0;
     public static double endLat = 0.0;
     public static double endLong = 0.0;
     @FXML
@@ -74,9 +72,6 @@ public class HomepageController {
     private TranslateTransition menuAnimation;
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
-
-    private String csvPath = "src/main/java/bus/maapstrichtfinal/Map/data/MassZipLatLon.csv";
-
 
     @FXML
     private void beginBtnClicked(ActionEvent event) {
@@ -105,45 +100,17 @@ public class HomepageController {
     }
 
     private void setStartLocation(String zipCode) {
-        startLat = 0.0;
-        startLong = 0.0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvPath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].trim().equalsIgnoreCase(zipCode)) {
-                    startLat = Double.parseDouble(parts[1].trim());
-                    startLong = Double.parseDouble(parts[2].trim());
-                    System.out.println("Start location updated:");
-                    System.out.println("Latitude: " + startLat + ", Longitude: " + startLong);
-                    return;
-                }
-            }
-            System.out.println("Zip code not found in CSV file: " + zipCode);
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
+        ZipCode startZipCode = new ZipCode(zipCode);
+        startLat = startZipCode.getLatitude();
+        startLong = startZipCode.getLongitude();
     }
 
     private void setEndLocation(String zipCode) {
-        endLat = 0.0;
-        endLong = 0.0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvPath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].trim().equalsIgnoreCase(zipCode)) {
-                    endLat = Double.parseDouble(parts[1].trim());
-                    endLong = Double.parseDouble(parts[2].trim());
-                    System.out.println("End location updated:");
-                    System.out.println("Latitude: " + endLat + ", Longitude: " + endLong);
-                    return;
-                }
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
+        ZipCode endZipCode = new ZipCode(zipCode);
+        endLat = endZipCode.getLatitude();
+        endLong = endZipCode.getLongitude();
     }
+     
     @FXML
     private void maapBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

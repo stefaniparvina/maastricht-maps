@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class Reader {
-    private static final String DATABASE = "project-1-2\\Data\\MassZipLatLon.csv";
+    private static final String DATABASE = "C:\\Users\\stefa\\OneDrive\\Desktop\\David-fix\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
     private static HashMap<String, double[]> coordinatesCache = new HashMap<>();
     private static boolean isCacheLoaded = false; // Flag to check if the cache is loaded
 
@@ -25,7 +25,8 @@ public class Reader {
                     double[] coordinates = new double[2];
                     coordinates[0] = Double.parseDouble(values[1]); // Latitude
                     coordinates[1] = Double.parseDouble(values[2]); // Longitude
-                    coordinatesCache.put(values[0], coordinates);
+                    String zipCode = values[0].trim().toLowerCase(); // Normalize zip code
+                    coordinatesCache.put(zipCode, coordinates);
                 }
             }
             isCacheLoaded = true; // Set flag to true after loading
@@ -39,7 +40,8 @@ public class Reader {
             loadCoordinatesCache(); // Ensure cache is loaded before accessing
         }
 
-        double[] coordinates = coordinatesCache.get(zipCode);
+        String normalizedZipCode = zipCode.trim().toLowerCase(); // Normalize zip code
+        double[] coordinates = coordinatesCache.get(normalizedZipCode);
         if (coordinates != null) {
             System.out.println("Zip code found in database. No need for API: " + zipCode);
             return coordinates; // Return from cache if found
@@ -50,8 +52,8 @@ public class Reader {
             Api api = Api.getInstance();
             try {
                 coordinates = api.getCoordinatesByPostcode(zipCode);
-                coordinatesCache.put(zipCode, coordinates);
-                System.out.println("Found in the API" + zipCode);
+                coordinatesCache.put(normalizedZipCode, coordinates);
+                System.out.println("Found in the API: " + zipCode);
                 return coordinates;
             } catch (Exception e) {
                 System.out.println("AAAA");

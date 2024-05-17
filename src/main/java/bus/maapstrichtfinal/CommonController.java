@@ -1,10 +1,7 @@
 package bus.maapstrichtfinal;
 
 import javafx.scene.control.Label;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import bus.maapstrichtfinal.ZipCode.Reader;
 
 /**
  * Utility class containing common methods used in multiple classes.
@@ -18,19 +15,11 @@ public class CommonController {
      * @return {@code true} if the zip code is valid, {@code false} otherwise.
      */
     static boolean isValidZipCode(String zipCode) {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/bus/maapstrichtfinal/Map/data/MassZipLatLon.csv"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                String csvZipCode = parts[0].trim();
-                if (zipCode.equalsIgnoreCase(csvZipCode)) {
-                    return true; // Zip code found
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(Reader.readCoordinates(zipCode) != null){
+            return true;
+        }else{
+            return false;
         }
-        return false; // Zip code not found
     }
 
     /**
