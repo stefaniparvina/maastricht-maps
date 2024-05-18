@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class Reader {
-    private static final String DATABASE = "C:\\Users\\stefa\\OneDrive\\Desktop\\David-fix\\project-1-2\\src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
+    private static final String DATABASE = "src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
     private static HashMap<String, double[]> coordinatesCache = new HashMap<>();
     private static boolean isCacheLoaded = false; // Flag to check if the cache is loaded
 

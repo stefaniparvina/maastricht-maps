@@ -1,6 +1,13 @@
 package bus.maapstrichtfinal.Map;
 
 import bus.maapstrichtfinal.HomepageController;
+import bus.maapstrichtfinal.Calculations.BusRouteShape;
+import bus.maapstrichtfinal.Calculations.Route;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import javafx.geometry.Point2D;
@@ -11,6 +18,7 @@ import javafx.scene.shape.Polyline;
 public class CustomMapLayer extends MapLayer {
     private final Circle startMarker;
     private final Circle endMarker;
+
     private final Polyline path;
 
     public CustomMapLayer() {
@@ -19,7 +27,6 @@ public class CustomMapLayer extends MapLayer {
         path = new Polyline();
 
         getChildren().addAll(startMarker, endMarker, path);
-        
     }
 
     @Override
@@ -29,7 +36,7 @@ public class CustomMapLayer extends MapLayer {
 
         Point2D startPoint = getMapPoint(startLocation.getLatitude(), startLocation.getLongitude());
         Point2D endPoint = getMapPoint(endLocation.getLatitude(), endLocation.getLongitude());
-
+    
         startMarker.setCenterX(startPoint.getX());
         startMarker.setCenterY(startPoint.getY());
         endMarker.setCenterX(endPoint.getX());
