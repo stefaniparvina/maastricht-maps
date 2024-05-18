@@ -20,8 +20,6 @@ public class DatabaseConnection {
     private static final String user = "root";
     private static final String password = "pass";
 
-    
-    @SuppressWarnings("exports")
     public static Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(url, user, password);

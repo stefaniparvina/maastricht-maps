@@ -100,6 +100,7 @@ public class Route {
             
             for (int i = 0; i < startStops.size(); i++) {
                 for (int j = 0; j < endStops.size(); j++) {
+                    System.out.println(i +"  " +  j + " bus stops pair");
                     allRoutes.addAll(findRoutesBetweenStops(startStops.get(i), endStops.get(j)));
                 }
             }
@@ -112,12 +113,13 @@ public class Route {
     }
 
 
-    public static List<Route> findQuickestRoute(List<Route> allRoutes) {
+    public static List<Route> findFastestRoutes(ZipCode startZipCode, ZipCode endZipCode) {
 
         //Go trough every possible route and find the quickest one to add to the list
         //If some of the routes have the same travel time, add them all to the list
         
-        List<Route> quickest = new ArrayList<Route>();
+        List<Route> allRoutes = findAllRoutes(startZipCode, endZipCode);
+        List<Route> fastest = new ArrayList<Route>();
         
         int currentTravelTime;
 
@@ -128,14 +130,14 @@ public class Route {
             currentTravelTime = allRoutes.get(0).getTravelTime();
             for (Route route : allRoutes) {
                 if (route.getTravelTime() < currentTravelTime) {
-                    quickest.clear();
-                    quickest.add(route);
+                    fastest.clear();
+                    fastest.add(route);
                     currentTravelTime = route.getTravelTime();
                 }else if(route.getTravelTime() == currentTravelTime){
-                    quickest.add(route);
+                    fastest.add(route);
                 }
             }
-            return quickest;
+            return fastest;
         }
     }
 

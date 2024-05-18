@@ -46,10 +46,14 @@ public class HomepageController {
     private TextField startTxtField;
     @FXML
     private TextField endTxtField;
+    
+    public static ZipCode startZipCode; 
     public static double startLat = 0.0;
     public static double startLong = 0.0;
+    public static ZipCode endZipCode; 
     public static double endLat = 0.0;
     public static double endLong = 0.0;
+
     @FXML
     private Button switchBtn;
     @FXML
@@ -72,6 +76,7 @@ public class HomepageController {
     private TranslateTransition menuAnimation;
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
+
 
     @FXML
     private void beginBtnClicked(ActionEvent event) {
@@ -100,13 +105,13 @@ public class HomepageController {
     }
 
     private void setStartLocation(String zipCode) {
-        ZipCode startZipCode = new ZipCode(zipCode);
+        startZipCode = new ZipCode(zipCode);
         startLat = startZipCode.getLatitude();
         startLong = startZipCode.getLongitude();
     }
 
     private void setEndLocation(String zipCode) {
-        ZipCode endZipCode = new ZipCode(zipCode);
+        endZipCode = new ZipCode(zipCode);
         endLat = endZipCode.getLatitude();
         endLong = endZipCode.getLongitude();
     }

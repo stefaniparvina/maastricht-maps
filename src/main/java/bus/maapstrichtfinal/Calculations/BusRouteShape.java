@@ -48,12 +48,14 @@ public class BusRouteShape {
         
         List<double[]> allPointsCoords = new ArrayList<double[]>();
 
-        String query = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?" + 
+        String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?" + 
         " AND shape_dist_traveled  BETWEEN ? AND ? ORDER BY shape_pt_sequence ASC;";
+
+        String stopsQuery = "SELECT stop_id, stop_lat, stop_lon FROM stops WHERE stop_id IN (?, ?)";
 
         try (
             Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            PreparedStatement pstmt = conn.prepareStatement(shapePointsQuery)) {
 
             pstmt.setInt(1, shapeDetails[0]);
             pstmt.setInt(2, shapeDetails[1]);
@@ -65,6 +67,29 @@ public class BusRouteShape {
                     current[0] = rs.getDouble("shape_pt_lat");
                     current[1] = rs.getDouble("shape_pt_lon");
                     allPointsCoords.add(current);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try (
+            Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(stopsQuery)) {
+
+            pstmt.setString(1, route.getStartStopId());
+            pstmt.setString(2, route.getEndStopId());
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    double[] current = new double[2];
+                    current[0] = rs.getDouble("stop_lat");
+                    current[1] = rs.getDouble("stop_lon");
+                    if(rs.getString("stop_id").equals(route.getStartStopId())){
+                        allPointsCoords.addFirst(current);
+                    }else{
+                        allPointsCoords.addLast(current);
+                    }
                 }
             }
         } catch (SQLException e) {

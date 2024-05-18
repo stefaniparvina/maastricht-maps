@@ -23,7 +23,7 @@ public class ClosestStopFinder {
                     double stopLon = rs.getDouble("stop_lon");
                     double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
     
-                    if (distance <= 0.5) { //closer that 500m
+                    if (distance <= 0.3) { //closer that 300m
                         closestStops.add(rs.getString("stop_id"));
                     }
                 }

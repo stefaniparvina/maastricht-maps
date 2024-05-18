@@ -1,13 +1,6 @@
 package bus.maapstrichtfinal.Map;
 
 import bus.maapstrichtfinal.HomepageController;
-import bus.maapstrichtfinal.Calculations.BusRouteShape;
-import bus.maapstrichtfinal.Calculations.Route;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import javafx.geometry.Point2D;
@@ -15,16 +8,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 
-public class CustomMapLayer extends MapLayer {
+public class DirectPathMapLayer extends MapLayer {
     private final Circle startMarker;
     private final Circle endMarker;
+    private boolean walking = false;
 
     private final Polyline path;
 
-    public CustomMapLayer() {
+    public DirectPathMapLayer(boolean walking) {
+        
+        this.walking = walking;
+
         startMarker = new Circle(5, Color.RED);
-        endMarker = new Circle(5, Color.BLUE);
+        endMarker = new Circle(5, Color.RED);
         path = new Polyline();
+        path.setStroke(Color.BLUE);
+        path.setStrokeWidth(2.5);
 
         getChildren().addAll(startMarker, endMarker, path);
     }
@@ -41,6 +40,10 @@ public class CustomMapLayer extends MapLayer {
         startMarker.setCenterY(startPoint.getY());
         endMarker.setCenterX(endPoint.getX());
         endMarker.setCenterY(endPoint.getY());
+        
+        if(walking){
+            path.getStrokeDashArray().addAll(5.0, 7.0); // Setting a dash pattern: 5 pixels on, 6 pixels off
+        }
 
         path.getPoints().clear();
         path.getPoints().addAll(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
