@@ -31,6 +31,7 @@ public class CommonController {
      */
     static void displayWarning(int invalidInputCount, Label mainTxt, Label secondaryTxt) {
         switch (invalidInputCount) {
+            // Cases for different counts of invalid inputs and corresponding warning messages
             case 1:
                 mainTxt.setText("Incorrect input.");
                 break;
@@ -82,6 +83,6 @@ public class CommonController {
      * @param fontSize The font size to set.
      */
     static void adjustFontSize(Label label, double fontSize) {
-        label.setStyle("-fx-font-size:" + fontSize + "px;");
+        label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
     }
 }

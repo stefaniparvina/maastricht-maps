@@ -9,20 +9,24 @@ import javafx.stage.Stage;
 
 @SuppressWarnings("exports")
 public class FileInitializer {
-    
+
     public static Scene scene;
 
+    // Method to initialize the FXML file and set up the scene
     public void initializeFXML(Stage stage, String fileName) throws IOException{
+        // Creating a new scene with the loaded FXML content
         scene = new Scene(loadFXML(fileName), 1400, 900);
         stage.setScene(scene);
         stage.setTitle("MAAPSTRICHT");
         stage.setResizable(false);
+        // Displaying the stage
         stage.show();
     }
 
+    // Method to load the FXML file and return its root node
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-    
+
 }

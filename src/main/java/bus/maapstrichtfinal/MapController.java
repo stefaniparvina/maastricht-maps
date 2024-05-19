@@ -7,6 +7,7 @@ import com.gluonhq.maps.MapView;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -17,7 +18,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.util.Duration;
 
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
@@ -27,8 +27,12 @@ import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
 import bus.maapstrichtfinal.ThemeStrategy.Theme;
 import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
 
+/**
+ * Controller class for the map.fxml file.
+ */
 public class MapController {
 
+    // FXML annotations to inject components from the FXML file
     @FXML
     private Button beginBtn;
     @FXML
@@ -80,6 +84,7 @@ public class MapController {
     @FXML
     private VBox map;
 
+    // Other variables for menu and panel animations, theme, and input validation
     private int invalidInputCount;
     private boolean isMenuVisible = false;
     private boolean isDiscoverPanelVisible = true;
@@ -90,6 +95,7 @@ public class MapController {
     private TranslateTransition discoverPanelBtnAnimation;
     private Theme themeHandler;
 
+    // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
         if (toggleGroup.getSelectedToggle() == null) {
@@ -106,6 +112,7 @@ public class MapController {
         }
     }
 
+    // Method called when the "Discover Panel" button is clicked to toggle panel visibility
     @FXML
     private void discoverPanelBtnClicked(ActionEvent event){
         if (isDiscoverPanelVisible) {
@@ -120,6 +127,7 @@ public class MapController {
         isDiscoverPanelVisible = !isDiscoverPanelVisible;
     }
 
+    // Method called when the "Contact Us" button is clicked to navigate to the contact us page
     @FXML
     private void contactUsBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -131,6 +139,7 @@ public class MapController {
         }
     }
 
+    // Method called when the "Menu" button is clicked to toggle the visibility of the menu
     @FXML
     private void menuBtnClicked(ActionEvent event) {
         if (isMenuVisible) {
@@ -143,6 +152,7 @@ public class MapController {
         isMenuVisible = !isMenuVisible;
     }
 
+    // Method called when the "Switch" button is clicked to swap start and end locations
     @FXML
     private void switchBtnClicked(ActionEvent event) {
         String temp = startTxtField.getText();
@@ -150,6 +160,7 @@ public class MapController {
         endTxtField.setText(temp);
     }
 
+    // Method called when the "Homepage" button is clicked to navigate to the homepage
     @FXML
     private void homepageBtnClicked(ActionEvent event){
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -161,11 +172,13 @@ public class MapController {
         }
     }
 
+    // Method called when the "Theme" button is clicked to toggle between light and dark themes
     @FXML
     private void themeBtnClicked(ActionEvent event){
         toggleTheme();
     }
 
+    // Method to toggle between light and dark themes
     private void toggleTheme(){
         if (isLightThemeOn) {
             themeHandler.setThemeStrategy(new DarkTheme());
@@ -177,20 +190,12 @@ public class MapController {
         ThemeInfo.setLightTheme(isLightThemeOn);
     }
 
+    // Method to check if start and end locations are available
     private boolean startAndEndInfoAvailable(){
         return DestinationInfo.getStartDestination() != null && DestinationInfo.getEndDestination() != null;
     }
 
-    // private MapView getMap(){
-    //     MapView mapView = MapInitializer.initializeMap();
-    //     return mapView;
-    // }
-
-    // private void placeMapIntoPane(MapView mapView){
-    //     mapView.setPrefSize(map.getWidth(), map.getHeight());
-    //     map.getChildren().add(mapView);
-    // }
-
+    // Method to apply theme settings on initialization
     private void applyThemeOnInitiation(){
         if (ThemeInfo.isLightThemeOn()) {
             themeHandler.setThemeStrategy(new LightTheme());
@@ -200,33 +205,40 @@ public class MapController {
         themeHandler.applyTheme(parent, themeBtnImg);
         isLightThemeOn = ThemeInfo.isLightThemeOn();
     }
-    
+
+    // Method called on controller initialization
     public void initialize() {
         themeHandler = new Theme();
         applyThemeOnInitiation();
 
-        // placeMapIntoPane(getMap());
+        // Add the map view to the map VBox
         MapView mapView = MapInitializer.createMapView();
         map.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
 
+        // Toggle group setup for radio buttons
         toggleGroup = new ToggleGroup();
         bicycleRadioBtn.setToggleGroup(toggleGroup);
         busRadioBtn.setToggleGroup(toggleGroup);
         walkRadioBtn.setToggleGroup(toggleGroup);
 
+        // Menu animation setup
         menuAnimation = new TranslateTransition(Duration.millis(300), menu);
         menu.setTranslateX(menu.getPrefWidth() + 300);
 
+        // Discover panel animation setup
         discoverPanelAnimation = new TranslateTransition(Duration.millis(300), discoverPanel);
         discoverPanelAnimation.setToX(0);
 
+        // Discover panel button animation setup
         discoverPanelBtnAnimation = new TranslateTransition(Duration.millis(300), discoverPanelBtn);
         discoverPanelBtn.setTranslateX(discoverPanelBtn.getPrefHeight() + 100);
 
+        // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
 
+        // Check if start and end locations are available and set them if so
         if(startAndEndInfoAvailable()){
             startTxtField.setText(DestinationInfo.getStartDestination());
             endTxtField.setText(DestinationInfo.getEndDestination());

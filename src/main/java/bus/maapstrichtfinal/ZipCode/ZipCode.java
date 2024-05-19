@@ -6,20 +6,23 @@ public class ZipCode extends Reader {
     private double longitude;
     private double[] coordinates;
 
-
+    // Constructor to initialize a ZipCode object with a given zip code
     public ZipCode(String zipCode) {
-
         this.zipCode = zipCode;
         this.coordinates = readCoordinates(zipCode);
-        assert (this.coordinates != null) && (this.coordinates != new double[]{-1,-1});
+
+        // Ensure that coordinates are retrieved successfully and are not the default invalid coordinates
+        assert (this.coordinates != null) && (this.coordinates != new double[]{-1, -1});
         this.latitude = this.coordinates[0];
         this.longitude = this.coordinates[1];
     }
 
-    public double getLongitude() { 
+    // Getter method for longitude
+    public double getLongitude() {
         return longitude;
     }
 
+    // Getter method for latitude
     public double getLatitude() {
         return latitude;
     }
