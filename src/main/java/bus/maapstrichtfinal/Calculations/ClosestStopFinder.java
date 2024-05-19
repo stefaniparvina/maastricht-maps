@@ -14,19 +14,51 @@ public class ClosestStopFinder {
         String query = "SELECT stop_id, stop_lat, stop_lon FROM stops";
 
         try (
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
+                Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     double stopLat = rs.getDouble("stop_lat");
                     double stopLon = rs.getDouble("stop_lon");
                     double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
-    
-                    if (distance <= 0.3) { //closer that 300m
+
+                    // First attempt: within 200 meters
+                    if (distance <= 0.2) {
                         closestStops.add(rs.getString("stop_id"));
                     }
                 }
+
+                // If no stops found within 200 meters, check within 300 meters
+                if (closestStops.isEmpty()) {
+                    try (ResultSet rs2 = pstmt.executeQuery()) {
+                        while (rs2.next()) {
+                            double stopLat = rs2.getDouble("stop_lat");
+                            double stopLon = rs2.getDouble("stop_lon");
+                            double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
+
+                            if (distance <= 0.3) {
+                                closestStops.add(rs2.getString("stop_id"));
+                            }
+                        }
+                    }
+                }
+
+                // If no stops found within 300 meters, check within 500 meters
+                if (closestStops.isEmpty()) {
+                    try (ResultSet rs3 = pstmt.executeQuery()) {
+                        while (rs3.next()) {
+                            double stopLat = rs3.getDouble("stop_lat");
+                            double stopLon = rs3.getDouble("stop_lon");
+                            double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
+
+                            if (distance <= 0.5) {
+                                closestStops.add(rs3.getString("stop_id"));
+                            }
+                        }
+                    }
+                }
+
                 rs.close();
                 pstmt.close();
                 conn.close();
@@ -49,6 +81,8 @@ public class ClosestStopFinder {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return earthRadius * c;
     }
+
+
 
     // public static void main(String[] args) {
     //     try {
