@@ -12,6 +12,7 @@ public class LightTheme implements ThemeInterface {
     private static final String BACKGROUND_IMAGE_PATH = "/bus/maapstrichtfinal/background/light_background.jpg";
     
     @Override
+    //apply light theme
     public void applyTheme(BorderPane parent, ImageView backgroundImg, ImageView themeBtnImg) {
         parent.getStylesheets().remove(getClass().getResource(DarkTheme.CSS_PATH).toString());
         parent.getStylesheets().add(getClass().getResource(CSS_PATH).toString());
@@ -20,6 +21,7 @@ public class LightTheme implements ThemeInterface {
     }
 
     @Override
+    //apply light theme
     public void applyTheme(BorderPane parent, ImageView themeBtnImg) {
         parent.getStylesheets().remove(getClass().getResource(DarkTheme.CSS_PATH).toString());
         parent.getStylesheets().add(getClass().getResource(CSS_PATH).toString());
