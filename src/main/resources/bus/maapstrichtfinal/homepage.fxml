@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1400.0" styleClass="background-color" stylesheets="@styles/lightMode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus.maapstrichtfinal.HomepageController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="783.0" prefWidth="1400.0" styleClass="background-color" stylesheets="@styles/lightMode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus.maapstrichtfinal.HomepageController">
    <top>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="105.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
          <children>
@@ -120,7 +120,7 @@
       </HBox>
    </top>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="678.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="backgroundImg" fitHeight="809.0" fitWidth="1415.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -131,7 +131,7 @@
                <children>
                   <HBox prefHeight="741.0" prefWidth="1421.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="500.0">
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="640.0" prefWidth="500.0">
                            <HBox.margin>
                               <Insets left="30.0" top="30.0" />
                            </HBox.margin>
@@ -281,7 +281,7 @@
                               <Insets top="30.0" />
                            </HBox.margin>
                         </Pane>
-                        <ScrollPane prefHeight="200.0" prefWidth="800.0">
+                        <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="640.0" prefWidth="801.0">
                            <HBox.margin>
                               <Insets top="30.0" />
                            </HBox.margin>
@@ -784,7 +784,7 @@
                   </Button>
                </children>
                <StackPane.margin>
-                  <Insets bottom="400.0" left="1160.0" />
+                  <Insets bottom="270.0" left="1160.0" />
                </StackPane.margin>
                <styleClass>
                   <String fx:value="background-color" />
@@ -793,7 +793,7 @@
             </VBox>
          </children>
          <BorderPane.margin>
-            <Insets top="12.0" />
+            <Insets top="2.0" />
          </BorderPane.margin>
       </StackPane>
    </center>

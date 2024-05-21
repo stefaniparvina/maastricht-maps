@@ -83,6 +83,16 @@ public class MapController {
     private ImageView themeBtnImg;
     @FXML
     private VBox map;
+    @FXML
+    private Label transportOptionTxt;
+    @FXML
+    private Label timeTxt;
+    @FXML
+    private Label zipCodesTxt;
+
+    // Empty if the user did not choose bus as the transportation method
+    @FXML
+    private Label busTxt;
 
     // Other variables for menu and panel animations, theme, and input validation
     private int invalidInputCount;

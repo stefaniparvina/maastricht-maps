@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1400.0" stylesheets="@styles/lightMode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus.maapstrichtfinal.MapController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="783.0" prefWidth="1400.0" stylesheets="@styles/lightMode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus.maapstrichtfinal.MapController">
    <top>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="105.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
          <children>
@@ -113,10 +113,10 @@
       </HBox>
    </top>
    <center>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="795.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="677.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="map" prefHeight="200.0" prefWidth="100.0" />
-            <VBox fx:id="discoverPanel" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="500.0">
+            <VBox fx:id="map" maxHeight="-Infinity" minWidth="-Infinity" prefHeight="677.0" prefWidth="100.0" />
+            <VBox fx:id="discoverPanel" alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="650.0" prefWidth="500.0">
                <children>
                   <Button fx:id="closeDiscoverPanelBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#discoverPanelBtnClicked" prefHeight="30.0" prefWidth="30.0">
                      <VBox.margin>
@@ -344,17 +344,20 @@
                   <String fx:value="round-border" />
                </styleClass>
                <StackPane.margin>
-                  <Insets bottom="410.0" left="1160.0" />
+                  <Insets bottom="290.0" left="1160.0" />
                </StackPane.margin>
             </VBox>
-            <VBox fx:id="resultPanel" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="resultPanel" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="170.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="transportOption" styleClass="text-color" text="By walking,">
+                  <Label fx:id="transportOptionTxt" styleClass="text-color" text="By walking,">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
                   </Label>
-                  <Label fx:id="timeResult" styleClass="text-color" text="it takes 30 minutes">
+                  <Label fx:id="timeTxt" styleClass="text-color" text="it takes 30 minutes">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
@@ -362,14 +365,22 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="zipCodes" styleClass="text-color" text="from 6221BR to 6229EN.">
+                  <Label fx:id="zipCodesTxt" styleClass="text-color" text="from 6221BR to 6229EN.">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
                   </Label>
+                  <Label fx:id="busTxt" styleClass="text-color">
+                     <font>
+                        <Font name="Calibri" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
                <StackPane.margin>
-                  <Insets bottom="600.0" left="15.0" right="1100.0" top="15.0" />
+                  <Insets bottom="500.0" left="15.0" right="1100.0" top="80.0" />
                </StackPane.margin>
                <styleClass>
                   <String fx:value="round-border" />
@@ -391,7 +402,7 @@
                   <String fx:value="very-round-border" />
                </styleClass>
                <StackPane.margin>
-                  <Insets left="1300.0" top="690.0" />
+                  <Insets left="1300.0" top="590.0" />
                </StackPane.margin>
             </Button>
          </children>

@@ -15,7 +15,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("homepage.fxml"));
         stage.setTitle("MAAPSTRICHT");
         stage.setResizable(false);
-        stage.setScene(new Scene(root, 1400, 900));
+        stage.setScene(new Scene(root, 1400, 783));
         stage.show();
     }
 

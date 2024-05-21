@@ -15,7 +15,7 @@ public class FileInitializer {
     // Method to initialize the FXML file and set up the scene
     public void initializeFXML(Stage stage, String fileName) throws IOException{
         // Creating a new scene with the loaded FXML content
-        scene = new Scene(loadFXML(fileName), 1400, 900);
+        scene = new Scene(loadFXML(fileName), 1400, 783);
         stage.setScene(scene);
         stage.setTitle("MAAPSTRICHT");
         stage.setResizable(false);
