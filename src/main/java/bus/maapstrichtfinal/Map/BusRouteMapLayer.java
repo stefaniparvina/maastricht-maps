@@ -8,6 +8,7 @@ import com.gluonhq.maps.MapLayer;
 import bus.maapstrichtfinal.HomepageController;
 import bus.maapstrichtfinal.Calculations.BusRouteShape;
 import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -19,7 +20,8 @@ public class BusRouteMapLayer extends MapLayer {
     private final Circle startZipCodeMarker;
     private final Circle endZipCodeMarker;
 
-    // Polylines for the bus route shape, start zip code to bus stop, and end bus stop to end zip code
+    // Polylines for the bus route shape, start zip code to bus stop, and end bus
+    // stop to end zip code
     private Polyline pathShape = new Polyline();
     private Polyline pathStartZipToStop = new Polyline();
     private Polyline pathEndStopToZip = new Polyline();
@@ -51,8 +53,8 @@ public class BusRouteMapLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         // Getting start and end zip codes from the HomepageController
-        ZipCode startZipCode = HomepageController.startZipCode;
-        ZipCode endZipCode = HomepageController.endZipCode;
+        ZipCode startZipCode = DestinationInfo.getStartZipCode();
+        ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
         // Checking if shape points coordinates are already found
         if (shapePointsCoords.size() == 0) {

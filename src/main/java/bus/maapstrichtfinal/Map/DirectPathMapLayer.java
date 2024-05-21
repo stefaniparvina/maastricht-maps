@@ -1,6 +1,8 @@
 package bus.maapstrichtfinal.Map;
 
 import bus.maapstrichtfinal.HomepageController;
+import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import javafx.geometry.Point2D;
@@ -35,8 +37,10 @@ public class DirectPathMapLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         // Get start and end locations from HomepageController
-        MapPoint startLocation = new MapPoint(HomepageController.startLat, HomepageController.startLong);
-        MapPoint endLocation = new MapPoint(HomepageController.endLat, HomepageController.endLong);
+        MapPoint startLocation = new MapPoint(DestinationInfo.getStartZipCode().getLatitude(),
+                DestinationInfo.getStartZipCode().getLongitude());
+        MapPoint endLocation = new MapPoint(DestinationInfo.getEndZipCode().getLatitude(),
+                DestinationInfo.getEndZipCode().getLongitude());
 
         // Convert start and end locations to map points
         Point2D startPoint = getMapPoint(startLocation.getLatitude(), startLocation.getLongitude());

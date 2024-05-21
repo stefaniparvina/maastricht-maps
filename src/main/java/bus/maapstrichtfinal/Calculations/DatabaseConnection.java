@@ -15,10 +15,10 @@ public class DatabaseConnection {
      * You need to change user and password
      * Use the ones you have for mysql
      */
-    
+
     private static final String url = "jdbc:mysql://localhost:3306/gtfs";
-    private static final String user = "root";
-    private static final String password = "pass";
+    private static final String user = "BCS1510";
+    private static final String password = "BCS1510";
 
     public static Connection getConnection() {
         try {

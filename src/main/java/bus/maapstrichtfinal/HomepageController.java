@@ -91,8 +91,10 @@ public class HomepageController {
             CommonController.adjustFontSize(mainTxt, 28);
             return;
         }
+        // if(toggleGroup.getSelectedToggle() == )
         // Check if start and end zip codes are valid
-        if (CommonController.isValidZipCode(startTxtField.getText()) && CommonController.isValidZipCode(endTxtField.getText())) {
+        if (CommonController.isValidZipCode(startTxtField.getText())
+                && CommonController.isValidZipCode(endTxtField.getText())) {
             // Set start and end locations
             setStartLocation(startTxtField.getText());
             setEndLocation(endTxtField.getText());
@@ -110,7 +112,8 @@ public class HomepageController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else invalidInput(); // Display error message for invalid input
+        } else
+            invalidInput(); // Display error message for invalid input
     }
 
     // Method to set the start location based on the entered zip code
@@ -118,6 +121,7 @@ public class HomepageController {
         startZipCode = new ZipCode(zipCode);
         startLat = startZipCode.getLatitude();
         startLong = startZipCode.getLongitude();
+        DestinationInfo.setStartZipCode(startZipCode);
     }
 
     // Method to set the end location based on the entered zip code
@@ -125,6 +129,7 @@ public class HomepageController {
         endZipCode = new ZipCode(zipCode);
         endLat = endZipCode.getLatitude();
         endLong = endZipCode.getLongitude();
+        DestinationInfo.setEndZipCode(endZipCode);
     }
 
     // Method called when the "maap" button is clicked
@@ -139,7 +144,8 @@ public class HomepageController {
         }
     }
 
-    // Method called when the "Switch" button is clicked to swap start and end locations
+    // Method called when the "Switch" button is clicked to swap start and end
+    // locations
     @FXML
     private void switchBtnClicked(ActionEvent event) {
         String temp = startTxtField.getText();
@@ -147,7 +153,8 @@ public class HomepageController {
         endTxtField.setText(temp);
     }
 
-    // Method called when the "Menu" button is clicked to toggle the visibility of the menu
+    // Method called when the "Menu" button is clicked to toggle the visibility of
+    // the menu
     @FXML
     private void menuBtnClicked(ActionEvent event) {
         if (isMenuVisible) {
@@ -160,7 +167,8 @@ public class HomepageController {
         isMenuVisible = !isMenuVisible;
     }
 
-    // Method called when the "Contact Us" button is clicked to navigate to the contact us page
+    // Method called when the "Contact Us" button is clicked to navigate to the
+    // contact us page
     @FXML
     private void contactUsBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -172,9 +180,10 @@ public class HomepageController {
         }
     }
 
-    // Method called when the "Theme" button is clicked to toggle between light and dark themes
+    // Method called when the "Theme" button is clicked to toggle between light and
+    // dark themes
     @FXML
-    private void themeBtnClicked(ActionEvent event){
+    private void themeBtnClicked(ActionEvent event) {
         toggleTheme();
     }
 
@@ -192,13 +201,13 @@ public class HomepageController {
         } else {
             // Increment count and display warning message
             invalidInputCount++;
-            CommonController.displayWarning(invalidInputCount,mainTxt,secondaryTxt);
+            CommonController.displayWarning(invalidInputCount, mainTxt, secondaryTxt);
             return true;
         }
     }
 
     // Method to set destination points for the route
-    private void setDestinationPoints(String start, String end){
+    private void setDestinationPoints(String start, String end) {
         DestinationInfo.setStartDestination(start);
         DestinationInfo.setEndDestination(end);
     }
@@ -213,7 +222,7 @@ public class HomepageController {
     }
 
     // Method to toggle between light and dark themes
-    private void toggleTheme(){
+    private void toggleTheme() {
         if (isLightThemeOn) {
             themeHandler.setThemeStrategy(new DarkTheme());
         } else {
@@ -225,7 +234,7 @@ public class HomepageController {
     }
 
     // Method to apply theme settings on initialization
-    private void applyThemeOnInitiation(){
+    private void applyThemeOnInitiation() {
         if (ThemeInfo.isLightThemeOn()) {
             themeHandler.setThemeStrategy(new LightTheme());
         } else {
