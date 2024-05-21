@@ -3,6 +3,7 @@ package bus.maapstrichtfinal.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import bus.maapstrichtfinal.MapController;
 import com.gluonhq.maps.MapLayer;
 
 import bus.maapstrichtfinal.HomepageController;
@@ -56,6 +57,11 @@ public class BusRouteMapLayer extends MapLayer {
         ZipCode startZipCode = DestinationInfo.getStartZipCode();
         ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
+        // Check if start or end zip code is null
+        if (startZipCode == null || endZipCode == null) {
+            new MapController();
+            return;
+        }
         // Checking if shape points coordinates are already found
         if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
