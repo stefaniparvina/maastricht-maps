@@ -151,4 +151,9 @@ public class Route {
             return fastest;
         }
     }
+
+    public static boolean isRouteAvailable(ZipCode startZipCode, ZipCode endZipCode){
+        List<Route> routes = findAllRoutes(startZipCode,endZipCode);
+        return !routes.isEmpty();
+    }
 }

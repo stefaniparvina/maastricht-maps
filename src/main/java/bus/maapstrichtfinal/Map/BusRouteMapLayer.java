@@ -31,7 +31,7 @@ public class BusRouteMapLayer extends MapLayer {
 
     // Constructor
     public BusRouteMapLayer() {
-        startZipCodeMarker = new Circle(5, Color.RED);
+        startZipCodeMarker = new Circle(5, Color.GREEN);
         endZipCodeMarker = new Circle(5, Color.RED);
 
         // Styling for the polylines
@@ -57,7 +57,7 @@ public class BusRouteMapLayer extends MapLayer {
         ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
         // Checking if shape points coordinates are already found
-        if (shapePointsCoords.size() == 0) {
+        if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
             List<Route> fastestRoutes = Route.findFastestRoutes(startZipCode, endZipCode);
             shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(fastestRoutes.get(0));

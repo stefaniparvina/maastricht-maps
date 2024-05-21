@@ -2,6 +2,7 @@ package bus.maapstrichtfinal;
 
 import java.io.IOException;
 
+import bus.maapstrichtfinal.Calculations.Route;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -98,19 +99,27 @@ public class HomepageController {
             // Set start and end locations
             setStartLocation(startTxtField.getText());
             setEndLocation(endTxtField.getText());
+            startZipCode = new ZipCode(startTxtField.getText());
+            endZipCode = new ZipCode(endTxtField.getText());
+
 
             // Display message and initialize route calculation
             mainTxt.setText("Calculating Route...");
             invalidInputCount = 0;
             setDestinationPoints(startTxtField.getText(), endTxtField.getText());
             setSelectedTransportOption();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            if(Route.isRouteAvailable(startZipCode,endZipCode)) {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            try {
-                FileInitializer initializer = new FileInitializer();
-                initializer.initializeFXML(stage, "map");
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    FileInitializer initializer = new FileInitializer();
+                    initializer.initializeFXML(stage, "map");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                mainTxt.setPrefSize(500,200);
+                mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
             }
         } else
             invalidInput(); // Display error message for invalid input
