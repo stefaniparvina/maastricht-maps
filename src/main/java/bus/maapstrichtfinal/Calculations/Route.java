@@ -55,6 +55,14 @@ public class Route {
         return distance;
     }
 
+    public static String getTimeMinutesAndSeconds(){
+        int time = getTravelTime();
+        int seconds = time % 60;
+        int minutes = time / 60;
+        if(seconds == 0) return minutes + " minutes";
+        else return minutes + " minutes, " + seconds + " seconds";
+    }
+
     // Static method to find routes between stops
     public static List<Route> findRoutesBetweenStops(String startStopId, String endStopId) {
         // List to store information for every route that goes through the 2 bus stops in the correct direction

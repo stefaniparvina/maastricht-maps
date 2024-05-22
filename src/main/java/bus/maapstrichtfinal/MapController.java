@@ -251,10 +251,9 @@ public class MapController {
     }
 
     private void busOptionChosen(){
-        int busTime = Route.getTravelTime();
         String busNumber = Route.getRouteShortName();
         transportOptionTxt.setText("By bus,");
-        timeTxt.setText("it takes " + busTime + " minutes"); // add the time and change from minutes if you need/want
+        timeTxt.setText("it takes " + Route.getTimeMinutesAndSeconds()); // add the time and change from minutes if you need/want
         zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
         busTxt.setText("Take bus " + busNumber +"."); // add bus number?
     }
