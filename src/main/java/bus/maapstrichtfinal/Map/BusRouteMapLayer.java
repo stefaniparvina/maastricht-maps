@@ -29,7 +29,8 @@ public class BusRouteMapLayer extends MapLayer {
 
     // List to store shape points coordinates
     private List<double[]> shapePointsCoords = new ArrayList<double[]>();
-
+    private static ZipCode startZipCode;
+    private static ZipCode endZipCode;
     // Constructor
     public BusRouteMapLayer() {
         startZipCodeMarker = new Circle(5, Color.GREEN);
@@ -54,8 +55,8 @@ public class BusRouteMapLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         // Getting start and end zip codes from the HomepageController
-        ZipCode startZipCode = DestinationInfo.getStartZipCode();
-        ZipCode endZipCode = DestinationInfo.getEndZipCode();
+        startZipCode = DestinationInfo.getStartZipCode();
+        endZipCode = DestinationInfo.getEndZipCode();
 
         // Check if start or end zip code is null
         if (startZipCode == null || endZipCode == null) {
@@ -66,6 +67,14 @@ public class BusRouteMapLayer extends MapLayer {
         if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
             List<Route> fastestRoutes = Route.findFastestRoutes(startZipCode, endZipCode);
+
+            // Check if the fastestRoutes is null or empty
+            if (fastestRoutes == null || fastestRoutes.isEmpty()) {
+                startZipCode = null;
+                endZipCode = null;
+                return;
+            }
+
             shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(fastestRoutes.get(0));
         }
 
