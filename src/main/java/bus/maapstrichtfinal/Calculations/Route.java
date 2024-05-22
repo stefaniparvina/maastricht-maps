@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
 @SuppressWarnings("static-access")
@@ -102,7 +103,7 @@ public class Route {
 
         List<Route> allRoutes = new ArrayList<>();
         try {
-            // Find closest bus stops to start and end zip codes
+            // Find the closest bus stops to start and end zip codes
             List<String> startStops = ClosestStopFinder.findStops(startZipCode.getLatitude(), startZipCode.getLongitude());
             List<String> endStops = ClosestStopFinder.findStops(endZipCode.getLatitude(), endZipCode.getLongitude());
 
@@ -154,6 +155,8 @@ public class Route {
     }
 
     public static boolean isRouteAvailable(ZipCode startZipCode, ZipCode endZipCode){
+        if (!(DestinationInfo.getSelectedTransportOption().equalsIgnoreCase("bus"))) return true;
+        if (startZipCode == null || endZipCode == null) return false;
         List<Route> routes = findAllRoutes(startZipCode,endZipCode);
         return !routes.isEmpty();
     }

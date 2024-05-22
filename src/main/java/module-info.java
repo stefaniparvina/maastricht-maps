@@ -6,7 +6,8 @@ module bus.maapstrichtfinal {
     requires com.google.gson;
     requires java.sql;
     requires javafx.graphics;
-    
+    requires graphhopper.core;
+
     opens bus.maapstrichtfinal to javafx.fxml;
     exports bus.maapstrichtfinal;
 }

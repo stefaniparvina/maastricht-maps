@@ -1,6 +1,5 @@
 package bus.maapstrichtfinal.Map;
 
-import bus.maapstrichtfinal.HomepageController;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 
 import com.gluonhq.maps.MapLayer;
@@ -24,7 +23,7 @@ public class DirectPathMapLayer extends MapLayer {
         this.walking = walking;
 
         // Initialize markers and path
-        startMarker = new Circle(5, Color.RED);
+        startMarker = new Circle(5, Color.GREEN);
         endMarker = new Circle(5, Color.RED);
         path = new Polyline();
         path.setStroke(Color.BLUE);
@@ -37,6 +36,9 @@ public class DirectPathMapLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         // Get start and end locations from HomepageController
+        if(DestinationInfo.getStartZipCode() == null || DestinationInfo.getEndZipCode() == null){
+            return;
+        }
         MapPoint startLocation = new MapPoint(DestinationInfo.getStartZipCode().getLatitude(),
                 DestinationInfo.getStartZipCode().getLongitude());
         MapPoint endLocation = new MapPoint(DestinationInfo.getEndZipCode().getLatitude(),

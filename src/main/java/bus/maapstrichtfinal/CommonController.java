@@ -1,13 +1,19 @@
 package bus.maapstrichtfinal;
 
+import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.ZipCode.ZipCode;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import bus.maapstrichtfinal.ZipCode.Reader;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * Utility class containing common methods used in multiple classes.
  */
 public class CommonController {
-
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
      *
@@ -85,4 +91,20 @@ public class CommonController {
     static void adjustFontSize(Label label, double fontSize) {
         label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
     }
+
+    static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
+        if (Route.isRouteAvailable(startZipCode, endZipCode)) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            try {
+                FileInitializer initializer = new FileInitializer();
+                initializer.initializeFXML(stage, "map");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mainTxt.setPrefSize(500, 200);
+            mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
+        }
+    }
+
 }
