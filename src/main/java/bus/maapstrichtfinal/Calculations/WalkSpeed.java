@@ -17,6 +17,6 @@ public class WalkSpeed {
         int minutes = (int) (timeHours * 60);
         int seconds = (int) ((timeHours * 3600) % 60);
 
-        return minutes + " minutes " + seconds + " seconds";
+        return minutes + " minutes, " + seconds + " seconds";
     }
 }

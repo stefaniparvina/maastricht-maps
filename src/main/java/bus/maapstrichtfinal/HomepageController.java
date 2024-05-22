@@ -92,7 +92,6 @@ public class HomepageController {
             CommonController.adjustFontSize(mainTxt, 28);
             return;
         }
-        // if(toggleGroup.getSelectedToggle() == )
         // Check if start and end zip codes are valid
         if (CommonController.isValidZipCode(startTxtField.getText())
                 && CommonController.isValidZipCode(endTxtField.getText())) {

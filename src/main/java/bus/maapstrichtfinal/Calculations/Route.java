@@ -9,13 +9,14 @@ import java.util.List;
 
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
+@SuppressWarnings("static-access")
 public class Route {
     // Route attributes
     private int routeId;
-    private String routeShortName;
+    private static String routeShortName;
     private String startStopId;
     private String endStopId;
-    private int travelTime;
+    private static int travelTime;
     private int distance;
 
     // Constructor
@@ -33,7 +34,7 @@ public class Route {
         return routeId;
     }
 
-    public String getRouteShortName() {
+    public static String getRouteShortName() {
         return routeShortName;
     }
 
@@ -45,7 +46,7 @@ public class Route {
         return endStopId;
     }
 
-    public int getTravelTime() {
+    public static int getTravelTime() {
         return travelTime;
     }
 

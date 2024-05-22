@@ -19,7 +19,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import bus.maapstrichtfinal.Calculations.BikeSpeed;
+import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.Calculations.WalkSpeed;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
@@ -70,12 +72,6 @@ public class MapController {
     @FXML
     private VBox resultPanel;
     @FXML
-    private Label transportOption;
-    @FXML
-    private Label timeResult;
-    @FXML
-    private Label zipCodes;
-    @FXML
     private Button closeDiscoverPanelBtn;
     @FXML
     private BorderPane parent;
@@ -99,6 +95,7 @@ public class MapController {
     private boolean isMenuVisible = false;
     private boolean isDiscoverPanelVisible = true;
     private boolean isLightThemeOn = true;
+    private boolean isResultVisible = false;
     private TranslateTransition menuAnimation;
     private TranslateTransition discoverPanelAnimation;
     private TranslateTransition resultPanelAnimation;
@@ -216,6 +213,52 @@ public class MapController {
         isLightThemeOn = ThemeInfo.isLightThemeOn();
     }
 
+    // Method that sets the text on the result panel
+    private void setResultPanelText(){
+        String transportOption = DestinationInfo.getSelectedTransportOption();
+        switch(transportOption){
+            case "Walk": {
+                walkingOptionChosen();
+                break;
+            }
+            case "Bicycle": {
+                cyclingOptionChosen();
+                break;
+            }
+            case "Bus": {
+                busOptionChosen();
+                break;
+            }
+            default: System.out.println("Error. Transport option is null.");
+        }
+    }
+
+    private String startDest = DestinationInfo.getStartDestination();
+    private String endDest = DestinationInfo.getEndDestination();
+
+    private void walkingOptionChosen(){
+        transportOptionTxt.setText("By walking,");
+        timeTxt.setText("it takes " + WalkSpeed.calculateWalkingTime(startDest, endDest)); 
+        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
+        busTxt.setText(null);
+    }
+
+    private void cyclingOptionChosen(){
+        transportOptionTxt.setText("By cycling,");
+        timeTxt.setText("it takes " + BikeSpeed.calculateCyclingTime(startDest, endDest));
+        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
+        busTxt.setText(null);
+    }
+
+    private void busOptionChosen(){
+        int busTime = Route.getTravelTime();
+        String busNumber = Route.getRouteShortName();
+        transportOptionTxt.setText("By bus,");
+        timeTxt.setText("it takes " + busTime + " minutes"); // add the time and change from minutes if you need/want
+        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
+        busTxt.setText("Take bus " + busNumber +"."); // add bus number?
+    }
+
     // Method called on controller initialization
     public void initialize() {
         themeHandler = new Theme();
@@ -255,8 +298,10 @@ public class MapController {
             mainTxt.setText("Route Calculated!");
             discoverPanel.setTranslateX(discoverPanel.getPrefWidth() + 800);
             discoverPanelBtn.setTranslateX(discoverPanelBtn.getPrefWidth() - 50);
+            isResultVisible = true;
             resultPanelAnimation.setToX(0);
             resultPanelAnimation.play();
+            setResultPanelText();
         }
     }
 }

@@ -16,6 +16,6 @@ public class BikeSpeed {
         int seconds = (int) ((timeHours * 3600) % 60);
 
 
-        return minutes + " minutes " + seconds + " seconds";
+        return minutes + " minutes, " + seconds + " seconds";
     }
 }

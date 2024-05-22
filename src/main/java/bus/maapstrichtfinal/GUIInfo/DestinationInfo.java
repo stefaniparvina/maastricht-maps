@@ -50,6 +50,4 @@ public abstract class DestinationInfo {
     public static String getSelectedTransportOption() {
         return selectedTransportOption;
     }
-
-    // TODO call the calculators or idk
 }
