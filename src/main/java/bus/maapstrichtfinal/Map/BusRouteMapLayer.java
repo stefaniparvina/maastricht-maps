@@ -6,7 +6,6 @@ import java.util.List;
 import bus.maapstrichtfinal.MapController;
 import com.gluonhq.maps.MapLayer;
 
-import bus.maapstrichtfinal.HomepageController;
 import bus.maapstrichtfinal.Calculations.BusRouteShape;
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
@@ -29,8 +28,7 @@ public class BusRouteMapLayer extends MapLayer {
 
     // List to store shape points coordinates
     private List<double[]> shapePointsCoords = new ArrayList<double[]>();
-    private static ZipCode startZipCode;
-    private static ZipCode endZipCode;
+
     // Constructor
     public BusRouteMapLayer() {
         startZipCodeMarker = new Circle(5, Color.GREEN);
@@ -55,8 +53,8 @@ public class BusRouteMapLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         // Getting start and end zip codes from the HomepageController
-        startZipCode = DestinationInfo.getStartZipCode();
-        endZipCode = DestinationInfo.getEndZipCode();
+        ZipCode startZipCode = DestinationInfo.getStartZipCode();
+        ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
         // Check if start or end zip code is null
         if (startZipCode == null || endZipCode == null) {

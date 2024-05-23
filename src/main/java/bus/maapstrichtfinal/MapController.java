@@ -102,6 +102,11 @@ public class MapController {
     private TranslateTransition discoverPanelBtnAnimation;
     private Theme themeHandler;
 
+    private static boolean walk = false;
+    private static boolean bike = false;
+    private static boolean bus = false;
+
+
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
@@ -213,49 +218,68 @@ public class MapController {
         isLightThemeOn = ThemeInfo.isLightThemeOn();
     }
 
-    // Method that sets the text on the result panel
-    private void setResultPanelText(){
-        String transportOption = DestinationInfo.getSelectedTransportOption();
-        switch(transportOption){
-            case "Walk": {
-                walkingOptionChosen();
-                break;
-            }
-            case "Bicycle": {
-                cyclingOptionChosen();
-                break;
-            }
-            case "Bus": {
-                busOptionChosen();
-                break;
-            }
-            default: System.out.println("Error. Transport option is null.");
+    /**
+     * Sets the text on the result panel based on the selected transport option.
+     */
+    private void setResultPanelText() {
+        String transportOptionString = DestinationInfo.getSelectedTransportOption();
+        try {
+            TransportOption transportOption = TransportOption.fromString(transportOptionString);
+            transportOptionChosen(transportOption);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error. Transport option is null or invalid.");
         }
     }
 
     private String startDest = DestinationInfo.getStartDestination();
     private String endDest = DestinationInfo.getEndDestination();
 
-    private void walkingOptionChosen(){
-        transportOptionTxt.setText("By walking,");
-        timeTxt.setText("it takes " + WalkSpeed.calculateWalkingTime(startDest, endDest)); 
-        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-        busTxt.setText(null);
+    /**
+     * Updates the result panel text based on the chosen transport option.
+     *
+     * @param transportOption the chosen transport option
+     */
+    private void transportOptionChosen(TransportOption transportOption) {
+        switch (transportOption) {
+            case WALK:
+                setTransportText("By walking,", WalkSpeed.calculateWalkingTime(startDest, endDest),
+                        WalkSpeed.distanceKM + "km.");
+                break;
+            case BICYCLE:
+                setTransportText("By cycling,", BikeSpeed.calculateCyclingTime(startDest, endDest),
+                        BikeSpeed.distanceKM + "km.");
+                break;
+            case BUS:
+                setBusText(Route.getRouteShortName(), Route.getTimeMinutesAndSeconds());
+                break;
+        }
     }
 
-    private void cyclingOptionChosen(){
-        transportOptionTxt.setText("By cycling,");
-        timeTxt.setText("it takes " + BikeSpeed.calculateCyclingTime(startDest, endDest));
+    /**
+     * Sets the text for walking or cycling options.
+     *
+     * @param transportOptionText the transport option text
+     * @param time the time it takes to travel
+     * @param distance the distance to travel
+     */
+    private void setTransportText(String transportOptionText, String time, String distance) {
+        transportOptionTxt.setText(transportOptionText);
+        timeTxt.setText("it takes " + time);
         zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-        busTxt.setText(null);
+        busTxt.setText("Distance: " + distance);
     }
 
-    private void busOptionChosen(){
-        String busNumber = Route.getRouteShortName();
+    /**
+     * Sets the text for the bus option.
+     *
+     * @param busNumber the bus number
+     * @param time the time it takes to travel
+     */
+    private void setBusText(String busNumber, String time) {
         transportOptionTxt.setText("By bus,");
-        timeTxt.setText("it takes " + Route.getTimeMinutesAndSeconds()); // add the time and change from minutes if you need/want
+        timeTxt.setText("it takes " + time);
         zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-        busTxt.setText("Take bus " + busNumber +"."); // add bus number?
+        busTxt.setText("Take bus " + busNumber + ".");
     }
 
     // Method called on controller initialization

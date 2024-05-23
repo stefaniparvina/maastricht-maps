@@ -2,11 +2,12 @@ package bus.maapstrichtfinal.Calculations;
 
 public class BikeSpeed {
     private final static double AVERAGE_CYCLING_SPEED = 15.0;
+    public static double distanceKM = 0.0;
 
     public static String calculateCyclingTime(String start, String end) {
 
         // Calculate the distance between start and end points in kilometers
-        double distanceKM = Distance.calculateDistance(start, end);
+        distanceKM = Distance.calculateDistance(start, end);
 
         // Calculate the time taken to cycle the distance in hours
         double timeHours = distanceKM / AVERAGE_CYCLING_SPEED;

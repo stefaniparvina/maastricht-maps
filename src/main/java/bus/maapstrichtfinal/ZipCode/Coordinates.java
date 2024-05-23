@@ -27,9 +27,16 @@ public class Coordinates {
     // Method to convert coordinates to radians
     protected static void convertCoordinatesToRadians(String start, String end) {
 
+        zipStartY = new ZipCode(start).getLatitude();
+        zipStartX = new ZipCode(start).getLongitude();
+
+        zipEndY = new ZipCode(end).getLatitude();
+        zipEndX = new ZipCode(end).getLongitude();
+
         // Converting latitude and longitude of start and end zip codes to radians
         startLatitudeRad = Math.toRadians(zipStartY);
         startLongitudeRad = Math.toRadians(zipStartX);
+
         finishLatitudeRad = Math.toRadians(zipEndY);
         finishLongitudeRad = Math.toRadians(zipEndX);
     }

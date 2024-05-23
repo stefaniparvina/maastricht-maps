@@ -7,10 +7,8 @@ public class Distance extends Coordinates {
 
     // Method to calculate the distance between two points using their coordinates
     public static double calculateDistance(String start, String end) {
-
         // Convert start and end coordinates to radians
         convertCoordinatesToRadians(start, end);
-
         // Calculate the differences in longitude and latitude
         double deltaX = (finishLongitudeRad - startLongitudeRad) * Math.cos((startLatitudeRad + finishLatitudeRad) / 2);
         double deltaY = (finishLatitudeRad - startLatitudeRad);
