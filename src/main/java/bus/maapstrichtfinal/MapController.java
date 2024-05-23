@@ -2,6 +2,7 @@ package bus.maapstrichtfinal;
 
 import java.io.IOException;
 
+import bus.maapstrichtfinal.Calculations.TravelTime;
 import com.gluonhq.maps.MapView;
 
 import javafx.animation.TranslateTransition;
@@ -19,9 +20,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import bus.maapstrichtfinal.Calculations.BikeSpeed;
 import bus.maapstrichtfinal.Calculations.Route;
-import bus.maapstrichtfinal.Calculations.WalkSpeed;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
@@ -102,9 +101,6 @@ public class MapController {
     private TranslateTransition discoverPanelBtnAnimation;
     private Theme themeHandler;
 
-    private static boolean walk = false;
-    private static boolean bike = false;
-    private static boolean bus = false;
 
 
     // Method called when the "Begin" button is clicked
@@ -242,12 +238,12 @@ public class MapController {
     private void transportOptionChosen(TransportOption transportOption) {
         switch (transportOption) {
             case WALK:
-                setTransportText("By walking,", WalkSpeed.calculateWalkingTime(startDest, endDest),
-                        WalkSpeed.distanceKM + "km.");
+                setTransportText("By walking,", TravelTime.calculateTravelTime(startDest, endDest, "walk"),
+                        TravelTime.distanceKM + "km.");
                 break;
             case BICYCLE:
-                setTransportText("By cycling,", BikeSpeed.calculateCyclingTime(startDest, endDest),
-                        BikeSpeed.distanceKM + "km.");
+                setTransportText("By cycling,", TravelTime.calculateTravelTime(startDest, endDest, "bike"),
+                        TravelTime.distanceKM + "km.");
                 break;
             case BUS:
                 setBusText(Route.getRouteShortName(), Route.getTimeMinutesAndSeconds());
