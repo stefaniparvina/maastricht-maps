@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BusRouteShape {
@@ -48,8 +49,7 @@ public class BusRouteShape {
     public static List<double[]> findCoordsOfAllRoutePoints(Route route){
 
         // Create a list to store arrays with coordinates for all points that lie on the chosen route and its quickest trip
-        List<double[]> allPointsCoords = new ArrayList<double[]>();
-
+        List<double[]> allPointsCoords = new LinkedList<>();
         // Find shape details for the given route
         int[] shapeDetails = findShapeDetails(route);
 
@@ -101,9 +101,9 @@ public class BusRouteShape {
                     current[1] = rs.getDouble("stop_lon");
                     // Add the stop coordinates to the list of all points coordinates
                     if(rs.getString("stop_id").equals(route.getStartStopId())){
-                        allPointsCoords.addFirst(current);
+                        ((LinkedList<double[]>) allPointsCoords).addFirst(current);
                     }else{
-                        allPointsCoords.addLast(current);
+                        ((LinkedList<double[]>) allPointsCoords).addLast(current);
                     }
                 }
             }

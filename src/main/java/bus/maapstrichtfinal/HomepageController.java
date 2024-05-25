@@ -2,7 +2,6 @@ package bus.maapstrichtfinal;
 
 import java.io.IOException;
 
-import bus.maapstrichtfinal.Calculations.Route;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -9,5 +9,7 @@ module bus.maapstrichtfinal {
     requires graphhopper.core;
 
     opens bus.maapstrichtfinal to javafx.fxml;
+    opens bus.maapstrichtfinal.Calculations to com.google.gson;
     exports bus.maapstrichtfinal;
+    exports bus.maapstrichtfinal.Calculations to com.google.gson;
 }
