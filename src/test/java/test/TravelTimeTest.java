@@ -12,12 +12,12 @@ public class TravelTimeTest {
     public void testCalculateTravelTimeForWalk() {
     
         String start = "6211JL";
-        String end = "6211AN";
+        String end = "6211EN";
         String method = "walk";
 
         String result = TravelTime.calculateTravelTime(start, end, method);
 
-        assertEquals("11 minutes, 9 seconds", result);
+        assertEquals("10 minutes, 10 seconds", result);
     }
 
     @Test
