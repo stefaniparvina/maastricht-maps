@@ -15,7 +15,7 @@ public class ClosestStopFinder {
         List<String> closestStops = new ArrayList<>();
 
         // Array of distances to search within
-        double[] distances = {0.2, 0.3, 0.5};
+        double[] distances = {0.3, 0.5};
 
         // SQL query to retrieve all bus stops
         String query = "SELECT stop_id, stop_lat, stop_lon FROM stops";
@@ -37,6 +37,7 @@ public class ClosestStopFinder {
                         // If the distance is within the maximum distance, add the bus stop to the list of closest stops
                         if (distance <= maxDistance) {
                             closestStops.add(rs.getString("stop_id"));
+
                         }
                     }
                 }
