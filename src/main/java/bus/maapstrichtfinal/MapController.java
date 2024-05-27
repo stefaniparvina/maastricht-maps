@@ -3,6 +3,7 @@ package bus.maapstrichtfinal;
 import java.io.IOException;
 
 import bus.maapstrichtfinal.Calculations.TravelTime;
+import bus.maapstrichtfinal.ZipCode.ZipCode;
 import com.gluonhq.maps.MapView;
 
 import javafx.animation.TranslateTransition;
@@ -103,20 +104,18 @@ public class MapController {
 
 
 
+
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
-        if (toggleGroup.getSelectedToggle() == null) {
-            mainTxt.setText("Choose a transport option to continue.");
-            CommonController.adjustFontSize(mainTxt, 28);
-            return;
-        }
-        if (CommonController.isValidZipCode(startTxtField.getText()) && CommonController.isValidZipCode(endTxtField.getText())) {
-            mainTxt.setText("Calculating Route...");
-            invalidInputCount = 0;
+        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup);
+    }
+    // Method to set the selected transport option
+    private void setSelectedTransportOption() {
+        if (toggleGroup.getSelectedToggle() != null) {
+            DestinationInfo.setSelectedTransportOption(((RadioButton) toggleGroup.getSelectedToggle()).getText());
         } else {
-            invalidInputCount++;
-            CommonController.displayWarning(invalidInputCount,mainTxt,secondaryTxt);
+            DestinationInfo.setSelectedTransportOption(null);
         }
     }
 

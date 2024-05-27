@@ -1,12 +1,17 @@
 package bus.maapstrichtfinal;
 
 import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import bus.maapstrichtfinal.ZipCode.Reader;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -14,6 +19,14 @@ import java.io.IOException;
  * Utility class containing common methods used in multiple classes.
  */
 public class CommonController {
+    // Variables to hold location and transport information
+    protected static ZipCode startZipCode;
+    protected static double startLat = 0.0;
+    protected static double startLong = 0.0;
+    protected static ZipCode endZipCode;
+    protected static double endLat = 0.0;
+    protected static double endLong = 0.0;
+    private static HomepageController hp = new HomepageController();
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
      *
@@ -92,7 +105,7 @@ public class CommonController {
         label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
     }
 
-    static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
+    protected static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
         if (Route.isRouteAvailable(startZipCode, endZipCode)) {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             try {
@@ -104,6 +117,70 @@ public class CommonController {
         } else {
             mainTxt.setPrefSize(500, 200);
             mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
+        }
+    }
+
+    protected static void checkRouting(ActionEvent event, Label mainTxt, Label secondaryTxt,
+                                       TextField startTxtField, TextField endTxtField, ToggleGroup toggleGroup){
+        // Check if a transport option is selected
+        if (toggleGroup.getSelectedToggle() == null) {
+            mainTxt.setText("Choose a transport option to continue.");
+            CommonController.adjustFontSize(mainTxt, 28);
+            return;
+        }
+        // Check if start and end zip codes are valid
+        if (CommonController.isValidZipCode(startTxtField.getText())
+                && CommonController.isValidZipCode(endTxtField.getText())) {
+            CommonController.startRouting(event, mainTxt, startTxtField, endTxtField, hp.invalidInputCount, toggleGroup);
+        } else {
+            hp.invalidInputCount++;
+            CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
+        }
+    }
+    protected static void startRouting(ActionEvent event, Label mainTxt,
+                                       TextField startTxtField, TextField endTxtField, int invalidInputCount, ToggleGroup toggleGroup) {
+        // Set start and end locations
+        setStartLocation(startTxtField.getText());
+        setEndLocation(endTxtField.getText());
+        startZipCode = new ZipCode(startTxtField.getText());
+        endZipCode = new ZipCode(endTxtField.getText());
+
+
+        // Display message and initialize route calculation
+        mainTxt.setText("Calculating Route...");
+        setDestinationPoints(startTxtField.getText(), endTxtField.getText());
+        setSelectedTransportOption(toggleGroup);
+        invalidInputCount = 0;
+        CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
+    }
+    // Method to set the start location based on the entered zip code
+    protected static void setStartLocation(String zipCode) {
+        startZipCode = new ZipCode(zipCode);
+        startLat = startZipCode.getLatitude();
+        startLong = startZipCode.getLongitude();
+        DestinationInfo.setStartZipCode(startZipCode);
+    }
+
+    // Method to set the end location based on the entered zip code
+    protected static void setEndLocation(String zipCode) {
+        endZipCode = new ZipCode(zipCode);
+        endLat = endZipCode.getLatitude();
+        endLong = endZipCode.getLongitude();
+        DestinationInfo.setEndZipCode(endZipCode);
+    }
+
+    // Method to set destination points for the route
+    protected static void setDestinationPoints(String start, String end) {
+        DestinationInfo.setStartDestination(start);
+        DestinationInfo.setEndDestination(end);
+    }
+
+    // Method to set the selected transport option
+    protected static void setSelectedTransportOption(ToggleGroup toggleGroup) {
+        if (toggleGroup.getSelectedToggle() != null) {
+            DestinationInfo.setSelectedTransportOption(((RadioButton) toggleGroup.getSelectedToggle()).getText());
+        } else {
+            DestinationInfo.setSelectedTransportOption(null);
         }
     }
 

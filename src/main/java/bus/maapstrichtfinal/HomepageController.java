@@ -68,15 +68,15 @@ public class HomepageController {
     private BorderPane parent;
 
     // Variables to hold location and transport information
-    public static ZipCode startZipCode;
-    public static double startLat = 0.0;
-    public static double startLong = 0.0;
-    public static ZipCode endZipCode;
-    public static double endLat = 0.0;
-    public static double endLong = 0.0;
+    private static ZipCode startZipCode;
+    private static double startLat = 0.0;
+    private static double startLong = 0.0;
+    private static ZipCode endZipCode;
+    private static double endLat = 0.0;
+    private static double endLong = 0.0;
 
     // Other variables for menu animation, theme, and input validation
-    private int invalidInputCount;
+    int invalidInputCount;
     private boolean isMenuVisible = false;
     private TranslateTransition menuAnimation;
     private boolean isLightThemeOn = true;
@@ -85,47 +85,11 @@ public class HomepageController {
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
-        // Check if a transport option is selected
-        if (toggleGroup.getSelectedToggle() == null) {
-            mainTxt.setText("Choose a transport option to continue.");
-            CommonController.adjustFontSize(mainTxt, 28);
-            return;
-        }
-        // Check if start and end zip codes are valid
-        if (CommonController.isValidZipCode(startTxtField.getText())
-                && CommonController.isValidZipCode(endTxtField.getText())) {
-            // Set start and end locations
-            setStartLocation(startTxtField.getText());
-            setEndLocation(endTxtField.getText());
-            startZipCode = new ZipCode(startTxtField.getText());
-            endZipCode = new ZipCode(endTxtField.getText());
-
-
-            // Display message and initialize route calculation
-            mainTxt.setText("Calculating Route...");
-            invalidInputCount = 0;
-            setDestinationPoints(startTxtField.getText(), endTxtField.getText());
-            setSelectedTransportOption();
-            CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
-        } else
-            invalidInput(); // Display error message for invalid input
+        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup);
     }
 
-    // Method to set the start location based on the entered zip code
-    private void setStartLocation(String zipCode) {
-        startZipCode = new ZipCode(zipCode);
-        startLat = startZipCode.getLatitude();
-        startLong = startZipCode.getLongitude();
-        DestinationInfo.setStartZipCode(startZipCode);
-    }
 
-    // Method to set the end location based on the entered zip code
-    private void setEndLocation(String zipCode) {
-        endZipCode = new ZipCode(zipCode);
-        endLat = endZipCode.getLatitude();
-        endLong = endZipCode.getLongitude();
-        DestinationInfo.setEndZipCode(endZipCode);
-    }
+
 
     // Method called when the "maap" button is clicked
     @FXML
@@ -180,40 +144,6 @@ public class HomepageController {
     @FXML
     private void themeBtnClicked(ActionEvent event) {
         toggleTheme();
-    }
-
-    // Method to handle invalid input
-    private boolean invalidInput() {
-        if (startTxtField.getText().isEmpty() && !endTxtField.getText().isEmpty()) {
-            mainTxt.setText("Please input your starting point.");
-            return true;
-        } else if (!startTxtField.getText().isEmpty() && endTxtField.getText().isEmpty()) {
-            mainTxt.setText("Please input your destination point.");
-            return true;
-        } else if (startTxtField.getText().isEmpty() && endTxtField.getText().isEmpty()) {
-            mainTxt.setText("Please input your trip details.");
-            return true;
-        } else {
-            // Increment count and display warning message
-            invalidInputCount++;
-            CommonController.displayWarning(invalidInputCount, mainTxt, secondaryTxt);
-            return true;
-        }
-    }
-
-    // Method to set destination points for the route
-    private void setDestinationPoints(String start, String end) {
-        DestinationInfo.setStartDestination(start);
-        DestinationInfo.setEndDestination(end);
-    }
-
-    // Method to set the selected transport option
-    private void setSelectedTransportOption() {
-        if (toggleGroup.getSelectedToggle() != null) {
-            DestinationInfo.setSelectedTransportOption(((RadioButton) toggleGroup.getSelectedToggle()).getText());
-        } else {
-            DestinationInfo.setSelectedTransportOption(null);
-        }
     }
 
     // Method to toggle between light and dark themes
