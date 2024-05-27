@@ -1,5 +1,6 @@
 package bus.maapstrichtfinal.Map;
 
+import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
@@ -14,7 +15,7 @@ public class MapInitializer {
         String transportOption = DestinationInfo.getSelectedTransportOption();
 
         // Add the appropriate layer based on the transport option
-        if ("bus".equalsIgnoreCase(transportOption)) {
+        if ("bus".equalsIgnoreCase(transportOption)&& Route.isRouteAvailable(DestinationInfo.getStartZipCode(),DestinationInfo.getEndZipCode())) {
             mapView.addLayer(new BusRouteMapLayer());
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));
