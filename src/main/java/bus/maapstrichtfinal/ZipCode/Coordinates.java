@@ -5,10 +5,10 @@ public class Coordinates {
     // Variables to store coordinates of start and end zip codes
     public static double zipStartX, zipStartY, zipEndX, zipEndY;
     // Variables to store coordinates in radians
-    protected static double startLatitudeRad;
-    protected static double startLongitudeRad;
-    protected static double finishLatitudeRad;
-    protected static double finishLongitudeRad;
+    public static double startLatitudeRad;
+    public static double startLongitudeRad;
+    public static double finishLatitudeRad;
+    public static double finishLongitudeRad;
 
     // Method to extract coordinates from zip code strings
     public static void extractCoordinates(String start, String end) {
@@ -25,7 +25,7 @@ public class Coordinates {
     }
 
     // Method to convert coordinates to radians
-    protected static void convertCoordinatesToRadians(String start, String end) {
+    public static void convertCoordinatesToRadians(String start, String end) {
 
         zipStartY = new ZipCode(start).getLatitude();
         zipStartX = new ZipCode(start).getLongitude();
