@@ -271,10 +271,18 @@ public class MapController {
      * @param time the time it takes to travel
      */
     private void setBusText(String busNumber, String time) {
-        transportOptionTxt.setText("By bus,");
-        timeTxt.setText("it takes " + time);
-        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-        busTxt.setText("Take bus " + busNumber + ".");
+        if(Route.isRouteAvailable(DestinationInfo.getStartZipCode(),DestinationInfo.getEndZipCode())) {
+            transportOptionTxt.setText("By bus,");
+            timeTxt.setText("it takes " + time);
+            zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
+            busTxt.setText("Take bus " + busNumber + ".");
+        }
+        else{
+            transportOptionTxt.setText("No bus available ");
+            timeTxt.setText("");
+            zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
+            busTxt.setText("");
+        }
     }
 
     // Method called on controller initialization
