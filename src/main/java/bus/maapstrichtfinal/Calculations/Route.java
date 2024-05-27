@@ -105,21 +105,28 @@ public class Route {
 
     // Method to find all possible routes between two zip codes
     public static List<Route> findAllRoutes(ZipCode startZipCode, ZipCode endZipCode){
-        // Make a list that contains all possible routes between the two zip codes
-        // Make a list with the possible start bus stops and a list with the end bus stops
-        // Check for the routes for every possible pair and add them
-
         List<Route> allRoutes = new ArrayList<>();
         try {
-            // Find the closest bus stops to start and end zip codes
-            List<String> startStops = ClosestStopFinder.findStops(startZipCode.getLatitude(), startZipCode.getLongitude());
-            List<String> endStops = ClosestStopFinder.findStops(endZipCode.getLatitude(), endZipCode.getLongitude());
+            // Find the closest bus stops to start and end zip codes within 300m
+            List<String> startStops300m = ClosestStopFinder.findStops300m(startZipCode.getLatitude(), startZipCode.getLongitude());
+            List<String> endStops300m = ClosestStopFinder.findStops300m(endZipCode.getLatitude(), endZipCode.getLongitude());
 
-            // Iterate through each pair of start and end stops
-            for (int i = 0; i < startStops.size(); i++) {
-                for (int j = 0; j < endStops.size(); j++) {
-                    // Find routes between the current pair of stops and add them to the list of all routes
-                    allRoutes.addAll(findRoutesBetweenStops(startStops.get(i), endStops.get(j)));
+            // Check for routes between 300m stops
+            for (int i = 0; i < startStops300m.size(); i++) {
+                for (int j = 0; j < endStops300m.size(); j++) {
+                    allRoutes.addAll(findRoutesBetweenStops(startStops300m.get(i), endStops300m.get(j)));
+                }
+            }
+
+            // If no routes found for 300m stops, check 500m stops
+            if (allRoutes.isEmpty()) {
+                List<String> startStops500m = ClosestStopFinder.findStops500m(startZipCode.getLatitude(), startZipCode.getLongitude());
+                List<String> endStops500m = ClosestStopFinder.findStops500m(endZipCode.getLatitude(), endZipCode.getLongitude());
+
+                for (int i = 0; i < startStops500m.size(); i++) {
+                    for (int j = 0; j < endStops500m.size(); j++) {
+                        allRoutes.addAll(findRoutesBetweenStops(startStops500m.get(i), endStops500m.get(j)));
+                    }
                 }
             }
         } catch (SQLException e) {
