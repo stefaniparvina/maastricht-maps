@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import bus.maapstrichtfinal.ZipCode.Coordinates;
 
+/*
+ * Test cases that verify the correctness of the coordinates
+ * and the second one checks the accuracy of the convertCoordinatesToRadians() method
+ */
 public class CoordinatesTest {
     @Test
     public void testExtractCoordinates() {

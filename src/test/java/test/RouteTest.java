@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
-
+/*
+ * Test case that checks for all the bus routes between two zip codes
+ */
 public class RouteTest {
     private ZipCode startZipCode;
     private ZipCode endZipCode;

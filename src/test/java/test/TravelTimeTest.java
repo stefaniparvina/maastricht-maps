@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import bus.maapstrichtfinal.Calculations.TravelTime;
-
+/*
+ * Test case for accuracy of the time calculator for walking 
+ * and cycling
+ */
 public class TravelTimeTest {
 
     @Test

@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 
+/*
+ * Test cases for finding stops within 300m and 500m
+ */
 public class ClosestStopFinderTest {
 
     @Test
