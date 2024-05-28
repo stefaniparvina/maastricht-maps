@@ -14,10 +14,10 @@ import bus.maapstrichtfinal.ZipCode.ZipCode;
 public class Route {
     // Route attributes
     private int routeId;
-    private static String routeShortName;
+    private String routeShortName;
     private String startStopId;
     private String endStopId;
-    private static int travelTime;
+    private int travelTime;
     private int distance;
 
     // Constructor
@@ -35,7 +35,7 @@ public class Route {
         return routeId;
     }
 
-    public static String getRouteShortName() {
+    public String getRouteShortName() {
         return routeShortName;
     }
 
@@ -47,7 +47,7 @@ public class Route {
         return endStopId;
     }
 
-    public static int getTravelTime() {
+    public int getTravelTime() {
         return travelTime;
     }
 
@@ -55,8 +55,8 @@ public class Route {
         return distance;
     }
 
-    public static String getTimeMinutesAndSeconds(){
-        int time = getTravelTime();
+    public  static String getTimeMinutesAndSeconds(Route route){
+        int time = route.getTravelTime();
         int seconds = time % 60;
         int minutes = time / 60;
         if(seconds == 0) return minutes + " minutes";
@@ -138,7 +138,7 @@ public class Route {
     }
 
     // Method to find the fastest routes between two zip codes
-    public static List<Route> findFastestRoutes(ZipCode startZipCode, ZipCode endZipCode) {
+    public static Route findFastestRoute(ZipCode startZipCode, ZipCode endZipCode) {
         // Find all possible routes between the start and end zip codes
         List<Route> allRoutes = findAllRoutes(startZipCode, endZipCode);
         // List to store the fastest routes
@@ -165,9 +165,11 @@ public class Route {
                     fastest.add(route);
                 }
             }
-            return fastest;
+            if(fastest.isEmpty()){ return null;}
+            return fastest.get(0);
         }
     }
+
 
     public static boolean isRouteAvailable(ZipCode startZipCode, ZipCode endZipCode){
         if (!(DestinationInfo.getSelectedTransportOption().equalsIgnoreCase("bus"))) return true;

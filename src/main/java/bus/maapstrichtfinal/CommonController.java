@@ -142,8 +142,10 @@ public class CommonController {
         // Set start and end locations
         setStartLocation(startTxtField.getText());
         setEndLocation(endTxtField.getText());
+        setBestRoute();
         startZipCode = new ZipCode(startTxtField.getText());
         endZipCode = new ZipCode(endTxtField.getText());
+
 
 
         // Display message and initialize route calculation
@@ -152,6 +154,7 @@ public class CommonController {
         setSelectedTransportOption(toggleGroup);
         invalidInputCount = 0;
         CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
+        setBestRoute();
     }
     // Method to set the start location based on the entered zip code
     protected static void setStartLocation(String zipCode) {
@@ -167,6 +170,9 @@ public class CommonController {
         endLat = endZipCode.getLatitude();
         endLong = endZipCode.getLongitude();
         DestinationInfo.setEndZipCode(endZipCode);
+    }
+    protected static void setBestRoute() {
+        DestinationInfo.setBestRoute();
     }
 
     // Method to set destination points for the route

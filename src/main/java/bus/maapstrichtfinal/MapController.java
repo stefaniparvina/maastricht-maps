@@ -1,6 +1,7 @@
 package bus.maapstrichtfinal;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import bus.maapstrichtfinal.Calculations.TravelTime;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
@@ -245,7 +246,7 @@ public class MapController {
                         TravelTime.distanceKM + "km.");
                 break;
             case BUS:
-                setBusText(Route.getRouteShortName(), Route.getTimeMinutesAndSeconds());
+                setBusText(DestinationInfo.bestRoute.getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute));
                 break;
         }
     }
