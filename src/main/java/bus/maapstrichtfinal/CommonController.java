@@ -2,6 +2,8 @@ package bus.maapstrichtfinal;
 
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.Map.BusRouteMapLayer;
+import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -117,6 +119,13 @@ public class CommonController {
         } else {
             adjustFontSize(mainTxt,24);
             mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            try {
+                FileInitializer initializer = new FileInitializer();
+                initializer.initializeFXML(stage, "map");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
