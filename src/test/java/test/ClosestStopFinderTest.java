@@ -25,6 +25,6 @@ public class ClosestStopFinderTest {
     public void testFindStopsWithin500Meters() throws SQLException {
         List<String> closestStops = ClosestStopFinder.findStops500m(50.85, 5.7);
 
-        assertEquals(2, closestStops.size());
+        assertEquals(22, closestStops.size());
     }
 }

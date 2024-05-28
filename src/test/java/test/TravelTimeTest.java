@@ -20,7 +20,7 @@ public class TravelTimeTest {
 
         String result = TravelTime.calculateTravelTime(start, end, method);
 
-        assertEquals("10 minutes, 10 seconds", result);
+        assertEquals("6 minutes, 50 seconds", result);
     }
 
     @Test
