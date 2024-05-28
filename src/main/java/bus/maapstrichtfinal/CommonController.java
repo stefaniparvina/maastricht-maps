@@ -115,7 +115,7 @@ public class CommonController {
                 e.printStackTrace();
             }
         } else {
-            mainTxt.setPrefSize(500, 200);
+            adjustFontSize(mainTxt,24);
             mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
         }
     }
