@@ -108,18 +108,15 @@ public class CommonController {
     }
 
     protected static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
+        Stage stage = new Stage();
         if (Route.isRouteAvailable(startZipCode, endZipCode)) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            try {
-                FileInitializer initializer = new FileInitializer();
-                initializer.initializeFXML(stage, "map");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        }
+        else{
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             adjustFontSize(mainTxt,24);
             mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        }
             try {
                 FileInitializer initializer = new FileInitializer();
                 initializer.initializeFXML(stage, "map");
@@ -127,7 +124,7 @@ public class CommonController {
                 e.printStackTrace();
             }
         }
-    }
+
 
     protected static void checkRouting(ActionEvent event, Label mainTxt, Label secondaryTxt,
                                        TextField startTxtField, TextField endTxtField, ToggleGroup toggleGroup){
