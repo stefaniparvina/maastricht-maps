@@ -131,18 +131,17 @@ public class CommonController {
         // Check if start and end zip codes are valid
         if (CommonController.isValidZipCode(startTxtField.getText())
                 && CommonController.isValidZipCode(endTxtField.getText())) {
-            CommonController.startRouting(event, mainTxt, startTxtField, endTxtField, hp.invalidInputCount, toggleGroup);
+            CommonController.startRouting(event, mainTxt, startTxtField, endTxtField, toggleGroup);
         } else {
             hp.invalidInputCount++;
             CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
         }
     }
     protected static void startRouting(ActionEvent event, Label mainTxt,
-                                       TextField startTxtField, TextField endTxtField, int invalidInputCount, ToggleGroup toggleGroup) {
+                                       TextField startTxtField, TextField endTxtField,ToggleGroup toggleGroup) {
         // Set start and end locations
         setStartLocation(startTxtField.getText());
         setEndLocation(endTxtField.getText());
-        setBestRoute();
         startZipCode = new ZipCode(startTxtField.getText());
         endZipCode = new ZipCode(endTxtField.getText());
 
@@ -152,9 +151,9 @@ public class CommonController {
         mainTxt.setText("Calculating Route...");
         setDestinationPoints(startTxtField.getText(), endTxtField.getText());
         setSelectedTransportOption(toggleGroup);
-        invalidInputCount = 0;
+        hp.invalidInputCount = 0;
         CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
-        setBestRoute();
+        if(DestinationInfo.getSelectedTransportOption() == "bus")setBestRoute();
     }
     // Method to set the start location based on the entered zip code
     protected static void setStartLocation(String zipCode) {
