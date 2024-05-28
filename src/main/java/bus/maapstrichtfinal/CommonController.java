@@ -136,11 +136,15 @@ public class CommonController {
         }
         // Check if start and end zip codes are valid
         if (CommonController.isValidZipCode(startTxtField.getText())
-                && CommonController.isValidZipCode(endTxtField.getText())) {
+                && CommonController.isValidZipCode(endTxtField.getText()) &&
+                !startTxtField.getText().equalsIgnoreCase(endTxtField.getText())) {
             CommonController.startRouting(event, mainTxt, startTxtField, endTxtField,toggleGroup);
         } else {
-            hp.invalidInputCount++;
-            CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
+            if(startTxtField.getText().equalsIgnoreCase(endTxtField.getText())) mainTxt.setText("Identical zipcodes.");
+            else{
+                hp.invalidInputCount++;
+                CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
+            }
         }
     }
     protected static void startRouting(ActionEvent event, Label mainTxt,
