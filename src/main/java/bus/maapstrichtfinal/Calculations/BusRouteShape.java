@@ -11,14 +11,24 @@ public class BusRouteShape {
 
     // Method to find shape details for a given route
     public static int[] findShapeDetails(Route route) {
-        // Array to store shape details: shape_id, start_stop_distance, end_stop_distance
+        // Array to store shape details: shape_id, start_stop_distance,
+        // end_stop_distance
         int[] shapeDetails = new int[3];
 
-        // SQL query to find the shape details for the fastest trip on the chosen route
-        String query = "SELECT t.trip_id, r.route_id, t.shape_id, a.shape_dist_traveled as start_stop_distance, b.shape_dist_traveled as end_stop_distance," +
-                " TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time) AS travel_time_seconds FROM trips t JOIN routes r ON t.route_id = r.route_id" +
-                " AND r.route_id = ? JOIN stop_times a ON t.trip_id = a.trip_id JOIN stop_times b ON a.trip_id = b.trip_id" +
-                " WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence ORDER BY travel_time_seconds ASC LIMIT 1";
+        /*
+         * // SQL query to find the shape details for the fastest trip on the chosen
+         * route
+         * String query =
+         * "SELECT t.trip_id, r.route_id, t.shape_id, a.shape_dist_traveled as start_stop_distance, b.shape_dist_traveled as end_stop_distance,"
+         * +
+         * " TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time) AS travel_time_seconds FROM trips t JOIN routes r ON t.route_id = r.route_id"
+         * +
+         * " AND r.route_id = ? JOIN stop_times a ON t.trip_id = a.trip_id JOIN stop_times b ON a.trip_id = b.trip_id"
+         * +
+         * " WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence ORDER BY travel_time_seconds ASC LIMIT 1"
+         * ;
+         */
+        String query = "SELECT * FROM trip_travel_times WHERE route_id = ? AND start_stop_id = ? AND end_stop_id = ? ORDER BY travel_time_seconds ASC LIMIT 1";
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
@@ -45,15 +55,17 @@ public class BusRouteShape {
     }
 
     // Method to find coordinates of all route points
-    public static List<double[]> findCoordsOfAllRoutePoints(Route route){
+    public static List<double[]> findCoordsOfAllRoutePoints(Route route) {
 
-        // Create a list to store arrays with coordinates for all points that lie on the chosen route and its quickest trip
+        // Create a list to store arrays with coordinates for all points that lie on the
+        // chosen route and its quickest trip
         List<double[]> allPointsCoords = new LinkedList<>();
         // Find shape details for the given route
         int[] shapeDetails = findShapeDetails(route);
 
         // SQL query to retrieve shape points
-        String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?" +
+        String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?"
+                +
                 " AND shape_dist_traveled  BETWEEN ? AND ? ORDER BY shape_pt_sequence ASC;";
 
         // SQL query to retrieve stop coordinates
@@ -99,9 +111,9 @@ public class BusRouteShape {
                     current[0] = rs.getDouble("stop_lat");
                     current[1] = rs.getDouble("stop_lon");
                     // Add the stop coordinates to the list of all points coordinates
-                    if(rs.getString("stop_id").equals(route.getStartStopId())){
+                    if (rs.getString("stop_id").equals(route.getStartStopId())) {
                         ((LinkedList<double[]>) allPointsCoords).addFirst(current);
-                    }else{
+                    } else {
                         ((LinkedList<double[]>) allPointsCoords).addLast(current);
                     }
                 }
