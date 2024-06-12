@@ -64,16 +64,15 @@ public class BusRouteMapLayer extends MapLayer {
         // Checking if shape points coordinates are already found
         if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
-            List<Route> fastestRoutes = Route.findFastestRoutes(startZipCode, endZipCode);
 
-            // Check if the fastestRoutes is null or empty
-            if (fastestRoutes == null || fastestRoutes.isEmpty()) {
+            Route bestRoute = DestinationInfo.bestRoute;
+            if (bestRoute == null){
                 startZipCode = null;
                 endZipCode = null;
                 return;
             }
 
-            shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(fastestRoutes.get(0));
+            shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(bestRoute);
         }
 
         List<Double> allPoints = new ArrayList<>();

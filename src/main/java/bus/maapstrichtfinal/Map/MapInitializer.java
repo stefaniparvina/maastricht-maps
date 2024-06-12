@@ -15,7 +15,7 @@ public class MapInitializer {
         String transportOption = DestinationInfo.getSelectedTransportOption();
 
         // Add the appropriate layer based on the transport option
-        if ("bus".equalsIgnoreCase(transportOption)&& Route.isRouteAvailable(DestinationInfo.getStartZipCode(),DestinationInfo.getEndZipCode())) {
+        if ("bus".equalsIgnoreCase(transportOption)&& DestinationInfo.bestRoute != null) {
             mapView.addLayer(new BusRouteMapLayer());
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));

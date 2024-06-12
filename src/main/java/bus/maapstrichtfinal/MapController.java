@@ -1,6 +1,7 @@
 package bus.maapstrichtfinal;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import bus.maapstrichtfinal.Calculations.TravelTime;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
@@ -245,7 +246,15 @@ public class MapController {
                         TravelTime.distanceKM + "km.");
                 break;
             case BUS:
-                setBusText(Route.getRouteShortName(), Route.getTimeMinutesAndSeconds());
+                if (DestinationInfo.bestRoute != null) {
+                    if (DestinationInfo.bestRoute.getRouteShortName() != null && !DestinationInfo.bestRoute.getRouteShortName().isEmpty()) {
+                        setBusText(DestinationInfo.bestRoute.getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute));
+                    } else {
+                        setBusText(null,null);
+                    }
+                } else {
+                    setBusText(null,null);
+                }
                 break;
         }
     }
@@ -271,7 +280,7 @@ public class MapController {
      * @param time the time it takes to travel
      */
     private void setBusText(String busNumber, String time) {
-        if(Route.isRouteAvailable(DestinationInfo.getStartZipCode(),DestinationInfo.getEndZipCode())) {
+        if(busNumber!=null&&time!=null) {
             transportOptionTxt.setText("By bus,");
             timeTxt.setText("it takes " + time);
             zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");

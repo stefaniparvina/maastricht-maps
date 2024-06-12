@@ -1,5 +1,6 @@
 package bus.maapstrichtfinal.GUIInfo;
 
+import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
 public abstract class DestinationInfo {
@@ -8,6 +9,8 @@ public abstract class DestinationInfo {
     private static String endDestination;
     private static ZipCode startZipCode;
     private static ZipCode endZipCode;
+
+    public static Route bestRoute;
 
     private static String selectedTransportOption;
 
@@ -42,6 +45,8 @@ public abstract class DestinationInfo {
     public static String getEndDestination() {
         return endDestination;
     }
+
+    public static void setBestRoute(){bestRoute = Route.findFastestRoute(startZipCode, endZipCode);}
 
     public static void setSelectedTransportOption(String option) {
         selectedTransportOption = option;

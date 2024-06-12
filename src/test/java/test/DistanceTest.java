@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import bus.maapstrichtfinal.Calculations.Distance;
 
+/*
+ * Test case that checks the accuracy of the distance calculator,
+ * between 2 zip codes
+ */
 public class DistanceTest {
     @Test
     public void testCalculateDistance() {

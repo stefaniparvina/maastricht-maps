@@ -2,6 +2,8 @@ package bus.maapstrichtfinal;
 
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.Map.BusRouteMapLayer;
+import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -106,19 +108,23 @@ public class CommonController {
     }
 
     protected static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
+        Stage stage = new Stage();
         if (Route.isRouteAvailable(startZipCode, endZipCode)) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        }
+        else{
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            adjustFontSize(mainTxt,24);
+            mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
+        }
             try {
                 FileInitializer initializer = new FileInitializer();
                 initializer.initializeFXML(stage, "map");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            mainTxt.setPrefSize(500, 200);
-            mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
         }
-    }
+
 
     protected static void checkRouting(ActionEvent event, Label mainTxt, Label secondaryTxt,
                                        TextField startTxtField, TextField endTxtField, ToggleGroup toggleGroup){
@@ -130,15 +136,19 @@ public class CommonController {
         }
         // Check if start and end zip codes are valid
         if (CommonController.isValidZipCode(startTxtField.getText())
-                && CommonController.isValidZipCode(endTxtField.getText())) {
-            CommonController.startRouting(event, mainTxt, startTxtField, endTxtField, hp.invalidInputCount, toggleGroup);
+                && CommonController.isValidZipCode(endTxtField.getText()) &&
+                !startTxtField.getText().equalsIgnoreCase(endTxtField.getText())) {
+            CommonController.startRouting(event, mainTxt, startTxtField, endTxtField,toggleGroup);
         } else {
-            hp.invalidInputCount++;
-            CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
+            if(startTxtField.getText().equalsIgnoreCase(endTxtField.getText())) mainTxt.setText("Identical zipcodes.");
+            else{
+                hp.invalidInputCount++;
+                CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
+            }
         }
     }
     protected static void startRouting(ActionEvent event, Label mainTxt,
-                                       TextField startTxtField, TextField endTxtField, int invalidInputCount, ToggleGroup toggleGroup) {
+                                       TextField startTxtField, TextField endTxtField,ToggleGroup toggleGroup) {
         // Set start and end locations
         setStartLocation(startTxtField.getText());
         setEndLocation(endTxtField.getText());
@@ -146,11 +156,13 @@ public class CommonController {
         endZipCode = new ZipCode(endTxtField.getText());
 
 
+
         // Display message and initialize route calculation
         mainTxt.setText("Calculating Route...");
         setDestinationPoints(startTxtField.getText(), endTxtField.getText());
         setSelectedTransportOption(toggleGroup);
-        invalidInputCount = 0;
+        hp.invalidInputCount = 0;
+        if(DestinationInfo.getSelectedTransportOption().equalsIgnoreCase("bus"))setBestRoute();
         CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
     }
     // Method to set the start location based on the entered zip code
@@ -167,6 +179,9 @@ public class CommonController {
         endLat = endZipCode.getLatitude();
         endLong = endZipCode.getLongitude();
         DestinationInfo.setEndZipCode(endZipCode);
+    }
+    protected static void setBestRoute() {
+        DestinationInfo.setBestRoute();
     }
 
     // Method to set destination points for the route
