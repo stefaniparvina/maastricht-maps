@@ -72,21 +72,22 @@ public class Route {
         // in the correct direction
         List<Route> routes = new ArrayList<>();
 
-        /*
-         * // SQL query to retrieve routes between the start and end bus stops
-         * String query =
-         * "SELECT DISTINCT r.route_short_name, r.route_id, a.stop_id AS start_stop_id, b.stop_id AS end_stop_id,"
-         * +
-         * " (TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time)) as travel_time_seconds, b.shape_dist_traveled - a.shape_dist_traveled AS distance"
-         * +
-         * " FROM routes r JOIN trips t ON r.route_id = t.route_id JOIN stop_times a ON t.trip_id = a.trip_id JOIN stop_times b ON"
-         * +
-         * " a.trip_id = b.trip_id JOIN shapes sh ON t.shape_id = sh.shape_id WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence"
-         * ;
-         */
-        String query = "SELECT route_short_name, route_id, start_stop_id, end_stop_id," +
-                " travel_time_seconds, distance" +
-                " FROM trip_details_view" +
+        // // SQL query to retrieve routes between the start and end bus stops
+        // String query = "SELECT DISTINCT r.route_short_name, r.route_id, a.stop_id AS
+        // start_stop_id, b.stop_id AS end_stop_id,"
+        // +
+        // " (TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time)) as
+        // travel_time_seconds, b.shape_dist_traveled - a.shape_dist_traveled AS
+        // distance"
+        // +
+        // " FROM routes r JOIN trips t ON r.route_id = t.route_id JOIN stop_times a ON
+        // t.trip_id = a.trip_id JOIN stop_times b ON"
+        // +
+        // " a.trip_id = b.trip_id JOIN shapes sh ON t.shape_id = sh.shape_id WHERE
+        // a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence";
+
+        String query = "SELECT *" +
+                " FROM route_stop_view_final" +
                 " WHERE start_stop_id = ? AND end_stop_id = ?";
 
         try (
