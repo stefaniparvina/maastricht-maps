@@ -13,7 +13,6 @@ import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
  * Test cases for finding stops within 300m and 500m
  */
 public class ClosestStopFinderTest {
-
     @Test
     public void testFindStopsWithin300Meters() throws SQLException {
         List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.3);

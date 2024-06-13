@@ -117,7 +117,6 @@ public class Route {
                     allRoutes.addAll(findRoutesBetweenStops(startStops300m.get(i), endStops300m.get(j)));
                 }
             }
-
             // If no routes found for 300m stops, check 500m stops
             if (allRoutes.isEmpty()) {
                 List<String> startStops500m = ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.5);
