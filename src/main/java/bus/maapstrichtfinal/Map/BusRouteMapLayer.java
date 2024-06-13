@@ -71,7 +71,6 @@ public class BusRouteMapLayer extends MapLayer {
                 endZipCode = null;
                 return;
             }
-
             shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(bestRoute);
         }
 

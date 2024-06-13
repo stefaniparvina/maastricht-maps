@@ -36,8 +36,8 @@ public class Api {
     public double[] getCoordinatesByPostcode(String postcode) throws Exception {
 
         // Base URL of the API
-        //private final String baseUrl = "https://computerscience.dacs.unimaas.nl/get_coordinates";
-        String baseUrl = "https://webmomentum.net/get_coordinates/";
+        String baseUrl = "https://project12.ashish.nl/get_coordinates";
+        //String baseUrl = "https://webmomentum.net/get_coordinates/";
 
         // Constructing the URI for the request
         URI uri = URI.create(baseUrl + "?postcode=" + postcode);

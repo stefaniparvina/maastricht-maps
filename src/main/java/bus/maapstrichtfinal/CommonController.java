@@ -155,8 +155,6 @@ public class CommonController {
         startZipCode = new ZipCode(startTxtField.getText());
         endZipCode = new ZipCode(endTxtField.getText());
 
-
-
         // Display message and initialize route calculation
         mainTxt.setText("Calculating Route...");
         setDestinationPoints(startTxtField.getText(), endTxtField.getText());
