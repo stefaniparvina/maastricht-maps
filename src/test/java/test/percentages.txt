@@ -1,0 +1,3 @@
+Instructions Coverage: 80%
+Branches Coverage: 70%
+Lines Coverage: 85%
