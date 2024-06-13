@@ -108,8 +108,8 @@ public class Route {
         List<Route> allRoutes = new ArrayList<>();
         try {
             // Find the closest bus stops to start and end zip codes within 300m
-            List<String> startStops300m = ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.3);
-            List<String> endStops300m = ClosestStopFinder.findClosestStops(endZipCode.getLatitude(), endZipCode.getLongitude(),0.3);
+            List<String> startStops300m = ClosestStopFinder.findStops300m(startZipCode.getLatitude(), startZipCode.getLongitude());
+            List<String> endStops300m = ClosestStopFinder.findStops300m(endZipCode.getLatitude(), endZipCode.getLongitude());
 
             // Check for routes between 300m stops
             for (int i = 0; i < startStops300m.size(); i++) {
@@ -119,8 +119,8 @@ public class Route {
             }
             // If no routes found for 300m stops, check 500m stops
             if (allRoutes.isEmpty()) {
-                List<String> startStops500m = ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.5);
-                List<String> endStops500m = ClosestStopFinder.findClosestStops(endZipCode.getLatitude(), endZipCode.getLongitude(),0.5);
+                List<String> startStops500m = ClosestStopFinder.findStops500m(startZipCode.getLatitude(), startZipCode.getLongitude());
+                List<String> endStops500m = ClosestStopFinder.findStops500m(endZipCode.getLatitude(), endZipCode.getLongitude());
 
                 for (int i = 0; i < startStops500m.size(); i++) {
                     for (int j = 0; j < endStops500m.size(); j++) {

@@ -15,14 +15,14 @@ import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 public class ClosestStopFinderTest {
     @Test
     public void testFindStopsWithin300Meters() throws SQLException {
-        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.3);
+        List<String> closestStops = ClosestStopFinder.findStops300m(50.85, 5.7);
 
         assertEquals(2, closestStops.size());
     }
 
     @Test
     public void testFindStopsWithin500Meters() throws SQLException {
-        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.5);
+        List<String> closestStops = ClosestStopFinder.findStops500m(50.85, 5.7);
 
         assertEquals(22, closestStops.size());
     }
