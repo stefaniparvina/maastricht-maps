@@ -87,7 +87,7 @@ public class Route {
         // a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence";
 
         String query = "SELECT *" +
-                " FROM route_stop_view_final" +
+                " FROM route_stop_view_final1" +
                 " WHERE start_stop_id = ? AND end_stop_id = ?";
 
         try (

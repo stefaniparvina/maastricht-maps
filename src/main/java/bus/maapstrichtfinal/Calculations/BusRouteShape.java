@@ -16,19 +16,26 @@ public class BusRouteShape {
         int[] shapeDetails = new int[3];
 
         // SQL query to find the shape details for the fastest trip on the chosen route
-        String query = "SELECT t.trip_id, r.route_id, t.shape_id, a.shape_dist_traveled as start_stop_distance, b.shape_dist_traveled as end_stop_distance,"
-                +
-                " TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time) AS travel_time_seconds FROM trips t JOIN routes r ON t.route_id = r.route_id"
-                +
-                " AND r.route_id = ? JOIN stop_times a ON t.trip_id = a.trip_id JOIN stop_times b ON a.trip_id = b.trip_id"
-                +
-                " WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence ORDER BY travel_time_seconds ASC LIMIT 1";
-
-        // String query = "SELECT * FROM trip_shape_view_final tsvf" +
-        // "JOIN route_stop_view_final rsvf ON tsvf.route_id = rsvf.route_id" +
-        // "WHERE tsvf.route_id = ? AND rsvf.start_stop_id = ? AND rsvf.end_stop_id = ?"
+        // String query = "SELECT t.trip_id, r.route_id, t.shape_id,
+        // a.shape_dist_traveled as start_stop_distance, b.shape_dist_traveled as
+        // end_stop_distance,"
         // +
-        // "ORDER BY tsvf.travel_time_seconds ASC LIMIT 1";
+        // " TIME_TO_SEC(b.arrival_time) - TIME_TO_SEC(a.departure_time) AS
+        // travel_time_seconds FROM trips t JOIN routes r ON t.route_id = r.route_id"
+        // +
+        // " AND r.route_id = ? JOIN stop_times a ON t.trip_id = a.trip_id JOIN
+        // stop_times b ON a.trip_id = b.trip_id"
+        // +
+        // " WHERE a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence
+        // ORDER BY travel_time_seconds ASC LIMIT 1";
+
+        String query = "SELECT shape_id, start_stop_distance, end_stop_distance FROM route_stop_view_final11 rsvf " +
+                "WHERE rsvf.route_id = ? AND rsvf.start_stop_id = ? AND rsvf.end_stop_id = ?"
+                +
+                "ORDER BY rsvf.travel_time_seconds ASC LIMIT 1;";
+        System.out.println("Executing query: " + query);
+        System.out.println("Parameters: " + route.getRouteId() + ", " + route.getStartStopId() + ", "
+                + route.getEndStopId());
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
@@ -47,6 +54,9 @@ public class BusRouteShape {
                     shapeDetails[1] = rs.getInt("start_stop_distance");
                     shapeDetails[2] = rs.getInt("end_stop_distance");
                 }
+                System.out.println("Executing query: " + query);
+                System.out.println("Parameters: " + route.getRouteId() + ", " + route.getStartStopId() + ", "
+                        + route.getEndStopId());
             }
         } catch (SQLException e) {
             e.printStackTrace();

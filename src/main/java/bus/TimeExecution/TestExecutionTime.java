@@ -28,5 +28,6 @@ public class TestExecutionTime {
 
         long allTime = (endTime - startTime) + (endTime1 - startTime1);
         System.out.println("All time: " + allTime + "nanoseconds");
+
     }
 }
