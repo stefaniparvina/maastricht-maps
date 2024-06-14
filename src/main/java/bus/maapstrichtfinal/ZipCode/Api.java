@@ -16,7 +16,6 @@ public class Api {
 
     // Private constructor to prevent external instantiation
     private Api() {
-
         // Initialize HTTP client with a 10-second timeout
         httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))

@@ -74,28 +74,12 @@ public class BusRouteShape {
         int[] shapeDetails = findShapeDetails(route);
 
         // SQL query to retrieve shape points
-        String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes " +
-                "WHERE shapes.shape_id = ? AND shapes.shape_dist_traveled BETWEEN ? AND ? " +
-                "ORDER BY shape_pt_sequence ASC;";
-
-        // String shapePointsQuery = "SELECT s.shape_pt_lat, s.shape_pt_lon,
-        // s.shape_pt_sequence " +
-        // "FROM shapes s JOIN trip_shape_view_final tsvf ON s.shape_id = tsvf.shape_id
-        // "
-        // +
-        // "JOIN route_stop_view_final rsvf ON tsvf.route_id = rsvf.route_id " +
-        // "WHERE tsvf.route_id = ? AND rsvf.start_stop_id = ? AND rsvf.end_stop_id = ?
-        // "
-        // +
-        // "AND s.shape_dist_traveled BETWEEN tsvf.start_stop_distance AND
-        // tsvf.end_stop_distance "
-        // +
-        // "ORDER BY s.shape_pt_sequence ASC;";
-        // ;
+        String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?"
+                +
+                " AND shape_dist_traveled  BETWEEN ? AND ? ORDER BY shape_pt_sequence ASC;";
 
         // SQL query to retrieve stop coordinates
-        String stopsQuery = "SELECT stop_id, stop_lat, stop_lon FROM stops " +
-                "WHERE stop_id IN (?, ?)";
+        String stopsQuery = "SELECT stop_id, stop_lat, stop_lon FROM stops WHERE stop_id IN (?, ?)";
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
