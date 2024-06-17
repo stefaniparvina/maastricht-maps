@@ -72,7 +72,7 @@ public class Route {
         // in the correct direction
         List<Route> routes = new ArrayList<>();
 
-        // // SQL query to retrieve routes between the start and end bus stops
+        // SQL query to retrieve routes between the start and end bus stops
         // String query = "SELECT DISTINCT r.route_short_name, r.route_id, a.stop_id AS
         // start_stop_id, b.stop_id AS end_stop_id,"
         // +
@@ -87,7 +87,7 @@ public class Route {
         // a.stop_id = ? AND b.stop_id = ? AND a.stop_sequence < b.stop_sequence";
 
         String query = "SELECT *" +
-                " FROM route_stop_view_final1" +
+                " FROM route_stop_view_final11" +
                 " WHERE start_stop_id = ? AND end_stop_id = ?";
 
         try (
