@@ -17,19 +17,19 @@ public class DatabaseConnection {
      */
 
     private static final String url = "jdbc:mysql://localhost:3306/gtfs";
-    private static final String user = "BCS1510";
-    static final String password = "BCS1510";
-    private static int count = 0;
+    private static final String user = "root";
+    static final String password = "pass";
 
     @SuppressWarnings("exports")
     public static Connection getConnection() {
         try {
-            count++;
             Connection conn = DriverManager.getConnection(url, user, password);
-            if(count==1)System.out.println("Connection is successful database " + url);
             return conn;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Connection failure " + url);
+
             return null;
         }
     }

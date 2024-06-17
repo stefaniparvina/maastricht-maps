@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 
-public class BusRouteMapLayer extends MapLayer {
+public class BusDirectRouteMapLayer extends MapLayer {
     // Markers for start and end zip codes
     private final Circle startZipCodeMarker;
     private final Circle endZipCodeMarker;
@@ -30,7 +30,7 @@ public class BusRouteMapLayer extends MapLayer {
     private List<double[]> shapePointsCoords = new ArrayList<double[]>();
 
     // Constructor
-    public BusRouteMapLayer() {
+    public BusDirectRouteMapLayer() {
         startZipCodeMarker = new Circle(5, Color.GREEN);
         endZipCodeMarker = new Circle(5, Color.RED);
 
@@ -72,7 +72,7 @@ public class BusRouteMapLayer extends MapLayer {
                 return;
             }
 
-            shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(bestRoute);
+            shapePointsCoords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute);
         }
 
         List<Double> allPoints = new ArrayList<>();

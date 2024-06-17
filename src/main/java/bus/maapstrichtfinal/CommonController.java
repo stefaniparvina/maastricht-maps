@@ -2,8 +2,6 @@ package bus.maapstrichtfinal;
 
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
-import bus.maapstrichtfinal.Map.BusRouteMapLayer;
-import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -13,7 +11,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 

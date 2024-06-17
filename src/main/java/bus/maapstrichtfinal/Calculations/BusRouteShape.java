@@ -9,6 +9,9 @@ import java.util.List;
 
 public class BusRouteShape {
 
+
+    //TODO
+    // i think this function is okay but we have to check it if it actually is
     // Method to find shape details for a given route
     public static int[] findShapeDetails(Route route) {
         // Array to store shape details: shape_id, start_stop_distance, end_stop_distance
@@ -44,8 +47,12 @@ public class BusRouteShape {
         return shapeDetails;
     }
 
+
+    //TODO
+    // this function is not working for transfers we can try to edit it or just create new function for trnasfers
+    // it doesnt work beacuse it takes only one route
     // Method to find coordinates of all route points
-    public static List<double[]> findCoordsOfAllRoutePoints(Route route){
+    public static List<double[]> findCoordsOfAllDirectRoutePoints(Route route){
 
         // Create a list to store arrays with coordinates for all points that lie on the chosen route and its quickest trip
         List<double[]> allPointsCoords = new LinkedList<>();

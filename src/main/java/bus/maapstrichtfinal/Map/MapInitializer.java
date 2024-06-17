@@ -1,7 +1,7 @@
 package bus.maapstrichtfinal.Map;
 
-import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.Calculations.Route;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
@@ -13,10 +13,18 @@ public class MapInitializer {
         mapView.setPrefSize(1400, 795);
 
         String transportOption = DestinationInfo.getSelectedTransportOption();
+        Route bestRoute = DestinationInfo.bestRoute;
+
+        // Determine if the best route involves a transfer
+        boolean isTransferRoute = isTransferRoute(bestRoute);
 
         // Add the appropriate layer based on the transport option
-        if ("bus".equalsIgnoreCase(transportOption)&& DestinationInfo.bestRoute != null) {
-            mapView.addLayer(new BusRouteMapLayer());
+        if ("bus".equalsIgnoreCase(transportOption)) {
+            if (isTransferRoute) {
+                mapView.addLayer(new BusTransferRouteMapLayer());
+            } else {
+                mapView.addLayer(new BusDirectRouteMapLayer());
+            }
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));
         } else if ("bicycle".equalsIgnoreCase(transportOption)) {
@@ -26,5 +34,12 @@ public class MapInitializer {
         mapView.setZoom(14);
         mapView.flyTo(0, maastrichtLatLon, 0.1);
         return mapView;
+    }
+
+    // Method to determine if the route is a transfer route
+    private static boolean isTransferRoute(Route route) {
+        // Assuming that a transfer route will have different start and end stop IDs
+        // for the first and second legs
+        return route != null && route.isTransfer() != false;
     }
 }
