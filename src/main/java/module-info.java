@@ -15,6 +15,5 @@ module bus.maapstrichtfinal {
     opens bus.maapstrichtfinal.Calculations to com.google.gson;
     exports bus.maapstrichtfinal;
     exports bus.maapstrichtfinal.Calculations to com.google.gson;
-    exports bus.maapstrichtfinal.Algo;
-    opens bus.maapstrichtfinal.Algo to javafx.fxml;
+
 }
