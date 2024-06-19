@@ -27,7 +27,7 @@ public class BusDirectRouteMapLayer extends MapLayer {
     private Polyline pathEndStopToZip = new Polyline();
 
     // List to store shape points coordinates
-    private List<double[]> shapePointsCoords = new ArrayList<double[]>();
+    private List<Point2D> shapePointsCoords = new ArrayList<>();
 
     // Constructor
     public BusDirectRouteMapLayer() {
@@ -77,8 +77,8 @@ public class BusDirectRouteMapLayer extends MapLayer {
 
         List<Double> allPoints = new ArrayList<>();
         // Convert shape points coordinates to map points
-        for (double[] point : shapePointsCoords) {
-            Point2D shapePoint = getMapPoint(point[0], point[1]);
+        for (Point2D point : shapePointsCoords) {
+            Point2D shapePoint = getMapPoint(point.getX(), point.getY());
             allPoints.add(shapePoint.getX());
             allPoints.add(shapePoint.getY());
         }
