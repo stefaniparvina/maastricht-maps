@@ -18,7 +18,7 @@ public class DatabaseConnection {
 
     private static final String url = "jdbc:mysql://localhost:3306/gtfs";
     private static final String user = "root";
-    static final String password = "pass";
+    static final String password = "Pudzianowski1601!";
 
     @SuppressWarnings("exports")
     public static Connection getConnection() {

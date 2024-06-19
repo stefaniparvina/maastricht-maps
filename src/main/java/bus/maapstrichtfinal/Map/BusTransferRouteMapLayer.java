@@ -1,19 +1,17 @@
 package bus.maapstrichtfinal.Map;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import bus.maapstrichtfinal.MapController;
-import com.gluonhq.maps.MapLayer;
-
-import bus.maapstrichtfinal.Calculations.BusRouteShape;
 import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.Calculations.BusRouteShape;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
+import com.gluonhq.maps.MapLayer;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BusTransferRouteMapLayer extends MapLayer {
     private final Circle startZipCodeMarker;
@@ -26,9 +24,6 @@ public class BusTransferRouteMapLayer extends MapLayer {
     private Polyline pathStartZipToStop = new Polyline();
     private Polyline pathEndStopToZip = new Polyline();
     private Polyline pathTransfer = new Polyline();
-
-    private List<double[]> shapePointsCoords1 = new ArrayList<>();
-    private List<double[]> shapePointsCoords2 = new ArrayList<>();
 
     public BusTransferRouteMapLayer() {
         startZipCodeMarker = new Circle(5, Color.GREEN);
@@ -54,7 +49,7 @@ public class BusTransferRouteMapLayer extends MapLayer {
         pathEndStopToZip.getStrokeDashArray().addAll(5.0, 7.0);
         pathEndStopToZip.setStrokeWidth(2.5);
 
-        getChildren().addAll(startZipCodeMarker, endZipCodeMarker, fromTransferMarker, toTransferMarker, pathShape1, pathTransfer, pathShape2, pathStartZipToStop, pathEndStopToZip);
+        getChildren().addAll(toTransferMarker, pathShape1, pathTransfer, pathShape2, pathStartZipToStop, pathEndStopToZip, startZipCodeMarker, endZipCodeMarker, fromTransferMarker);
     }
 
     @Override
@@ -63,46 +58,60 @@ public class BusTransferRouteMapLayer extends MapLayer {
         ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
         if (startZipCode == null || endZipCode == null) {
-            new MapController();
             return;
         }
-        //TODO
-        // this part of the code needs revision as it is not correct
-        if (shapePointsCoords1.isEmpty() || shapePointsCoords2.isEmpty()) {
-            Route bestRoute = DestinationInfo.bestRoute;
-            if (bestRoute == null){
-                startZipCode = null;
-                endZipCode = null;
-                return;
-            }
-            //TODO
-            // this part is entirely to change
-            shapePointsCoords1 = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute);
-            shapePointsCoords2 = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute);
-          //
+
+        List<Route> bestRoute = DestinationInfo.getBestRoute();
+
+        // Clear existing shapes
+        clearPaths();
+
+        // Fetch route coordinates using BusRouteShape class
+        List<Point2D> route1Coords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute.get(0));
+        List<Point2D> route2Coords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute.get(1));
+
+        // Update map components
+        updateMapComponents(route1Coords, route2Coords);
+    }
+
+    private void clearPaths() {
+        pathShape1.getPoints().clear();
+        pathShape2.getPoints().clear();
+        pathStartZipToStop.getPoints().clear();
+        pathEndStopToZip.getPoints().clear();
+        pathTransfer.getPoints().clear();
+    }
+
+    private void updateMapComponents(List<Point2D> route1Coords, List<Point2D> route2Coords) {
+        if (route1Coords.isEmpty() || route2Coords.isEmpty()) {
+            return;
         }
 
-
-        List<Double> allPoints1 = new ArrayList<>();
-        for (double[] point : shapePointsCoords1) {
-            Point2D shapePoint = getMapPoint(point[0], point[1]);
-            allPoints1.add(shapePoint.getX());
-            allPoints1.add(shapePoint.getY());
+        // Populate path points for route1
+        List<Double> points1 = new ArrayList<>();
+        for (Point2D point : route1Coords) {
+            Point2D shapePoint = getMapPoint(point.getX(), point.getY());
+            points1.add(shapePoint.getX());
+            points1.add(shapePoint.getY());
         }
 
-        List<Double> allPoints2 = new ArrayList<>();
-        for (double[] point : shapePointsCoords2) {
-            Point2D shapePoint = getMapPoint(point[0], point[1]);
-            allPoints2.add(shapePoint.getX());
-            allPoints2.add(shapePoint.getY());
+        // Populate path points for route2
+        List<Double> points2 = new ArrayList<>();
+        for (Point2D point : route2Coords) {
+            Point2D shapePoint = getMapPoint(point.getX(), point.getY());
+            points2.add(shapePoint.getX());
+            points2.add(shapePoint.getY());
         }
 
-        Point2D startZipCodePoint = getMapPoint(startZipCode.getLatitude(), startZipCode.getLongitude());
-        Point2D endZipCodePoint = getMapPoint(endZipCode.getLatitude(), endZipCode.getLongitude());
+        // Get start and end points for zip codes
+        Point2D startZipCodePoint = getMapPoint(DestinationInfo.getStartZipCode().getLatitude(), DestinationInfo.getStartZipCode().getLongitude());
+        Point2D endZipCodePoint = getMapPoint(DestinationInfo.getEndZipCode().getLatitude(), DestinationInfo.getEndZipCode().getLongitude());
 
-        Point2D transferStart = getMapPoint(shapePointsCoords1.get(shapePointsCoords1.size() - 1)[0], shapePointsCoords1.get(shapePointsCoords1.size() - 1)[1]);
-        Point2D transferEnd = getMapPoint(shapePointsCoords2.get(0)[0], shapePointsCoords2.get(0)[1]);
+        // Identify transfer points
+        Point2D transferStart = getMapPoint(route1Coords.get(route1Coords.size() - 1).getX(), route1Coords.get(route1Coords.size() - 1).getY());
+        Point2D transferEnd = getMapPoint(route2Coords.get(0).getX(), route2Coords.get(0).getY());
 
+        // Update marker positions
         startZipCodeMarker.setCenterX(startZipCodePoint.getX());
         startZipCodeMarker.setCenterY(startZipCodePoint.getY());
         endZipCodeMarker.setCenterX(endZipCodePoint.getX());
@@ -113,11 +122,17 @@ public class BusTransferRouteMapLayer extends MapLayer {
         toTransferMarker.setCenterX(transferEnd.getX());
         toTransferMarker.setCenterY(transferEnd.getY());
 
-        pathShape1.getPoints().setAll(allPoints1);
-        pathShape2.getPoints().setAll(allPoints2);
+        // Update paths with new points
+        pathShape1.getPoints().addAll(points1);
+        pathShape2.getPoints().addAll(points2);
 
-        pathStartZipToStop.getPoints().setAll(startZipCodePoint.getX(), startZipCodePoint.getY(), allPoints1.get(0), allPoints1.get(1));
-        pathTransfer.getPoints().setAll(transferStart.getX(), transferStart.getY(), transferEnd.getX(), transferEnd.getY());
-        pathEndStopToZip.getPoints().setAll(endZipCodePoint.getX(), endZipCodePoint.getY(), allPoints2.get(allPoints2.size() - 2), allPoints2.get(allPoints2.size() - 1));
+
+        //walking paths
+        pathStartZipToStop.getPoints().addAll(startZipCodePoint.getX(), startZipCodePoint.getY(), points1.get(0), points1.get(1));
+        pathTransfer.getPoints().addAll(transferStart.getX(), transferStart.getY(), transferEnd.getX(), transferEnd.getY());
+        pathEndStopToZip.getPoints().addAll(endZipCodePoint.getX(), endZipCodePoint.getY(), points2.get(points2.size() - 2), points2.get(points2.size() - 1));
+
+
     }
+
 }

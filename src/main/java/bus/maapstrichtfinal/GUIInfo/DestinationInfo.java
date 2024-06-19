@@ -3,6 +3,8 @@ package bus.maapstrichtfinal.GUIInfo;
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
+import java.util.List;
+
 public abstract class DestinationInfo {
 
     private static String startDestination;
@@ -10,7 +12,7 @@ public abstract class DestinationInfo {
     private static ZipCode startZipCode;
     private static ZipCode endZipCode;
 
-    public static Route bestRoute;
+    public static List<Route> bestRoute;
 
     private static String selectedTransportOption;
 
@@ -46,7 +48,15 @@ public abstract class DestinationInfo {
         return endDestination;
     }
 
-    public static void setBestRoute(){bestRoute = Route.findFastestRoute(startZipCode, endZipCode);}
+    // Method to find and set the best route, considering transfers
+    public static void setBestRoute() {
+        bestRoute = Route.findFastestRoute(startZipCode, endZipCode);
+    }
+
+    // Method to get the best route(s)
+    public static List<Route> getBestRoute() {
+        return bestRoute;
+    }
 
     public static void setSelectedTransportOption(String option) {
         selectedTransportOption = option;

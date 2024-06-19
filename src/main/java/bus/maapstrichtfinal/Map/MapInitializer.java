@@ -5,6 +5,8 @@ import bus.maapstrichtfinal.Calculations.Route;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import java.util.List;
+
 public class MapInitializer {
     protected static final MapPoint maastrichtLatLon = new MapPoint(50.8514, 5.6910);
 
@@ -13,10 +15,10 @@ public class MapInitializer {
         mapView.setPrefSize(1400, 795);
 
         String transportOption = DestinationInfo.getSelectedTransportOption();
-        Route bestRoute = DestinationInfo.bestRoute;
+        List<Route> bestRoute = DestinationInfo.bestRoute;
 
         // Determine if the best route involves a transfer
-        boolean isTransferRoute = isTransferRoute(bestRoute);
+        boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
 
         // Add the appropriate layer based on the transport option
         if ("bus".equalsIgnoreCase(transportOption)) {
@@ -40,6 +42,6 @@ public class MapInitializer {
     private static boolean isTransferRoute(Route route) {
         // Assuming that a transfer route will have different start and end stop IDs
         // for the first and second legs
-        return route != null && route.isTransfer() != false;
+        return route != null && route.isTransfer() == true;
     }
 }

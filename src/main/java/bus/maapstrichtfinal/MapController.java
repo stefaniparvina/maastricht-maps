@@ -247,8 +247,8 @@ public class MapController {
                 break;
             case BUS:
                 if (DestinationInfo.bestRoute != null) {
-                    if (DestinationInfo.bestRoute.getRouteShortName() != null && !DestinationInfo.bestRoute.getRouteShortName().isEmpty()) {
-                        setBusText(DestinationInfo.bestRoute.getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute));
+                    if (DestinationInfo.bestRoute.get(0).getRouteShortName() != null && !DestinationInfo.bestRoute.get(0).getRouteShortName().isEmpty()) {
+                        setBusText(DestinationInfo.bestRoute.get(0).getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute.get(0)));
                     } else {
                         setBusText(null,null);
                     }

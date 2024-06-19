@@ -20,7 +20,7 @@ public class RouteTest {
         startZipCode = new ZipCode("6211aa");
         endZipCode = new ZipCode("6211en");
 
-        List<Route> routes = Route.findAllRoutes(startZipCode, endZipCode);
+        List<List<Route>> routes = Route.findAllRoutes(startZipCode, endZipCode);
         assertNotNull(routes);
         assertFalse(routes.isEmpty());
     }

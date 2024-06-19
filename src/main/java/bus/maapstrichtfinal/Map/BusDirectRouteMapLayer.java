@@ -65,14 +65,14 @@ public class BusDirectRouteMapLayer extends MapLayer {
         if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
 
-            Route bestRoute = DestinationInfo.bestRoute;
+            List<Route> bestRoute = DestinationInfo.bestRoute;
             if (bestRoute == null){
                 startZipCode = null;
                 endZipCode = null;
                 return;
             }
 
-            shapePointsCoords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute);
+            shapePointsCoords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute.get(0));
         }
 
         List<Double> allPoints = new ArrayList<>();
