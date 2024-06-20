@@ -69,6 +69,8 @@ public class MapController {
     @FXML
     private Button discoverPanelBtn;
     @FXML
+    private Button closeResultPanelBtn;
+    @FXML
     private VBox discoverPanel;
     @FXML
     private VBox resultPanel;
@@ -133,6 +135,18 @@ public class MapController {
         discoverPanelAnimation.play();
         discoverPanelBtnAnimation.play();
         isDiscoverPanelVisible = !isDiscoverPanelVisible;
+    }
+    @FXML
+    private void resultPanelBtnClicked(ActionEvent event){
+        if (isResultVisible) {
+            resultPanelAnimation.setToX(discoverPanel.getPrefWidth() - 1000);
+            //discoverPanelBtnAnimation.setToX(discoverPanelBtn.getPrefHeight() - 60);
+        } else {
+            resultPanelAnimation.setToX(0);
+
+        }
+        resultPanelAnimation.play();
+
     }
 
     // Method called when the "Contact Us" button is clicked to navigate to the contact us page
@@ -324,7 +338,7 @@ public class MapController {
 
         // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
-        resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
+        resultPanel.setTranslateX(resultPanel.getPrefWidth() - 1000);
 
         // Check if start and end locations are available and set them if so
         if(startAndEndInfoAvailable()){
