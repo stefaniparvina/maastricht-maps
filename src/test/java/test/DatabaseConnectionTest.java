@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import bus.maapstrichtfinal.Calculations.DatabaseConnection;
 
 /*
- * Test case that checks if the connection to the database is successfull
+ * Test case that checks if the connection to the database is successful
  */
 public class DatabaseConnectionTest {
 
