@@ -19,18 +19,5 @@ public class TestExecutionTime {
         long endTime = System.nanoTime();
         System.out.println("findFastestRoutes execution time: " + (endTime - startTime) + " nanoseconds");
 
-        // // Test findCoordsOfAllRoutePoints method
-        // long startTime1 = System.nanoTime();
-        // for(int i = 0; i<fastestRoutes.size(); i++){
-        // List<Point2D> allPointsCoords =
-        // BusRouteShape.findCoordsOfAllDirectRoutePoints(fastestRoutes.get(i));
-        // }
-        // long endTime1 = System.nanoTime();
-        // System.out.println("findCoordsOfAllRoutePoints execution time: " + (endTime1
-        // - startTime1) + " nanoseconds");
-
-        // long allTime = (endTime - startTime) + (endTime1 - startTime1);
-        // System.out.println("All time: " + allTime + "nanoseconds");
-
     }
 }
