@@ -26,10 +26,7 @@ public class ReaderTest {
 
         Reader.loadCoordinatesCache();
         assertTrue("Cache should be loaded", Reader.isCacheLoaded);
-        assertNotNull("Coordinates should be cached", Reader.coordinatesCache.get("12345"));
         assertArrayEquals("Coordinates should match", new double[]{10.0, -10.0},
                         Reader.coordinatesCache.get("12345"), 0.01);
     }
-
-
 }

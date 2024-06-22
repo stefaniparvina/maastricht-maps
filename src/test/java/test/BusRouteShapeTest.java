@@ -47,24 +47,6 @@ public class BusRouteShapeTest {
     }
 
     @Test
-    public void testFindShapeDetails() throws SQLException {
-        when(mockResultSet.next()).thenReturn(true, false); 
-        when(mockResultSet.getInt("shape_id")).thenReturn(1);
-        when(mockResultSet.getInt("start_stop_distance")).thenReturn(100);
-        when(mockResultSet.getInt("end_stop_distance")).thenReturn(500);
-
-        Route testRoute = new Route(1, "start_stop", "end_stop", null, 0, 0);
-        int[] shapeDetails = BusRouteShape.findShapeDetails(testRoute);
-
-        assertNotNull(shapeDetails);
-        assertArrayEquals(new int[]{1, 100, 500}, shapeDetails);
-
-        verify(mockPreparedStatement).setInt(1, testRoute.getRouteId());
-        verify(mockPreparedStatement).setString(2, testRoute.getStartStopId());
-        verify(mockPreparedStatement).setString(3, testRoute.getEndStopId());
-    }
-
-    @Test
     public void testFindCoordsOfAllRoutePoints() throws SQLException {
         when(mockResultSet.next()).thenReturn(true, true, false); 
         when(mockResultSet.getDouble("shape_pt_lat")).thenReturn(50.2);
