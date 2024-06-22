@@ -16,21 +16,30 @@ public class DatabaseConnection {
      * Use the ones you have for mysql
      */
 
-    private static final String url = "jdbc:mysql://localhost:3306/gtfs";
-    private static final String user = "BCS1510";
-    static final String password = "BCS1510";
-
+    public static final String url = "jdbc:mysql://localhost:3306/gtfs";
+    public static final String user = "BCS1510";
+    public static final String password = "BCS1510";
+    
+    // This static variable holds the active connection.
+    private static Connection activeConnection = null;
+    
     @SuppressWarnings("exports")
     public static Connection getConnection() {
+        if (activeConnection != null) {
+            return activeConnection; // Return the existing connection if it's set
+        }
         try {
             Connection conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connection is successful to database " + url);
             return conn;
-
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Connection failure " + url);
-
             return null;
         }
+    }
+    
+    // This method allows for injecting a mock or alternate connection.
+    public static void setConnection(@SuppressWarnings("exports") Connection mockConnection) {
+        activeConnection = mockConnection;
     }
 }
