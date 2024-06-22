@@ -35,8 +35,7 @@ public class BusRouteShapeTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this); // Initialize mocks annotated with @Mock
 
-        // Since DatabaseConnection.getConnection() is static and we have the ability to set a mock connection:
-        DatabaseConnection.setConnection(mockConnection); // Set the mock connection before tests
+        DatabaseConnection.setConnection(mockConnection); 
 
         when(mockConnection.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
@@ -44,12 +43,12 @@ public class BusRouteShapeTest {
 
     @After
     public void tearDown() {
-        DatabaseConnection.setConnection(null); // Reset the connection after each test
+        DatabaseConnection.setConnection(null); 
     }
 
     @Test
     public void testFindShapeDetails() throws SQLException {
-        when(mockResultSet.next()).thenReturn(true, false); // Return true the first time, false the second time
+        when(mockResultSet.next()).thenReturn(true, false); 
         when(mockResultSet.getInt("shape_id")).thenReturn(1);
         when(mockResultSet.getInt("start_stop_distance")).thenReturn(100);
         when(mockResultSet.getInt("end_stop_distance")).thenReturn(500);
@@ -67,7 +66,7 @@ public class BusRouteShapeTest {
 
     @Test
     public void testFindCoordsOfAllRoutePoints() throws SQLException {
-        when(mockResultSet.next()).thenReturn(true, true, false); // Simulate three calls
+        when(mockResultSet.next()).thenReturn(true, true, false); 
         when(mockResultSet.getDouble("shape_pt_lat")).thenReturn(50.2);
         when(mockResultSet.getDouble("shape_pt_lon")).thenReturn(58.0);
 
@@ -75,7 +74,6 @@ public class BusRouteShapeTest {
         List<Point2D> coords = BusRouteShape.findCoordsOfAllDirectRoutePoints(testRoute);
 
         assertNotNull(coords);
-        //assertFalse(coords.isEmpty());
     }
 
 }

@@ -14,15 +14,13 @@ public class DistanceTest {
 
     @Test
     public void testCalculateDistanceBetweenTwoPoints() {
-        // Set up the coordinates manually for the test
-        Coordinates.startLatitudeRad = Math.toRadians(50.8513682); // Maastricht latitude in radians
-        Coordinates.finishLatitudeRad = Math.toRadians(50.7753455); // Aachen latitude in radians
-        Coordinates.startLongitudeRad = Math.toRadians(5.6909725); // Maastricht longitude in radians
-        Coordinates.finishLongitudeRad = Math.toRadians(6.0838868); // Aachen longitude in radians
+        Coordinates.startLatitudeRad = Math.toRadians(50.8513682); 
+        Coordinates.finishLatitudeRad = Math.toRadians(50.7753455); 
+        Coordinates.startLongitudeRad = Math.toRadians(5.6909725); 
+        Coordinates.finishLongitudeRad = Math.toRadians(6.0838868); 
 
-        // Calculate distance and assert
-        double expectedDistance = 0.94; // Approximate distance between Maastricht and Aachen in km
-        double actualDistance = Distance.calculateDistance("6211JL", "6211CC"); // Assuming postal codes for Maastricht and Aachen
+        double expectedDistance = 0.94;
+        double actualDistance = Distance.calculateDistance("6211JL", "6211CC"); 
         assertEquals("Distance calculation between Maastricht and Aachen should be close to expected value",
                      expectedDistance, actualDistance, DELTA);
     }

@@ -23,17 +23,4 @@ public class CoordinatesTest {
         assertEquals(50.83939495, Coordinates.zipEndY);
         assertEquals(5.7142248166666665, Coordinates.zipEndX);
     }
-
-    // @Test
-    // public void testConvertCoordinatesToRadians() {
-    //     String startZip = "6211LC";
-    //     String endZip = "6229EN";
-
-    //     Coordinates.convertCoordinatesToRadians(startZip, endZip);
-
-    //     assertEquals(Math.toRadians(50.85), Coordinates.startLatitudeRad);
-    //     assertEquals(Math.toRadians(5.7), Coordinates.startLongitudeRad);
-    //     assertEquals(Math.toRadians(50.86), Coordinates.finishLatitudeRad);
-    //     assertEquals(Math.toRadians(5.71), Coordinates.finishLongitudeRad);
-    // }
 }

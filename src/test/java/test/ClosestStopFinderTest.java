@@ -1,11 +1,7 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,38 +22,43 @@ public class ClosestStopFinderTest {
     @Mock
     private Connection mockConnection;
     @Mock
-    private PreparedStatement mockStatement;
+    private PreparedStatement mockPreparedStatement;
     @Mock
     private ResultSet mockResultSet;
 
     @BeforeEach
     public void setUp() throws SQLException {
         MockitoAnnotations.openMocks(this);
-        when(mockConnection.prepareStatement(any(String.class))).thenReturn(mockStatement);
-        when(mockStatement.executeQuery()).thenReturn(mockResultSet);
-        when(mockResultSet.next()).thenReturn(true, true, false);
-
-        // Make sure this line is correctly setting the mocked connection
-        DatabaseConnection.setConnection(mockConnection);  // Or however you're setting the mock
+        when(mockConnection.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        DatabaseConnection.setConnection(mockConnection);  
     }
-
 
     @Test
     public void testFindStopsWithin300Meters() throws SQLException {
-        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7, 0.3);
-        assertEquals(0, closestStops.size());
+        when(mockResultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getDouble("stop_lat")).thenReturn(50.85, 50.85);
+        when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
+        when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
+
+        List<String> closestStops = ClosestStopFinder.findStops300m(50.85, 5.7);
+        assertNotNull(closestStops);
+        assertEquals(2, closestStops.size());
+        assertTrue(closestStops.contains("Stop1"));
+        assertTrue(closestStops.contains("Stop2"));
     }
 
     @Test
     public void testFindStopsWithin500Meters() throws SQLException {
-        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7, 0.5);
-        assertEquals(0, closestStops.size());
-    }
+        when(mockResultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getDouble("stop_lat")).thenReturn(50.85, 50.85);
+        when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
+        when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
 
-    @Test
-    public void testFindClosestStops() throws SQLException {
-        List<String> stops = ClosestStopFinder.findClosestStops(50.85, 5.7, 0.2);
-        assertNotNull(stops);
+        List<String> closestStops = ClosestStopFinder.findStops500m(50.85, 5.7);
+        assertNotNull(closestStops);
+        assertEquals(2, closestStops.size());
+        assertTrue(closestStops.contains("Stop1"));
+        assertTrue(closestStops.contains("Stop2"));
     }
-
 }

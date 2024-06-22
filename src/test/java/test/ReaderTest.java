@@ -15,7 +15,6 @@ public class ReaderTest {
 
     @BeforeClass
     public static void setupClass() {
-        // Since we cannot reset the static instance in the Api, we focus on what we can control.
         Reader.coordinatesCache = new HashMap<>();
         Reader.isCacheLoaded = false;
     }

@@ -18,16 +18,13 @@ public class TravelTimeTest {
     @Test
     public void testCalculateTravelTimeWalking() {
         try (MockedStatic<Distance> mockedDistance = mockStatic(Distance.class)) {
-            // Mock the calculateDistance method
             mockedDistance.when(() -> Distance.calculateDistance(anyString(), anyString())).thenReturn(3.0);
 
             String start = "52.370216, 4.895168"; 
             String end = "52.366374, 4.894515";   
 
-            // Call the method under test
             String result = TravelTime.calculateTravelTime(start, end, "walk");
 
-            // Expected result calculation
             double distanceKM = 3.0;
             double timeHours = distanceKM / 5.0;
             int expectedMinutes = (int) (timeHours * 60);
@@ -41,16 +38,13 @@ public class TravelTimeTest {
     @Test
     public void testCalculateTravelTimeBiking() {
         try (MockedStatic<Distance> mockedDistance = mockStatic(Distance.class)) {
-            // Mock the calculateDistance method
             mockedDistance.when(() -> Distance.calculateDistance(anyString(), anyString())).thenReturn(15.0);
 
             String start = "52.370216, 4.895168"; 
             String end = "52.309069, 4.941728";   
 
-            // Call the method under test
             String result = TravelTime.calculateTravelTime(start, end, "bike");
 
-            // Expected result calculation
             double distanceKM = 15.0;
             double timeHours = distanceKM / 15.0;
             int expectedMinutes = (int) (timeHours * 60);

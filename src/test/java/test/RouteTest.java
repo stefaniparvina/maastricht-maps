@@ -1,73 +1,78 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 import bus.maapstrichtfinal.Calculations.DatabaseConnection;
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
-@ExtendWith(MockitoExtension.class)
 public class RouteTest {
 
-    private static ZipCode startZipCode;
-    private static ZipCode endZipCode;
+    @Mock
+    private Connection mockConnection;
+    @Mock
+    private PreparedStatement mockPreparedStatement;
+    @Mock
+    private ResultSet mockResultSet;
 
-    @BeforeAll
-    public static void setUp() {
-        startZipCode = new ZipCode("6211JL"); 
-        endZipCode = new ZipCode("6229EN"); 
+    @BeforeEach
+    public void setUp() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        when(mockConnection.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        DatabaseConnection.setConnection(mockConnection);  
     }
 
     @Test
-    public void testFindRoutesBetweenStops() throws SQLException {
-        // Mock the database connection and related objects
-        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class)) {
-            Connection mockConnection = mock(Connection.class);
-            PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
-            ResultSet mockResultSet = mock(ResultSet.class);
-
-            mockedDbConnection.when(DatabaseConnection::getConnection).thenReturn(mockConnection);
-            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-            when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-
-            // Mocking the result set
-            when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-            when(mockResultSet.getInt("route_id")).thenReturn(1);
-            when(mockResultSet.getString("route_short_name")).thenReturn("Route1");
-            when(mockResultSet.getString("start_stop_id")).thenReturn("StartStop");
-            when(mockResultSet.getString("end_stop_id")).thenReturn("EndStop");
-            when(mockResultSet.getInt("travel_time_seconds")).thenReturn(3600); // 1 hour
-            when(mockResultSet.getInt("distance")).thenReturn(10000); // 10 km
-
-            List<Route> routes = Route.findRoutesBetweenStops("StartStop", "EndStop");
-
-            assertNotNull(routes);
-            assertEquals(1, routes.size());
-            assertEquals(1, routes.get(0).getRouteId());
-            assertEquals("Route1", routes.get(0).getRouteShortName());
-            assertEquals("StartStop", routes.get(0).getStartStopId());
-            assertEquals("EndStop", routes.get(0).getEndStopId());
-            assertEquals(3600, routes.get(0).getTravelTime());
-            assertEquals(10000, routes.get(0).getDistance());
-        }
+    public void testGetTimeMinutesAndSeconds() {
+        Route testRoute = new Route(1, "Test Route", "START", "END", 125, 10);
+        String time = Route.getTimeMinutesAndSeconds(testRoute);
+        assertEquals("2 minutes, 5 seconds", time);
     }
 
-    
+    @Test
+    public void testFindDirectRoutes() throws Exception {
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getInt("route_id")).thenReturn(1);
+        when(mockResultSet.getString("route_short_name")).thenReturn("Route A");
+        when(mockResultSet.getString("start_stop_id")).thenReturn("100");
+        when(mockResultSet.getString("end_stop_id")).thenReturn("200");
+        when(mockResultSet.getInt("travel_time_seconds")).thenReturn(360);
+        when(mockResultSet.getInt("distance")).thenReturn(500);
+
+        List<List<Route>> routes = Route.findDirectRoutes("100", "200");
+        assertNotNull(routes);
+        assertFalse(routes.isEmpty());
+        assertEquals(1, routes.size());
+        assertEquals(500, routes.get(0).get(0).getDistance());
+    }
+
+    @Test
+    public void testIsRouteAvailable() throws SQLException {
+        ZipCode start = new ZipCode("1111");
+        ZipCode end = new ZipCode("2222");
+
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false); 
+
+        boolean available = Route.isRouteAvailable(start, end);
+        assertTrue(available);
+    }
+
+    @Test
+    public void testIsTransfer() {
+        Route testRoute = new Route(1, "Test Route", "START", "END", 125, 10);
+        assertFalse(testRoute.isTransfer()); 
+    }
 }
