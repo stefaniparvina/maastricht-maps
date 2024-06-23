@@ -246,13 +246,20 @@ public class MapController {
                         TravelTime.distanceKM + "km.");
                 break;
             case BUS:
-                if (DestinationInfo.bestRoute != null) {
-                    if (DestinationInfo.bestRoute.get(0).getRouteShortName() != null && !DestinationInfo.bestRoute.get(0).getRouteShortName().isEmpty()) {
-                        setBusText(DestinationInfo.bestRoute.get(0).getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute.get(0)));
-                    } else {
-                        setBusText(null,null);
+                if (DestinationInfo.bestRoute != null && !DestinationInfo.bestRoute.isEmpty()) {
+                    StringBuilder busText = new StringBuilder();
+                    for (Route route : DestinationInfo.bestRoute) {
+                        if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
+                            if (busText.length() > 0) {
+                                busText.append(" -> ");  // separator between segments
+                            }
+                            busText.append(route.getRouteShortName());
+                        }
                     }
-                } else {
+                    String totalTime = Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute);
+                    setBusText(busText.toString(), totalTime);
+                }
+                else {
                     setBusText(null,null);
                 }
                 break;
@@ -280,6 +287,7 @@ public class MapController {
      * @param time the time it takes to travel
      */
     private void setBusText(String busNumber, String time) {
+
         if(busNumber!=null&&time!=null) {
             transportOptionTxt.setText("By bus,");
             timeTxt.setText("it takes " + time);

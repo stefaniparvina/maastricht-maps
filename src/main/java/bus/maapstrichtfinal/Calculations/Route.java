@@ -56,13 +56,18 @@ public class Route {
         return distance;
     }
 
-    public static String getTimeMinutesAndSeconds(Route route) {
-        int time = route.getTravelTime();
-        int seconds = time % 60;
-        int minutes = time / 60;
+    public static String getTimeMinutesAndSeconds(List<Route> routes) {
+        int totalTime = 0;
+        for (Route route : routes) {
+            totalTime += route.getTravelTime();
+            System.out.println(route.getTravelTime() / 60);
+        }
+        int seconds = totalTime % 60;
+        int minutes = totalTime / 60;
         if (seconds == 0) return minutes + " minutes";
         else return minutes + " minutes, " + seconds + " seconds";
     }
+
 
     // Method to find direct routes between two stops
     public static List<List<Route>> findDirectRoutes(String startStopId, String endStopId) {
@@ -71,7 +76,7 @@ public class Route {
         String query = "SELECT DISTINCT " +
                 "route_id, route_short_name, start_stop_id, end_stop_id, " +
                 "travel_time_seconds, distance " +
-                "FROM route_stop_view_final11 " +
+                "FROM route_stop_view_final11_mat " +
                 "WHERE start_stop_id = ? AND end_stop_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -101,10 +106,10 @@ public class Route {
         return routes;
     }
 
+
     // Method to find transfer routes between two stops
     public static List<List<Route>> findTransferRoutes(String startStopId, String endStopId) {
         List<List<Route>> routes = new ArrayList<>();
-        int count = 0;
         String query = "SELECT DISTINCT " +
                 "first_leg.route_id AS first_route_id, first_leg.route_short_name AS first_route_short_name, " +
                 "first_leg.start_stop_id, first_leg.end_stop_id AS transfer_stop_id, " +
@@ -114,8 +119,8 @@ public class Route {
                 "second_leg.start_stop_id AS transfer_stop_id, second_leg.end_stop_id, " +
                 "second_leg.travel_time_seconds AS second_leg_travel_time_seconds, " +
                 "second_leg.distance AS second_leg_distance " +
-                "FROM route_stop_view_final11 first_leg " +
-                "JOIN route_stop_view_final11 second_leg ON first_leg.end_stop_id = second_leg.start_stop_id " +
+                "FROM route_stop_view_final11_mat first_leg " +
+                "JOIN route_stop_view_final11_mat second_leg ON first_leg.end_stop_id = second_leg.start_stop_id " +
                 "WHERE first_leg.start_stop_id = ? AND second_leg.end_stop_id = ? " +
                 "AND first_leg.route_id <> second_leg.route_id";
 
@@ -146,14 +151,7 @@ public class Route {
 
                     List<Route> routeOption = new ArrayList<>();
                     routeOption.add(firstLeg);
-                    if(count == 0) {
-                        System.out.println("Bus transfer: \n" + routeOption.get(0).getRouteShortName());
-                    }
                     routeOption.add(secondLeg);
-                    if(count == 0) {
-                        System.out.println(routeOption.get(1).getRouteShortName() + "\n" );
-                        count++;
-                    }
 
                     // Add the routeOption to the routes list
                     routes.add(routeOption);
@@ -164,6 +162,8 @@ public class Route {
         }
         return routes;
     }
+
+
 
 
     // Method to find all possible routes between two zip codes
