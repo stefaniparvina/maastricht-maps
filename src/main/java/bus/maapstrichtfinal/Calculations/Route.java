@@ -56,16 +56,12 @@ public class Route {
         return distance;
     }
 
-    public static String getTimeMinutesAndSeconds(List<Route> routes) {
+    public static int getTime(List<Route> routes) {
         int totalTime = 0;
         for (Route route : routes) {
             totalTime += route.getTravelTime();
-            System.out.println(route.getTravelTime() / 60);
         }
-        int seconds = totalTime % 60;
-        int minutes = totalTime / 60;
-        if (seconds == 0) return minutes + " minutes";
-        else return minutes + " minutes, " + seconds + " seconds";
+        return totalTime;
     }
 
 
@@ -151,7 +147,10 @@ public class Route {
 
                     List<Route> routeOption = new ArrayList<>();
                     routeOption.add(firstLeg);
+                    System.out.println(firstLeg.getRouteShortName());
                     routeOption.add(secondLeg);
+                    System.out.println(secondLeg.getRouteShortName());
+                    System.out.println("  ...  ");
 
                     // Add the routeOption to the routes list
                     routes.add(routeOption);

@@ -40,8 +40,6 @@ public class MapInitializer {
 
     // Method to determine if the route is a transfer route
     private static boolean isTransferRoute(Route route) {
-        // Assuming that a transfer route will have different start and end stop IDs
-        // for the first and second legs
         return route != null && route.isTransfer() == true;
     }
 }

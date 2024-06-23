@@ -40,6 +40,7 @@ public abstract class DestinationInfo {
         return endZipCode;
     }
 
+
     public static String getStartDestination() {
         return startDestination;
     }

@@ -1,7 +1,7 @@
 package bus.maapstrichtfinal.Calculations;
 
 public class TravelTime {
-    private static double AVERAGE_SPEED = 0.0;
+    private static double AVERAGE_SPEED = 5.0;
     public static double distanceKM = 0.0;
 
     public static String calculateTravelTime(String start, String end, String method) {
@@ -25,4 +25,13 @@ public class TravelTime {
 
         return minutes + " minutes, " + seconds + " seconds";
     }
+    public static double getWalkingTimeBusStop(String start, String stopId){
+
+        double distance = Distance.calculateDistanceFromZipToStop(start, stopId);
+        double time =  (distance / AVERAGE_SPEED) * 3600;
+        System.out.println(distance);
+        System.out.println("time is " + time);
+        return time;
+    }
+
 }

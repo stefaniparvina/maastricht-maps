@@ -102,6 +102,8 @@ public class MapController {
     private TranslateTransition resultPanelAnimation;
     private TranslateTransition discoverPanelBtnAnimation;
     private Theme themeHandler;
+    private String startStopId;
+    private String endStopId;
 
 
 
@@ -229,6 +231,8 @@ public class MapController {
 
     private String startDest = DestinationInfo.getStartDestination();
     private String endDest = DestinationInfo.getEndDestination();
+    //private  String startStopId = ;
+    //private String endStopId = ;
 
     /**
      * Updates the result panel text based on the chosen transport option.
@@ -251,13 +255,16 @@ public class MapController {
                     for (Route route : DestinationInfo.bestRoute) {
                         if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
                             if (busText.length() > 0) {
-                                busText.append(" -> ");  // separator between segments
+                                busText.append(" then bus ");  // separator between segments
                             }
                             busText.append(route.getRouteShortName());
                         }
                     }
-                    String totalTime = Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute);
-                    setBusText(busText.toString(), totalTime);
+                    startStopId = DestinationInfo.bestRoute.get(0).getStartStopId();
+                    endStopId = DestinationInfo.bestRoute.get(1).getEndStopId();
+                    double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startDest, startStopId) + TravelTime.getWalkingTimeBusStop(endDest, endStopId);
+                    String timeTxt = (int)(totalTime / 60) + " minutes";
+                    setBusText(busText.toString(), timeTxt);
                 }
                 else {
                     setBusText(null,null);
