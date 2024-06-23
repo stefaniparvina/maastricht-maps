@@ -1,23 +1,27 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import bus.maapstrichtfinal.Calculations.Distance;
+import bus.maapstrichtfinal.ZipCode.Coordinates;
+import bus.maapstrichtfinal.ZipCode.ZipCode;
 
-/*
- * Test case that checks the accuracy of the distance calculator,
- * between 2 zip codes
- */
+import static org.junit.Assert.assertEquals;
+
 public class DistanceTest {
+
+    private static final double DELTA = 0.01; // Delta used for asserting equality on floating point numbers
+
     @Test
-    public void testCalculateDistance() {
-        String start = "6211en";
-        String end = "6211an";
+    public void testCalculateDistanceBetweenTwoPoints() {
+        Coordinates.startLatitudeRad = Math.toRadians(50.8513682); 
+        Coordinates.finishLatitudeRad = Math.toRadians(50.7753455); 
+        Coordinates.startLongitudeRad = Math.toRadians(5.6909725); 
+        Coordinates.finishLongitudeRad = Math.toRadians(6.0838868); 
 
-        double result = Distance.calculateDistance(start, end);
-
-        assertEquals(0.4, result);
+        double expectedDistance = 0.94;
+        double actualDistance = Distance.calculateDistance("6211JL", "6211CC"); 
+        assertEquals("Distance calculation between Maastricht and Aachen should be close to expected value",
+                     expectedDistance, actualDistance, DELTA);
     }
 }

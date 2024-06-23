@@ -10,13 +10,13 @@ public class Reader {
     private static final String DATABASE = "src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
 
     // HashMap to cache zip code coordinates
-    private static HashMap<String, double[]> coordinatesCache = new HashMap<>();
+    public static HashMap<String, double[]> coordinatesCache = new HashMap<>();
 
     // Flag to check if the cache is loaded
-    private static boolean isCacheLoaded = false;
+    public static boolean isCacheLoaded = false;
 
     // Method to load coordinates into cache
-    private static void loadCoordinatesCache() {
+    public static void loadCoordinatesCache() {
         if (isCacheLoaded) {
             return; // If already loaded, do nothing
         }
