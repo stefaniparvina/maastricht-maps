@@ -28,6 +28,7 @@ public class TravelTime {
     public static double getWalkingTimeBusStop(String start, String stopId){
 
         double distance = Distance.calculateDistanceFromZipToStop(start, stopId);
+
         double time =  (distance / AVERAGE_SPEED) * 3600;
         System.out.println(distance);
         System.out.println("time is " + time);

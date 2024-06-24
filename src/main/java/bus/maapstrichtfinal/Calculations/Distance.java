@@ -31,8 +31,6 @@ public class Distance extends Coordinates {
         double zipStartY = new ZipCode(start).getLatitude();
         double zipStartX = new ZipCode(start).getLongitude();
 
-        double zipEndY = 0.0;
-        double zipEndX = 0.0;
 
         // Query to get latitude and longitude of the stopId
         String query = "SELECT stop_lat, stop_lon FROM stops WHERE stop_id = ?";
@@ -43,8 +41,8 @@ public class Distance extends Coordinates {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    zipEndY = rs.getDouble("stop_lat");
-                    zipEndX = rs.getDouble("stop_lon");
+                   zipEndY = rs.getDouble("stop_lat");
+                   zipEndX = rs.getDouble("stop_lon");
                 }
             }
         } catch (SQLException e) {

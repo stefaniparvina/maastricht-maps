@@ -261,7 +261,12 @@ public class MapController {
                         }
                     }
                     startStopId = DestinationInfo.bestRoute.get(0).getStartStopId();
-                    endStopId = DestinationInfo.bestRoute.get(1).getEndStopId();
+                    if(MapInitializer.isTransferRoute(DestinationInfo.bestRoute.get(0))) {
+                        endStopId = DestinationInfo.bestRoute.get(1).getEndStopId();
+                    }
+                    else{
+                        endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
+                    }
                     double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startDest, startStopId) + TravelTime.getWalkingTimeBusStop(endDest, endStopId);
                     String timeTxt = (int)(totalTime / 60) + " minutes";
                     setBusText(busText.toString(), timeTxt);

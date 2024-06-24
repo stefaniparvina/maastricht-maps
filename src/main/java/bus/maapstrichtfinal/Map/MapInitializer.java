@@ -39,7 +39,7 @@ public class MapInitializer {
     }
 
     // Method to determine if the route is a transfer route
-    private static boolean isTransferRoute(Route route) {
+    public static boolean isTransferRoute(Route route) {
         return route != null && route.isTransfer() == true;
     }
 }
