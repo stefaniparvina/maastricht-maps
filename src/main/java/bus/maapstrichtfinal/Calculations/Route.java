@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Time;
 
 import bus.maapstrichtfinal.CommonController;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
 @SuppressWarnings("static-access")
@@ -23,17 +26,19 @@ public class Route {
     private int travelTime;
     private int distance;
     private Time departureTime;
+    private Time arrivalTime;
 
     // Constructor
     public Route(int routeId, String routeShortName, String startStopId, String endStopId,
-                 int travelTime, int distance, Time departureTime) {
+                 int travelTime, int distance, Time arrivalTime, Time departureTime) {
         this.routeId = routeId;
         this.routeShortName = routeShortName;
         this.startStopId = startStopId;
         this.endStopId = endStopId;
         this.travelTime = travelTime;
         this.distance = distance;
-        this.departureTime = departureTime; // Direct assignment from result set
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
     }
 
     // Getters for route attributes
@@ -64,6 +69,7 @@ public class Route {
     public Time getDepartureTime() {
         return departureTime;
     }
+    public Time getArrivalTime(){return arrivalTime;}
 
     public static int getTime(List<Route> routes) {
         int totalTime = 0;
@@ -80,11 +86,11 @@ public class Route {
 
         String query = "SELECT " +
                 "r.route_id, r.route_short_name, r.start_stop_id, r.end_stop_id, " +
-                "r.travel_time_seconds, r.distance, s.departure_time " +  // Only select necessary fields
+                "r.travel_time_seconds, r.distance, s.departure_time, s.arrival_time " +
                 "FROM route_stop_view_final11_mat r " +
                 "JOIN stop_times s ON s.stop_id = r.end_stop_id " +
                 "WHERE r.start_stop_id = ? AND r.end_stop_id = ? " +
-                "AND s.departure_time >= ?";
+                "AND s.departure_time > ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -101,7 +107,8 @@ public class Route {
                             rs.getString("end_stop_id"),
                             rs.getInt("travel_time_seconds"),
                             rs.getInt("distance"),
-                            rs.getTime("departure_time")  // Properly retrieve departure time
+                            rs.getTime("arrival_time"),
+                            rs.getTime("departure_time")
                     );
                     List<Route> routeOption = new ArrayList<>();
                     routeOption.add(route);
@@ -117,26 +124,31 @@ public class Route {
 
 
     // Method to find transfer routes between two stops
-    public static List<List<Route>> findTransferRoutes(String startStopId, String endStopId) {
+    public static List<List<Route>> findTransferRoutes(String startStopId, String endStopId, Time deptTime) {
         List<List<Route>> routes = new ArrayList<>();
         String query = "SELECT DISTINCT " +
                 "first_leg.route_id AS first_route_id, first_leg.route_short_name AS first_route_short_name, " +
                 "first_leg.start_stop_id, first_leg.end_stop_id AS transfer_stop_id, " +
                 "first_leg.travel_time_seconds AS first_leg_travel_time_seconds, " +
                 "first_leg.distance AS first_leg_distance, " +
+                "s.departure_time, s.arrival_time, " +
                 "second_leg.route_id AS second_route_id, second_leg.route_short_name AS second_route_short_name, " +
                 "second_leg.start_stop_id AS transfer_stop_id, second_leg.end_stop_id, " +
                 "second_leg.travel_time_seconds AS second_leg_travel_time_seconds, " +
                 "second_leg.distance AS second_leg_distance " +
                 "FROM route_stop_view_final11_mat first_leg " +
                 "JOIN route_stop_view_final11_mat second_leg ON first_leg.end_stop_id = second_leg.start_stop_id " +
-                "WHERE first_leg.start_stop_id = ? AND second_leg.end_stop_id = ? " +
-                "AND first_leg.route_id <> second_leg.route_id";
+                "JOIN stop_times s ON s.stop_id = first_leg.start_stop_id " +
+                "WHERE first_leg.start_stop_id = ? " +
+                "AND second_leg.end_stop_id = ? " +
+                "AND first_leg.route_id <> second_leg.route_id " +
+                "AND s.departure_time > ? ";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, startStopId);
             pstmt.setString(2, endStopId);
+            pstmt.setTime(3, deptTime);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -147,6 +159,7 @@ public class Route {
                             rs.getString("transfer_stop_id"),
                             rs.getInt("first_leg_travel_time_seconds"),
                             rs.getInt("first_leg_distance"),
+                            rs.getTime("arrival_time"),
                             rs.getTime("departure_time")
                     );
 
@@ -157,6 +170,7 @@ public class Route {
                             rs.getString("end_stop_id"),
                             rs.getInt("second_leg_travel_time_seconds"),
                             rs.getInt("second_leg_distance"),
+                            rs.getTime("arrival_time"),
                             rs.getTime("departure_time")
                     );
 
@@ -199,7 +213,7 @@ public class Route {
 
                 for (String startStop : startStops500m) {
                     for (String endStop : endStops500m) {
-                        //allRoutes.addAll(findTransferRoutes(startStop, endStop));
+                        allRoutes.addAll(findTransferRoutes(startStop, endStop, CommonController.getDeptTime()));
                     }
                 }
             }
@@ -252,9 +266,29 @@ public class Route {
 
     // Helper method to calculate total travel time for a list of routes
     private static int getTotalTravelTime(List<Route> routes) {
-        return (int) (routes.stream().mapToInt(Route::getTravelTime).sum() +
-                TravelTime.getWalkingTimeBusStop(DestinationInfo.getStartDestination(), routes.get(0).getStartStopId()) +
-                TravelTime.getWalkingTimeBusStop(DestinationInfo.getEndDestination(), routes.get(0).getEndStopId()));
+        int time = (int) (routes.stream().mapToInt(Route::getTravelTime).sum() +
+                TravelTime.getWalkingTimeBusStop(DestinationInfo.getStartDestination(), routes.get(0).getStartStopId()));
+
+        if (routes.size() > 1) {
+            time += (int) TravelTime.getWalkingTimeBusStop(DestinationInfo.getEndDestination(), routes.get(1).getEndStopId());
+
+            // Convert departure and arrival times to LocalTime
+            Time departureTime = routes.get(1).getDepartureTime();
+            Time arrivalTime = routes.get(0).getArrivalTime();
+
+            LocalTime departureLocalTime = departureTime.toLocalTime();
+            LocalTime arrivalLocalTime = arrivalTime.toLocalTime();
+
+            // Calculate the difference in seconds
+            long timeDifferenceInSeconds = ChronoUnit.SECONDS.between(arrivalLocalTime, departureLocalTime);
+
+            // Add the difference to time
+            time += (int) timeDifferenceInSeconds;
+        } else {
+            time += (int) TravelTime.getWalkingTimeBusStop(DestinationInfo.getEndDestination(), routes.get(0).getEndStopId());
+        }
+
+        return time;
     }
 
     public static boolean isRouteAvailable(ZipCode startZipCode, ZipCode endZipCode) {
