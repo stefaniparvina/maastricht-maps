@@ -1,9 +1,12 @@
 package bus.maapstrichtfinal.Calculations;
 
+import javafx.geometry.Point2D;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,70 +48,58 @@ public class BusRouteShape {
     }
 
     // Method to find coordinates of all route points
-    public static List<double[]> findCoordsOfAllRoutePoints(Route route){
-
-        // Create a list to store arrays with coordinates for all points that lie on the chosen route and its quickest trip
-        List<double[]> allPointsCoords = new LinkedList<>();
-        // Find shape details for the given route
+    public static List<Point2D> findCoordsOfAllRoutePoints(Route route) {
+        List<Point2D> allPointsCoords = new ArrayList<>();
         int[] shapeDetails = findShapeDetails(route);
 
-        // SQL query to retrieve shape points
         String shapePointsQuery = "SELECT shape_pt_lat, shape_pt_lon, shape_pt_sequence FROM shapes WHERE shape_id = ?" +
                 " AND shape_dist_traveled  BETWEEN ? AND ? ORDER BY shape_pt_sequence ASC;";
 
-        // SQL query to retrieve stop coordinates
         String stopsQuery = "SELECT stop_id, stop_lat, stop_lon FROM stops WHERE stop_id IN (?, ?)";
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(shapePointsQuery)) {
 
-            // Set parameters for the shape points query
             pstmt.setInt(1, shapeDetails[0]);
             pstmt.setInt(2, shapeDetails[1]);
             pstmt.setInt(3, shapeDetails[2]);
 
-            // Execute the query
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    // Store the retrieved shape point coordinates in an array
-                    double[] current = new double[2];
-                    current[0] = rs.getDouble("shape_pt_lat");
-                    current[1] = rs.getDouble("shape_pt_lon");
-                    allPointsCoords.add(current);
+                    double lat = rs.getDouble("shape_pt_lat");
+                    double lon = rs.getDouble("shape_pt_lon");
+                    Point2D point = new Point2D(lat, lon);
+                    allPointsCoords.add(point);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        // Retrieve stop coordinates and add them to the list of all points coordinates
         try (
                 Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(stopsQuery)) {
 
-            // Set parameters for the stops query
             pstmt.setString(1, route.getStartStopId());
             pstmt.setString(2, route.getEndStopId());
 
-            // Execute the query
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    // Store the retrieved stop coordinates in an array
-                    double[] current = new double[2];
-                    current[0] = rs.getDouble("stop_lat");
-                    current[1] = rs.getDouble("stop_lon");
-                    // Add the stop coordinates to the list of all points coordinates
-                    if(rs.getString("stop_id").equals(route.getStartStopId())){
-                        ((LinkedList<double[]>) allPointsCoords).addFirst(current);
-                    }else{
-                        ((LinkedList<double[]>) allPointsCoords).addLast(current);
+                    double lat = rs.getDouble("stop_lat");
+                    double lon = rs.getDouble("stop_lon");
+                    Point2D point = new Point2D(lat, lon);
+                    if (rs.getString("stop_id").equals(route.getStartStopId())) {
+                        allPointsCoords.add(0, point); // Add start stop at the beginning
+                    } else {
+                        allPointsCoords.add(point); // Add end stop at the end
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return allPointsCoords;
     }
 }

@@ -1,16 +1,27 @@
 package bus.maapstrichtfinal.GUIInfo;
 
+import bus.maapstrichtfinal.Calculations.Node;
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 public abstract class DestinationInfo {
+
+    private static Node endNode;
 
     private static String startDestination;
     private static String endDestination;
     private static ZipCode startZipCode;
     private static ZipCode endZipCode;
 
-    public static Route bestRoute;
+    private static LocalTime currentTime = LocalTime.now();
+
+    public static List<Route> bestRoute;
 
     private static String selectedTransportOption;
 
@@ -46,7 +57,21 @@ public abstract class DestinationInfo {
         return endDestination;
     }
 
-    public static void setBestRoute(){bestRoute = Route.findFastestRoute(startZipCode, endZipCode);}
+    public static Node getEndNode(){
+        return endNode;
+    }
+    public static void setEndNode() {
+        try {
+            endNode = Node.createGraph(startZipCode, endZipCode, LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        } catch (SQLException e) {
+            System.out.println("sql");
+        }
+    }
+
+
+    public static void setBestRoute(){
+        bestRoute = Node.findRoutes(Node.reconstructPath(getEndNode()));
+    }
 
     public static void setSelectedTransportOption(String option) {
         selectedTransportOption = option;
@@ -54,5 +79,8 @@ public abstract class DestinationInfo {
 
     public static String getSelectedTransportOption() {
         return selectedTransportOption;
+    }
+    public static List<Route> getBestRoute(){
+        return bestRoute;
     }
 }

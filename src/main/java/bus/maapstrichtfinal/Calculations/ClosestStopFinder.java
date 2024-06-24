@@ -1,48 +1,35 @@
 package bus.maapstrichtfinal.Calculations;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClosestStopFinder {
 
-    //Method to find the closest stops from a given location, within a given radius
-    public static List<String> findClosestStops(double userLat, double userLon, double maxDistance) throws SQLException {
-        // List to store the closest bus stops
-        List<String> closestStops = new ArrayList<>();
+    // Method to find the closest stops from a given location, within a given radius
+    public static List<BusStop> findClosestStops(double userLat, double userLon, double maxDistance) {
+        List<BusStop> closestStops = new ArrayList<>();
 
-        // SQL query to retrieve all bus stops
-        String query = "SELECT stop_id, stop_lat, stop_lon FROM stops";
+        // All bus stops in Maastricht
+        List<BusStop> busStops = BusStop.getAllBusStops();
 
-        try (
-                Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(query);
-                ResultSet rs = pstmt.executeQuery()) {
+        // Iterate over the list of bus stops
+        for (BusStop busStop : busStops) {
+            double stopLat = busStop.getLatitude();
+            double stopLon = busStop.getLongitude();
+            // Calculate the distance between the user's location and the bus stop
+            double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
 
-            // Iterate over the result set of bus stops
-            while (rs.next()) {
-                double stopLat = rs.getDouble("stop_lat");
-                double stopLon = rs.getDouble("stop_lon");
-                // Calculate the distance between the user's location and the bus stop
-                double distance = calculateDistance(userLat, userLon, stopLat, stopLon);
-
-                // If the distance is within the maximum distance, add the bus stop to the list of closest stops
-                if (distance <= maxDistance) {
-                    closestStops.add(rs.getString("stop_id"));
-                }
+            // If the distance is within the maximum distance, add the bus stop to the list of closest stops
+            if (distance <= maxDistance) {
+                closestStops.add(busStop);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return closestStops;
     }
 
     // Method to calculate the distance between two geographical coordinates using the Haversine formula
-    private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double earthRadius = 6371; // Earth's radius in kilometers
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -55,3 +42,17 @@ public class ClosestStopFinder {
         return earthRadius * c; // Distance in kilometers
     }
 }
+
+
+// Main method for testing purposes
+    /*public static void main(String[] args) {
+        try {
+            List<String> closestStops1 = findStops(50.85, 5.7);
+            System.out.println(closestStops1);
+            List<String> closestStops2 = findStops(50.86, 5.8);
+            System.out.println(closestStops2);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/

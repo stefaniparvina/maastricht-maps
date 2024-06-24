@@ -17,6 +17,8 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
+import static bus.maapstrichtfinal.GUIInfo.DestinationInfo.setBestRoute;
+
 /**
  * Utility class containing common methods used in multiple classes.
  */
@@ -109,14 +111,9 @@ public class CommonController {
 
     protected static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
         Stage stage = new Stage();
-        if (Route.isRouteAvailable(startZipCode, endZipCode)) {
+
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        }
-        else{
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            adjustFontSize(mainTxt,24);
-            mainTxt.setText(" No route exists between the\n specified locations.\n Please try another transport method");
-        }
+
             try {
                 FileInitializer initializer = new FileInitializer();
                 initializer.initializeFXML(stage, "map");
@@ -183,7 +180,6 @@ public class CommonController {
     protected static void setBestRoute() {
         DestinationInfo.setBestRoute();
     }
-
     // Method to set destination points for the route
     protected static void setDestinationPoints(String start, String end) {
         DestinationInfo.setStartDestination(start);

@@ -1,13 +1,20 @@
 package bus.maapstrichtfinal.Map;
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import bus.maapstrichtfinal.MapController;
+import bus.maapstrichtfinal.Calculations.BusRouteShape;
+import bus.maapstrichtfinal.Calculations.Node;
+import bus.maapstrichtfinal.Calculations.Route;
+
 import com.gluonhq.maps.MapLayer;
 
-import bus.maapstrichtfinal.Calculations.BusRouteShape;
-import bus.maapstrichtfinal.Calculations.Route;
+//import bus.maapstrichtfinal.Calculations.BusRouteShape;
+//import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.geometry.Point2D;
@@ -19,6 +26,8 @@ public class BusRouteMapLayer extends MapLayer {
     // Markers for start and end zip codes
     private final Circle startZipCodeMarker;
     private final Circle endZipCodeMarker;
+    ZipCode startZipCode = new ZipCode("6224cd");
+    ZipCode endZipCode = new ZipCode("6229en");
 
     // Polylines for the bus route shape, start zip code to bus stop, and end bus
     // stop to end zip code
@@ -28,6 +37,10 @@ public class BusRouteMapLayer extends MapLayer {
 
     // List to store shape points coordinates
     private List<double[]> shapePointsCoords = new ArrayList<double[]>();
+    private String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    private Node endNode;
+    private List<Node> path;
+    private List<Route> routes;
 
     // Constructor
     public BusRouteMapLayer() {
@@ -50,30 +63,26 @@ public class BusRouteMapLayer extends MapLayer {
         getChildren().addAll(startZipCodeMarker, endZipCodeMarker, pathShape, pathStartZipToStop, pathEndStopToZip);
     }
 
+
     @Override
     protected void layoutLayer() {
         // Getting start and end zip codes from the HomepageController
-        ZipCode startZipCode = DestinationInfo.getStartZipCode();
-        ZipCode endZipCode = DestinationInfo.getEndZipCode();
 
+        try {
+            endNode = Node.createGraph(startZipCode, endZipCode, currentTime);
+            path = Node.reconstructPath(endNode);
+            routes = Node.findRoutes(path);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Node.printPath(path);
         // Check if start or end zip code is null
         if (startZipCode == null || endZipCode == null) {
             new MapController();
             return;
         }
-        // Checking if shape points coordinates are already found
-        if (shapePointsCoords.isEmpty()) {
-            // Find the fastest route and its shape points coordinates
 
-            Route bestRoute = DestinationInfo.bestRoute;
-            if (bestRoute == null){
-                startZipCode = null;
-                endZipCode = null;
-                return;
-            }
 
-            shapePointsCoords = BusRouteShape.findCoordsOfAllRoutePoints(bestRoute);
-        }
 
         List<Double> allPoints = new ArrayList<>();
         // Convert shape points coordinates to map points

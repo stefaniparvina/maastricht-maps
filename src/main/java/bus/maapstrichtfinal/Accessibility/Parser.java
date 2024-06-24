@@ -1,5 +1,6 @@
 package bus.maapstrichtfinal.Accessibility;
 
+import bus.maapstrichtfinal.Calculations.BusStop;
 import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 import bus.maapstrichtfinal.Calculations.DatabaseConnection;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
@@ -189,7 +190,7 @@ public class Parser {
 
     private static int countBusStopsByZIP(String zipcode) throws SQLException {
         ZipCode zip = new ZipCode(zipcode);
-        List<String> closestStops = ClosestStopFinder.findClosestStops(zip.getLatitude(), zip.getLongitude(), 0.5);
+        List<BusStop> closestStops = ClosestStopFinder.findClosestStops(zip.getLatitude(), zip.getLongitude(), 0.5);
         return closestStops.size();
     }
 

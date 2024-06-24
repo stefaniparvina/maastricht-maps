@@ -235,7 +235,7 @@ public class MapController {
         String transportOptionString = DestinationInfo.getSelectedTransportOption();
         try {
             TransportOption transportOption = TransportOption.fromString(transportOptionString);
-            transportOptionChosen(transportOption);
+            //transportOptionChosen(transportOption);
         } catch (IllegalArgumentException e) {
             System.out.println("Error. Transport option is null or invalid.");
         }
@@ -260,21 +260,21 @@ public class MapController {
                         TravelTime.distanceKM + "km.");
                 break;
             case BUS:
-                if (DestinationInfo.bestRoute != null) {
-                    if (DestinationInfo.bestRoute.getRouteShortName() != null && !DestinationInfo.bestRoute.getRouteShortName().isEmpty()) {
-                        setBusText(DestinationInfo.bestRoute.getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute));
-                    } else {
-                        setBusText(null,null);
-                    }
-                } else {
-                    setBusText(null,null);
-                }
+//                if (DestinationInfo.bestRoute != null) {
+//                    if (DestinationInfo.bestRoute.getRouteShortName() != null && !DestinationInfo.bestRoute.getRouteShortName().isEmpty()) {
+//                        setBusText(DestinationInfo.bestRoute.getRouteShortName(), Route.getTimeMinutesAndSeconds(DestinationInfo.bestRoute));
+//                    } else {
+//                        setBusText(null,null);
+//                    }
+//                } else {
+//                    setBusText(null,null);
+//                }
                 break;
         }
     }
 
     /**
-     * Sets the text for walking or cycling options.
+     *      * Sets the text for walking or cycling options.
      *
      * @param transportOptionText the transport option text
      * @param time the time it takes to travel
