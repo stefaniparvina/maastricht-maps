@@ -13,6 +13,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 
 /**
  * Utility class containing common methods used in multiple classes.
@@ -26,6 +28,7 @@ public class CommonController {
     protected static double endLat = 0.0;
     protected static double endLong = 0.0;
     private static HomepageController hp = new HomepageController();
+    private static Time deptTime = Time.valueOf(LocalTime.now());
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
      *
@@ -196,4 +199,7 @@ public class CommonController {
         }
     }
 
+    public static Time getDeptTime() {
+        return deptTime;
+    }
 }
