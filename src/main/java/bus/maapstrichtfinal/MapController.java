@@ -1,11 +1,21 @@
 package bus.maapstrichtfinal;
 
+import static bus.maapstrichtfinal.GUIInfo.DestinationInfo.getTotalTime;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import bus.maapstrichtfinal.Calculations.TravelTime;
 import com.gluonhq.maps.MapView;
+
+import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.Calculations.TravelTime;
+import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
+import bus.maapstrichtfinal.Map.MapInitializer;
+import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
+import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
+import bus.maapstrichtfinal.ThemeStrategy.Theme;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,15 +31,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import bus.maapstrichtfinal.Calculations.Route;
-import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
-import bus.maapstrichtfinal.Map.MapInitializer;
-import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
-import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
-import bus.maapstrichtfinal.ThemeStrategy.Theme;
-import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
-
-import static bus.maapstrichtfinal.GUIInfo.DestinationInfo.getTotalTime;
 
 /**
  * Controller class for the map.fxml file.
@@ -173,6 +174,7 @@ public class MapController {
         resultPanelBtnAnimation.play();
         isResultPanelVisible = !isResultPanelVisible;
     }
+
 
     // Method called when the "Contact Us" button is clicked to navigate to the
     // contact us page
@@ -379,11 +381,15 @@ public class MapController {
 
         // Discover panel button animation setup
         discoverPanelBtnAnimation = new TranslateTransition(Duration.millis(300), discoverPanelBtn);
-        discoverPanelBtn.setTranslateX(discoverPanelBtn.getPrefHeight() + 100);
+        discoverPanelBtn.setTranslateX(discoverPanelBtn.getPrefHeight() + 200);
 
         // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
+
+        // Result panel button animation setup
+        resultPanelBtnAnimation = new TranslateTransition(Duration.millis(300), resultPanelBtn);
+        resultPanelBtn.setTranslateX(resultPanelBtn.getPrefHeight() - 200);
 
         // Check if start and end locations are available and set them if so
         if (startAndEndInfoAvailable()) {
@@ -396,6 +402,8 @@ public class MapController {
             resultPanelAnimation.setToX(0);
             resultPanelAnimation.play();
             setResultPanelText();
+        } else {
+            resultPanel.setTranslateX(resultPanel.getPrefWidth() + 300);
         }
     }
 }
