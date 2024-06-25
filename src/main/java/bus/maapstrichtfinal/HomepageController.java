@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -66,6 +67,10 @@ public class HomepageController {
     private ImageView themeBtnImg;
     @FXML
     private BorderPane parent;
+    @FXML
+    private TextField timeTxtField;
+    @FXML
+    private Label errorLabel;
 
     // Variables to hold location and transport information
     private static ZipCode startZipCode;
@@ -85,7 +90,7 @@ public class HomepageController {
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
-        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup);
+        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
     }
 
 

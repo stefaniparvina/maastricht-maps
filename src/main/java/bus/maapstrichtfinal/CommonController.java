@@ -127,7 +127,8 @@ public class CommonController {
 
 
     protected static void checkRouting(ActionEvent event, Label mainTxt, Label secondaryTxt,
-                                       TextField startTxtField, TextField endTxtField, ToggleGroup toggleGroup){
+                                       TextField startTxtField, TextField endTxtField, 
+                                       ToggleGroup toggleGroup, TextField timeTxtField, Label errorLabel){
         // Check if a transport option is selected
         if (toggleGroup.getSelectedToggle() == null) {
             mainTxt.setText("Choose a transport option to continue.");
@@ -146,7 +147,24 @@ public class CommonController {
                 CommonController.displayWarning(hp.invalidInputCount,mainTxt,secondaryTxt);
             }
         }
+        //Check if the time is valid
+        try {
+            String timeText = timeTxtField.getText().trim();
+            if (timeText.matches("\\d{2}:\\d{2}")) {
+                timeText += ":00"; //To match the HH:mm:ss format that Time uses
+            }
+            deptTime = Time.valueOf(timeText);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid time format.");
+            setTimeErrorText(errorLabel);
+        }
+               
     }
+
+    protected static void setTimeErrorText(Label errorLabel){
+        errorLabel.setText("Invalid time format.");
+    }
+
     protected static void startRouting(ActionEvent event, Label mainTxt,
                                        TextField startTxtField, TextField endTxtField,ToggleGroup toggleGroup) {
         // Set start and end locations

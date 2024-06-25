@@ -86,6 +86,10 @@ public class MapController {
     private Label timeTxt;
     @FXML
     private Label zipCodesTxt;
+    @FXML
+    private TextField timeTxtField;
+    @FXML
+    private Label errorLabel;
 
     // Empty if the user did not choose bus as the transportation method
     @FXML
@@ -111,7 +115,7 @@ public class MapController {
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
-        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup);
+        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
     }
     // Method to set the selected transport option
     private void setSelectedTransportOption() {
