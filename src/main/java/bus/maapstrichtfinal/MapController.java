@@ -164,7 +164,7 @@ public class MapController {
     @FXML
     private void resultPanelBtnClicked(ActionEvent event) {
         if (isResultPanelVisible) {
-            resultPanelAnimation.setToX(resultPanel.getPrefWidth() + 300);
+            resultPanelAnimation.setToX(resultPanel.getPrefWidth() -3000);
             resultPanelBtnAnimation.setToX(resultPanelBtn.getPrefHeight() - 60);
         } else {
             resultPanelAnimation.setToX(0);
@@ -357,6 +357,7 @@ public class MapController {
 
     // Method called on controller initialization
     public void initialize() {
+        System.out.println("lo");
         themeHandler = new Theme();
         applyThemeOnInitiation();
 
@@ -389,7 +390,7 @@ public class MapController {
 
         // Result panel button animation setup
         resultPanelBtnAnimation = new TranslateTransition(Duration.millis(300), resultPanelBtn);
-        resultPanelBtn.setTranslateX(resultPanelBtn.getPrefHeight() - 200);
+        resultPanelBtn.setTranslateX(resultPanelBtn.getPrefHeight() - 400);
 
         // Check if start and end locations are available and set them if so
         if (startAndEndInfoAvailable()) {
