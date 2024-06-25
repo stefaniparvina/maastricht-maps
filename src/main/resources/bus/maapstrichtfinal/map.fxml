@@ -385,7 +385,7 @@
             </VBox>
             <VBox fx:id="resultPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="350.0">
                <children>
-                  <Button fx:id="closeResultPanelBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#discoverPanelBtnClicked" prefHeight="30.0" prefWidth="30.0">
+                  <Button fx:id="closeResultPanelBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#resultPanelBtnClicked" prefHeight="30.0" prefWidth="30.0">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
