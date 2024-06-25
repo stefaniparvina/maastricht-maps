@@ -2,7 +2,7 @@ package bus.maapstrichtfinal.Map;
 
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.Calculations.Route;
-import bus.maapstrichtfinal.Map.data.BusTranfersRouteMapLayer;
+
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
@@ -19,13 +19,12 @@ public class MapInitializer {
         List<Route> bestRoute = DestinationInfo.bestRoute;
 
         // Determine if the best route involves a transfer
-        //boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
+        // boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
 
         // Add the appropriate layer based on the transport option
         if ("bus".equalsIgnoreCase(transportOption)) {
 
             mapView.addLayer(new BusTranfersRouteMapLayer());
-
 
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));
@@ -39,9 +38,9 @@ public class MapInitializer {
     }
 
     // Method to determine if the route is a transfer route
-//    private static boolean isTransferRoute(Route route) {
-//        // Assuming that a transfer route will have different start and end stop IDs
-//        // for the first and second legs
-//        return route != null && route.isTransfer() == true;
-//    }
+    // private static boolean isTransferRoute(Route route) {
+    // // Assuming that a transfer route will have different start and end stop IDs
+    // // for the first and second legs
+    // return route != null && route.isTransfer() == true;
+    // }
 }

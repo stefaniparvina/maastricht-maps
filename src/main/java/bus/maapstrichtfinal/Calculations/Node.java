@@ -156,7 +156,7 @@ public class Node {
         List<BusStop> stops = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, busStop.getStopId());
             pstmt.setString(2, currentTime);
