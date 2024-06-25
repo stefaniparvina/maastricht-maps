@@ -315,7 +315,7 @@
                   <Insets bottom="20.0" left="900.0" right="20.0" top="20.0" />
                </StackPane.margin>
             </VBox>
-            <VBox fx:id="menu" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="222.0">
+            <VBox fx:id="menu" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="222.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="235.0" prefWidth="234.0" styleClass="border-bottom" stylesheets="@styles/lightMode.css">
                      <children>
@@ -357,6 +357,19 @@
                         <String fx:value="button" />
                      </styleClass>
                   </Button>
+                  <Button fx:id="accessibilityBtn" mnemonicParsing="false" onAction="#accessibilityBtnClicked" prefHeight="43.0" prefWidth="222.0">
+                     <styleClass>
+                        <String fx:value="secondary-color" />
+                        <String fx:value="round-border" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/accessibility.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="contactUsBtn" mnemonicParsing="false" onAction="#contactUsBtnClicked" prefHeight="39.0" prefWidth="222.0">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -380,7 +393,7 @@
                   <String fx:value="round-border" />
                </styleClass>
                <StackPane.margin>
-                  <Insets bottom="290.0" left="1160.0" />
+                  <Insets bottom="250.0" left="1160.0" />
                </StackPane.margin>
             </VBox>
             <VBox fx:id="resultPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="350.0">

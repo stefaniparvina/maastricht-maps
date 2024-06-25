@@ -764,7 +764,7 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox fx:id="menu" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="222.0">
+            <VBox fx:id="menu" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="445.0" prefWidth="222.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="235.0" prefWidth="234.0" styleClass="border-bottom" stylesheets="@styles/lightMode.css">
                      <children>
@@ -802,6 +802,19 @@
                         <String fx:value="round-border" />
                      </styleClass>
                   </Button>
+                  <Button fx:id="accessibilityBtn" mnemonicParsing="false" onAction="#accessibilityBtnClicked" prefHeight="58.0" prefWidth="329.0">
+                     <styleClass>
+                        <String fx:value="background-color" />
+                        <String fx:value="round-border" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/accessibility.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="contactUsBtn" mnemonicParsing="false" onAction="#contactUsBtnClicked" prefHeight="50.0" prefWidth="222.0">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -820,7 +833,7 @@
                   </Button>
                </children>
                <StackPane.margin>
-                  <Insets bottom="270.0" left="1160.0" />
+                  <Insets bottom="220.0" left="1160.0" />
                </StackPane.margin>
                <styleClass>
                   <String fx:value="background-color" />

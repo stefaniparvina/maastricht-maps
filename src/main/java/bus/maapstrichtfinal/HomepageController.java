@@ -67,6 +67,8 @@ public class HomepageController {
     private TextField timeTxtField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Button accessibilityBtn;
 
 
     // Other variables for menu animation, theme, and input validation
@@ -76,6 +78,12 @@ public class HomepageController {
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
 
+
+    @FXML
+    private void accessibilityBtnClicked(ActionEvent event){
+        
+    }
+    
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {

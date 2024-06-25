@@ -120,6 +120,8 @@ public class MapController {
     private ImageView transportImage4;
     @FXML
     private ImageView transportImage5;
+    @FXML
+    private Button accessibilityBtn;
 
     // Other variables for menu and panel animations, theme, and input validation
     private boolean isMenuVisible = false;
@@ -138,6 +140,11 @@ public class MapController {
     private final String endDest = DestinationInfo.getEndDestination();
     private static final Logger LOGGER = Logger.getLogger(MapController.class.getName());
 
+
+    @FXML
+    private void accessibilityBtnClicked(ActionEvent event){
+        
+    }
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
@@ -164,7 +171,7 @@ public class MapController {
     @FXML
     private void resultPanelBtnClicked(ActionEvent event) {
         if (isResultPanelVisible) {
-            resultPanelAnimation.setToX(resultPanel.getPrefWidth() -3000);
+            resultPanelAnimation.setToX(resultPanel.getPrefWidth() + 300);
             resultPanelBtnAnimation.setToX(resultPanelBtn.getPrefHeight() - 60);
         } else {
             resultPanelAnimation.setToX(0);
@@ -357,7 +364,6 @@ public class MapController {
 
     // Method called on controller initialization
     public void initialize() {
-        System.out.println("lo");
         themeHandler = new Theme();
         applyThemeOnInitiation();
 
@@ -390,7 +396,7 @@ public class MapController {
 
         // Result panel button animation setup
         resultPanelBtnAnimation = new TranslateTransition(Duration.millis(300), resultPanelBtn);
-        resultPanelBtn.setTranslateX(resultPanelBtn.getPrefHeight() - 400);
+        resultPanelBtn.setTranslateX(resultPanelBtn.getPrefHeight() - 200);
 
         // Check if start and end locations are available and set them if so
         if (startAndEndInfoAvailable()) {
