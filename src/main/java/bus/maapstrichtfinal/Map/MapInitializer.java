@@ -15,13 +15,13 @@ public class MapInitializer {
         mapView.setPrefSize(1400, 795);
 
         String transportOption = DestinationInfo.getSelectedTransportOption();
-        List<Route> bestRoute = DestinationInfo.bestRoute;
-
-        // Determine if the best route involves a transfer
-        boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
 
         // Add the appropriate layer based on the transport option
         if ("bus".equalsIgnoreCase(transportOption)) {
+            List<Route> bestRoute = DestinationInfo.bestRoute;
+
+            // Determine if the best route involves a transfer
+            boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
             if (isTransferRoute) {
                 mapView.addLayer(new BusTransferRouteMapLayer());
             } else {
