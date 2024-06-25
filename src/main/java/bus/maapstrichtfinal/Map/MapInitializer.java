@@ -2,6 +2,7 @@ package bus.maapstrichtfinal.Map;
 
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.Map.data.AstarMapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
@@ -15,17 +16,21 @@ public class MapInitializer {
         mapView.setPrefSize(1400, 795);
 
         String transportOption = DestinationInfo.getSelectedTransportOption();
-
+        boolean Astar = true;
         // Add the appropriate layer based on the transport option
         if ("bus".equalsIgnoreCase(transportOption)) {
             List<Route> bestRoute = DestinationInfo.bestRoute;
-
-            // Determine if the best route involves a transfer
-            boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
-            if (isTransferRoute) {
-                mapView.addLayer(new BusTransferRouteMapLayer());
-            } else {
-                mapView.addLayer(new BusDirectRouteMapLayer());
+            if(!Astar) {
+                // Determine if the best route involves a transfer
+                boolean isTransferRoute = isTransferRoute(bestRoute.get(0));
+                if (isTransferRoute) {
+                    mapView.addLayer(new BusTransferRouteMapLayer());
+                } else {
+                    mapView.addLayer(new BusDirectRouteMapLayer());
+                }
+            }
+            else{
+                mapView.addLayer(new AstarMapLayer());
             }
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));

@@ -21,8 +21,8 @@ public class DatabaseConnection {
      */
 
      private static final String url = "jdbc:mysql://localhost:3306/gtfs";
-     private static final String user = "BCS1510";
-     private static final String password = "BCS1510";
+     private static final String user = "root";
+     private static final String password = "";
      private static HikariDataSource dataSource;
      private static Jedis jedis;
 
