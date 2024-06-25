@@ -137,17 +137,17 @@ public class MapController {
     private final String endDest = DestinationInfo.getEndDestination();
     private static final Logger LOGGER = Logger.getLogger(MapController.class.getName());
 
-
-
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
-        CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
+        CommonController.checkRouting(event, mainTxt, secondaryTxt, startTxtField, endTxtField, toggleGroup,
+                timeTxtField, errorLabel);
     }
 
-    // Method called when the "Discover Panel" button is clicked to toggle panel visibility
+    // Method called when the "Discover Panel" button is clicked to toggle panel
+    // visibility
     @FXML
-    private void discoverPanelBtnClicked(ActionEvent event){
+    private void discoverPanelBtnClicked(ActionEvent event) {
         if (isDiscoverPanelVisible) {
             discoverPanelAnimation.setToX(discoverPanel.getPrefWidth() + 300);
             discoverPanelBtnAnimation.setToX(discoverPanelBtn.getPrefHeight() - 60);
@@ -161,7 +161,7 @@ public class MapController {
     }
 
     @FXML
-    private void resultPanelBtnClicked(ActionEvent event){
+    private void resultPanelBtnClicked(ActionEvent event) {
         if (isResultPanelVisible) {
             resultPanelAnimation.setToX(resultPanel.getPrefWidth() + 300);
             resultPanelBtnAnimation.setToX(resultPanelBtn.getPrefHeight() - 60);
@@ -174,7 +174,8 @@ public class MapController {
         isResultPanelVisible = !isResultPanelVisible;
     }
 
-    // Method called when the "Contact Us" button is clicked to navigate to the contact us page
+    // Method called when the "Contact Us" button is clicked to navigate to the
+    // contact us page
     @FXML
     private void contactUsBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -186,7 +187,8 @@ public class MapController {
         }
     }
 
-    // Method called when the "Menu" button is clicked to toggle the visibility of the menu
+    // Method called when the "Menu" button is clicked to toggle the visibility of
+    // the menu
     @FXML
     private void menuBtnClicked(ActionEvent event) {
         if (isMenuVisible) {
@@ -199,7 +201,8 @@ public class MapController {
         isMenuVisible = !isMenuVisible;
     }
 
-    // Method called when the "Switch" button is clicked to swap start and end locations
+    // Method called when the "Switch" button is clicked to swap start and end
+    // locations
     @FXML
     private void switchBtnClicked(ActionEvent event) {
         String temp = startTxtField.getText();
@@ -207,9 +210,10 @@ public class MapController {
         endTxtField.setText(temp);
     }
 
-    // Method called when the "Homepage" button is clicked to navigate to the homepage
+    // Method called when the "Homepage" button is clicked to navigate to the
+    // homepage
     @FXML
-    private void homepageBtnClicked(ActionEvent event){
+    private void homepageBtnClicked(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
             FileInitializer initializer = new FileInitializer();
@@ -219,14 +223,15 @@ public class MapController {
         }
     }
 
-    // Method called when the "Theme" button is clicked to toggle between light and dark themes
+    // Method called when the "Theme" button is clicked to toggle between light and
+    // dark themes
     @FXML
-    private void themeBtnClicked(ActionEvent event){
+    private void themeBtnClicked(ActionEvent event) {
         toggleTheme();
     }
 
     // Method to toggle between light and dark themes
-    private void toggleTheme(){
+    private void toggleTheme() {
         if (isLightThemeOn) {
             themeHandler.setThemeStrategy(new DarkTheme());
         } else {
@@ -238,12 +243,12 @@ public class MapController {
     }
 
     // Method to check if start and end locations are available
-    private boolean startAndEndInfoAvailable(){
+    private boolean startAndEndInfoAvailable() {
         return DestinationInfo.getStartDestination() != null && DestinationInfo.getEndDestination() != null;
     }
 
     // Method to apply theme settings on initialization
-    private void applyThemeOnInitiation(){
+    private void applyThemeOnInitiation() {
         if (ThemeInfo.isLightThemeOn()) {
             themeHandler.setThemeStrategy(new LightTheme());
         } else {
@@ -285,28 +290,27 @@ public class MapController {
                 if (DestinationInfo.bestRoute != null && !DestinationInfo.bestRoute.isEmpty()) {
                     StringBuilder busText = getBusText();
                     startStopId = DestinationInfo.bestRoute.get(0).getStartStopId();
-                    if(MapInitializer.isTransferRoute(DestinationInfo.bestRoute.get(0))) {
+                    if (MapInitializer.isTransferRoute(DestinationInfo.bestRoute.get(0))) {
                         endStopId = DestinationInfo.bestRoute.get(1).getEndStopId();
-                    }
-                    else{
+                    } else {
                         endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
                     }
                     double totalTime = getTotalTime() + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
-                    String timeTxt = (int)(totalTime / 60) + " minutes";
+                    String timeTxt = (int) (totalTime / 60) + " minutes";
                     setBusText(busText.toString(), timeTxt);
-                }
-                else {
-                    setBusText(null,null);
+                } else {
+                    setBusText(null, null);
                 }
                 break;
         }
     }
+
     private static StringBuilder getBusText() {
         StringBuilder busText = new StringBuilder();
         for (Route route : DestinationInfo.bestRoute) {
             if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
                 if (!busText.isEmpty()) {
-                    busText.append(" then bus ");  // separator between segments
+                    busText.append(" then bus "); // separator between segments
                 }
                 busText.append(route.getRouteShortName());
             }
@@ -318,8 +322,8 @@ public class MapController {
      * Sets the text for walking or cycling options.
      *
      * @param transportOptionText the transport option text
-     * @param time the time it takes to travel
-     * @param distance the distance to travel
+     * @param time                the time it takes to travel
+     * @param distance            the distance to travel
      */
     private void setTransportText(String transportOptionText, String time, String distance) {
         transportOptionTxt.setText("By" + transportOptionText);
@@ -332,17 +336,16 @@ public class MapController {
      * Sets the text for the bus option.
      *
      * @param busNumber the bus number
-     * @param time the time it takes to travel
+     * @param time      the time it takes to travel
      */
     private void setBusText(String busNumber, String time) {
 
-        if(busNumber!=null&&time!=null) {
+        if (busNumber != null && time != null) {
             transportOptionTxt.setText("By bus,");
             timeTxt.setText("it takes " + time);
             zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
             distanceTxt.setText("Take bus " + busNumber + ".");
-        }
-        else{
+        } else {
             transportOptionTxt.setText("No bus available ");
             timeTxt.setText("");
             zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
@@ -383,7 +386,7 @@ public class MapController {
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
 
         // Check if start and end locations are available and set them if so
-        if(startAndEndInfoAvailable()){
+        if (startAndEndInfoAvailable()) {
             startTxtField.setText(DestinationInfo.getStartDestination());
             endTxtField.setText(DestinationInfo.getEndDestination());
             mainTxt.setText("Route Calculated!");
