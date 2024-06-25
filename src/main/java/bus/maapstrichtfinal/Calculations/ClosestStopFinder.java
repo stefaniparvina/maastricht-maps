@@ -13,7 +13,6 @@ public class ClosestStopFinder {
 
     private static final Logger LOGGER = Logger.getLogger(ClosestStopFinder.class.getName());
 
-
     // Method to find the closest bus stops to a given location within a given radius
     public static List<String> findClosestStops(double userLat, double userLon, double radius) throws SQLException {
         // List to store the closest bus stops
@@ -47,7 +46,7 @@ public class ClosestStopFinder {
     }
 
     // Method to calculate the distance between two geographical coordinates using the Haversine formula
-    private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double earthRadius = 6371; // Earth's radius in kilometers
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

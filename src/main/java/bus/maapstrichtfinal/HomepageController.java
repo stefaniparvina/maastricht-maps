@@ -89,6 +89,12 @@ public class HomepageController {
     @FXML
     private void setAlgorithmSelected(ActionEvent event){
         isAStarSelected = !isAStarSelected;
+        if(isAStarSelected){
+            timeTxtField.setVisible(false);
+        }
+        else{
+            timeTxtField.setVisible(true);
+        }
     }
 
     @FXML
