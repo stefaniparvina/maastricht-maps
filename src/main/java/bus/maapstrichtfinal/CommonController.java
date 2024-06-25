@@ -2,8 +2,10 @@ package bus.maapstrichtfinal;
 
 import bus.maapstrichtfinal.Calculations.Route;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
+import bus.maapstrichtfinal.Map.MapInitializer;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import bus.maapstrichtfinal.ZipCode.Reader;
@@ -15,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class containing common methods used in multiple classes.
@@ -29,6 +33,10 @@ public class CommonController {
     protected static double endLong = 0.0;
     private static final HomepageController hp = new HomepageController();
     private static Time deptTime = Time.valueOf(LocalTime.now());
+    public static boolean heatMap = false;
+    private static final Logger LOGGER = Logger.getLogger(CommonController.class.getName());
+
+
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
      *
@@ -203,8 +211,30 @@ public class CommonController {
         }
     }
 
+    //getter for the departure time
     public static Time getDeptTime() {
         return deptTime;
+    }
+
+    //setter for the heatmap boolean
+    public static void setHeatMap(boolean value){
+        heatMap = value;
+    }
+
+    //getter for the heatmap boolean
+    public static boolean getHeatMap(){
+        return heatMap;
+    }
+
+    public static void displayHeatMap(Event event){
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        try {
+            setHeatMap(true);
+            FileInitializer initializer = new FileInitializer();
+            initializer.initializeFXML(stage, "map");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error displaying the heatmap", e);
+        }
     }
 
     /**

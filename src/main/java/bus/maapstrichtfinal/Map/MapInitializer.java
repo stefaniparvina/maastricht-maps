@@ -1,7 +1,10 @@
 package bus.maapstrichtfinal.Map;
 
+import bus.maapstrichtfinal.CommonController;
 import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.Calculations.Route;
+import bus.maapstrichtfinal.HeatMapVisualization;
+import bus.maapstrichtfinal.HomepageController;
 import bus.maapstrichtfinal.MapController;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 import com.gluonhq.maps.MapPoint;
@@ -20,10 +23,15 @@ public class MapInitializer extends MapLayer{
     protected static final MapPoint maastrichtLatLon = new MapPoint(50.8514, 5.6910);
 
     public static MapView createMapView() {
+        System.out.println("lol");
         MapView mapView = new MapView();
         mapView.setPrefSize(1400, 795);
 
         String transportOption = DestinationInfo.getSelectedTransportOption();
+
+        if(CommonController.getHeatMap()){
+            mapView.addLayer(new HeatMapVisualization());
+        }
 
         // Add the appropriate layer based on the transport option
         if ("bus".equalsIgnoreCase(transportOption)) {
@@ -43,6 +51,7 @@ public class MapInitializer extends MapLayer{
             }
         } else if ("walk".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(true));
+
         } else if ("bicycle".equalsIgnoreCase(transportOption)) {
             mapView.addLayer(new DirectPathMapLayer(false));
         }

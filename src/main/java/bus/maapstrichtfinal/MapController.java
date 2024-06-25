@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
 import bus.maapstrichtfinal.Calculations.Route;
@@ -140,11 +141,11 @@ public class MapController {
     private final String endDest = DestinationInfo.getEndDestination();
     private static final Logger LOGGER = Logger.getLogger(MapController.class.getName());
 
-
     @FXML
     private void accessibilityBtnClicked(ActionEvent event){
-        
+        CommonController.displayHeatMap(event);
     }
+
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
@@ -393,6 +394,12 @@ public class MapController {
         // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
+        if(DestinationInfo.getStartZipCode() == null){
+            resultPanel.setVisible(false);
+            if(CommonController.getHeatMap()){
+                discoverPanel.setVisible(false);
+            }
+        }
 
         // Result panel button animation setup
         resultPanelBtnAnimation = new TranslateTransition(Duration.millis(300), resultPanelBtn);

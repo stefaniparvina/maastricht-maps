@@ -1,7 +1,10 @@
 package bus.maapstrichtfinal;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import bus.maapstrichtfinal.Map.MapInitializer;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -77,11 +80,12 @@ public class HomepageController {
     private TranslateTransition menuAnimation;
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
+    private static final Logger LOGGER = Logger.getLogger(HomepageController.class.getName());
 
 
     @FXML
     private void accessibilityBtnClicked(ActionEvent event){
-        
+        CommonController.displayHeatMap(event);
     }
     
     // Method called when the "Begin" button is clicked
@@ -98,7 +102,7 @@ public class HomepageController {
             FileInitializer initializer = new FileInitializer();
             initializer.initializeFXML(stage, "map");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error handling the action of clicking the maap button", e);
         }
     }
 
@@ -134,7 +138,7 @@ public class HomepageController {
             FileInitializer initializer = new FileInitializer();
             initializer.initializeFXML(stage, "contactUs");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error handling the action of clicking the contactUs button", e);
         }
     }
 
