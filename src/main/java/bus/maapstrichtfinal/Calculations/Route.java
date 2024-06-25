@@ -117,29 +117,49 @@ public class Route {
     // Method to find transfer routes between two stops
     public static List<List<Route>> findTransferRoutes(String startStopId, String endStopId, Time deptTime) {
         List<List<Route>> routes = new ArrayList<>();
-        String query = "SELECT DISTINCT " +
-                "first_leg.route_id AS first_route_id, first_leg.route_short_name AS first_route_short_name, " +
-                "first_leg.start_stop_id, first_leg.end_stop_id AS transfer_stop_id, " +
+        String sql = "SELECT DISTINCT " +
+                "first_leg.route_id AS first_route_id, " +
+                "first_leg.route_short_name AS first_route_short_name, " +
+                "first_leg.start_stop_id, " +
+                "first_leg.end_stop_id AS transfer_stop_id, " +
                 "first_leg.travel_time_seconds AS first_leg_travel_time_seconds, " +
                 "first_leg.distance AS first_leg_distance, " +
-                "s.departure_time, s.arrival_time, " +
-                "second_leg.route_id AS second_route_id, second_leg.route_short_name AS second_route_short_name, " +
-                "second_leg.start_stop_id AS transfer_stop_id, second_leg.end_stop_id, " +
+                "first_leg_departure.departure_time AS first_leg_departure_time, " +
+                "first_leg_arrival.arrival_time AS transfer_arrival_time, " +
+                "second_leg.route_id AS second_route_id, " +
+                "second_leg.route_short_name AS second_route_short_name, " +
+                "second_leg.end_stop_id, " +
                 "second_leg.travel_time_seconds AS second_leg_travel_time_seconds, " +
-                "second_leg.distance AS second_leg_distance " +
+                "second_leg.distance AS second_leg_distance, " +
+                "second_leg_departure.departure_time AS transfer_departure_time, " +
+                "second_leg_arrival.arrival_time AS second_leg_arrival_time, " +
+                "((TIME_TO_SEC(first_leg_departure.departure_time) - TIME_TO_SEC('?')) + " +
+                "(TIME_TO_SEC(first_leg_arrival.arrival_time) - TIME_TO_SEC(first_leg_departure.departure_time)) + " +
+                "(TIME_TO_SEC(second_leg_departure.departure_time) - TIME_TO_SEC(first_leg_arrival.arrival_time)) + " +
+                "(TIME_TO_SEC(second_leg_arrival.arrival_time) - TIME_TO_SEC(second_leg_departure.departure_time))) as tot " +
                 "FROM route_stop_view_final11_mat first_leg " +
                 "JOIN route_stop_view_final11_mat second_leg ON first_leg.end_stop_id = second_leg.start_stop_id " +
-                "JOIN stop_times s ON s.stop_id = first_leg.start_stop_id " +
-                "WHERE first_leg.start_stop_id = ? " +
-                "AND second_leg.end_stop_id = ? " +
+                "JOIN trips t ON t.route_id = first_leg.route_id " +
+                "JOIN trips t1 ON t1.route_id = second_leg.route_id " +
+                "JOIN stop_times first_leg_departure ON first_leg_departure.stop_id = first_leg.start_stop_id AND first_leg_departure.trip_id = t.trip_id " +
+                "JOIN stop_times first_leg_arrival ON first_leg_arrival.stop_id = first_leg.end_stop_id AND first_leg_arrival.trip_id = t.trip_id " +
+                "JOIN stop_times second_leg_departure ON second_leg_departure.stop_id = second_leg.start_stop_id AND second_leg_departure.trip_id = t1.trip_id " +
+                "JOIN stop_times second_leg_arrival ON second_leg_arrival.stop_id = second_leg.end_stop_id AND second_leg_arrival.trip_id = t1.trip_id " +
+                "WHERE first_leg.start_stop_id = '?' " +
+                "AND second_leg.end_stop_id = '?' " +
                 "AND first_leg.route_id <> second_leg.route_id " +
-                "AND s.departure_time > ? ";
+                "AND first_leg_departure.departure_time > '?' " +
+                "AND second_leg_departure.departure_time >= first_leg_arrival.arrival_time " +
+                "ORDER BY tot ASC " +
+                "LIMIT BY 1;";
+
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, startStopId);
-            pstmt.setString(2, endStopId);
-            pstmt.setTime(3, deptTime);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setTime(1, deptTime);
+            pstmt.setString(2, startStopId);
+            pstmt.setString(3, endStopId);
+            pstmt.setTime(4, deptTime);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -150,8 +170,8 @@ public class Route {
                             rs.getString("transfer_stop_id"),
                             rs.getInt("first_leg_travel_time_seconds"),
                             rs.getInt("first_leg_distance"),
-                            rs.getTime("arrival_time"),
-                            rs.getTime("departure_time")
+                            rs.getTime("first_leg_departure_time"),
+                            rs.getTime("transfer_arrival_time")
                     );
 
                     Route secondLeg = new Route(
@@ -161,14 +181,17 @@ public class Route {
                             rs.getString("end_stop_id"),
                             rs.getInt("second_leg_travel_time_seconds"),
                             rs.getInt("second_leg_distance"),
-                            rs.getTime("arrival_time"),
-                            rs.getTime("departure_time")
+                            rs.getTime("second_leg_arrival_time"),
+                            rs.getTime("transfer_departure_time")
                     );
 
                     List<Route> routeOption = new ArrayList<>();
                     routeOption.add(firstLeg);
+                    System.out.println(firstLeg.getRouteShortName());
                     routeOption.add(secondLeg);
-
+                    System.out.println(secondLeg.getRouteShortName());
+                    System.out.println("  ...  ");
+                    DestinationInfo.setTotalTime(rs.getInt("tot"));
 
                     // Add the routeOption to the routes list
                     routes.add(routeOption);
@@ -179,9 +202,6 @@ public class Route {
         }
         return routes;
     }
-
-
-
 
     // Method to find all possible routes between two zip codes
     public static List<List<Route>> findAllRoutes(ZipCode startZipCode, ZipCode endZipCode) {

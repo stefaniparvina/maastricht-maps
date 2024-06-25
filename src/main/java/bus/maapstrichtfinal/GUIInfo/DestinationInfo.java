@@ -15,6 +15,7 @@ public abstract class DestinationInfo {
     public static List<Route> bestRoute;
 
     private static String selectedTransportOption;
+    private static int totalTime;
 
     public static void setStartDestination(String start) {
         startDestination = start;
@@ -31,6 +32,8 @@ public abstract class DestinationInfo {
     public static void setEndZipCode(ZipCode end) {
         endZipCode = end;
     }
+    public static void setTotalTime(int time){totalTime = time;}
+
 
     public static ZipCode getStartZipCode() {
         return startZipCode;
@@ -48,6 +51,8 @@ public abstract class DestinationInfo {
     public static String getEndDestination() {
         return endDestination;
     }
+
+    public static int getTotalTime(){return totalTime;}
 
     // Method to find and set the best route, considering transfers
     public static void setBestRoute() {

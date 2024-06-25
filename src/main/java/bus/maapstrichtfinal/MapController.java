@@ -3,8 +3,7 @@ package bus.maapstrichtfinal;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import bus.maapstrichtfinal.Calculations.Distance;
+;
 import bus.maapstrichtfinal.Calculations.TravelTime;
 import com.gluonhq.maps.MapView;
 import javafx.animation.TranslateTransition;
@@ -29,6 +28,8 @@ import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
 import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
 import bus.maapstrichtfinal.ThemeStrategy.Theme;
 import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
+
+import static bus.maapstrichtfinal.GUIInfo.DestinationInfo.getTotalTime;
 
 /**
  * Controller class for the map.fxml file.
@@ -251,7 +252,7 @@ public class MapController {
                     else{
                         endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
                     }
-                    double totalTime = Route.getTotalTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
+                    double totalTime = getTotalTime() + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
                     String timeTxt = (int)(totalTime / 60) + " minutes";
                     setBusText(busText.toString(), timeTxt);
                 }
