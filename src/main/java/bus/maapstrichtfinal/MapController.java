@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -123,6 +124,8 @@ public class MapController {
     private ImageView transportImage5;
     @FXML
     private Button accessibilityBtn;
+    @FXML
+    private CheckBox aStarAlgorithmCheckBox;
 
     // Other variables for menu and panel animations, theme, and input validation
     private boolean isMenuVisible = false;
@@ -140,7 +143,13 @@ public class MapController {
     private final String startDest = DestinationInfo.getStartDestination();
     private final String endDest = DestinationInfo.getEndDestination();
     private static final Logger LOGGER = Logger.getLogger(MapController.class.getName());
+    private static boolean isAStarSelected;
 
+    @FXML
+    private void setAlgorithmSelected(ActionEvent event){
+        isAStarSelected = !isAStarSelected;
+    }
+    
     @FXML
     private void accessibilityBtnClicked(ActionEvent event){
         CommonController.displayHeatMap(event);

@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -72,6 +73,8 @@ public class HomepageController {
     private Label errorLabel;
     @FXML
     private Button accessibilityBtn;
+    @FXML
+    private CheckBox aStarAlgorithmCheckBox;
 
 
     // Other variables for menu animation, theme, and input validation
@@ -81,7 +84,12 @@ public class HomepageController {
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
     private static final Logger LOGGER = Logger.getLogger(HomepageController.class.getName());
+    private boolean isAStarSelected = false;
 
+    @FXML
+    private void setAlgorithmSelected(ActionEvent event){
+        isAStarSelected = !isAStarSelected;
+    }
 
     @FXML
     private void accessibilityBtnClicked(ActionEvent event){
