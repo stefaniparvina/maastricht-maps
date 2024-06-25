@@ -33,6 +33,7 @@ public class DirectPathMapLayer extends MapLayer {
         getChildren().addAll(path, startMarker, endMarker);
     }
 
+    // Overrides the layout method to position markers and polylines based on map data.
     @Override
     protected void layoutLayer() {
         // Get start and end locations from HomepageController
@@ -44,15 +45,9 @@ public class DirectPathMapLayer extends MapLayer {
         MapPoint endLocation = new MapPoint(DestinationInfo.getEndZipCode().getLatitude(),
                 DestinationInfo.getEndZipCode().getLongitude());
 
-        // Convert start and end locations to map points
-        Point2D startPoint = getMapPoint(startLocation.getLatitude(), startLocation.getLongitude());
-        Point2D endPoint = getMapPoint(endLocation.getLatitude(), endLocation.getLongitude());
-
         // Set positions of start and end markers
-        startMarker.setCenterX(startPoint.getX());
-        startMarker.setCenterY(startPoint.getY());
-        endMarker.setCenterX(endPoint.getX());
-        endMarker.setCenterY(endPoint.getY());
+        setMarkerPositions(startMarker, startLocation);
+        setMarkerPositions(endMarker, endLocation);
 
         // Add dash pattern to the path if it's a walking path
         if (walking) {
@@ -61,6 +56,16 @@ public class DirectPathMapLayer extends MapLayer {
 
         // Clear previous points and set new points for the path
         path.getPoints().clear();
-        path.getPoints().addAll(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+        path.getPoints().addAll(getMapPoint(startLocation.getLatitude(), startLocation.getLongitude()).getX(),
+                getMapPoint(startLocation.getLatitude(), startLocation.getLongitude()).getY(),
+                getMapPoint(endLocation.getLatitude(), endLocation.getLongitude()).getX(),
+                getMapPoint(endLocation.getLatitude(), endLocation.getLongitude()).getY());
+    }
+
+    // Method to set marker position based on MapPoint object
+    private void setMarkerPositions(Circle marker, MapPoint point) {
+        Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
+        marker.setCenterX(mapPoint.getX());
+        marker.setCenterY(mapPoint.getY());
     }
 }

@@ -27,7 +27,7 @@ public class CommonController {
     protected static ZipCode endZipCode;
     protected static double endLat = 0.0;
     protected static double endLong = 0.0;
-    private static HomepageController hp = new HomepageController();
+    private static final HomepageController hp = new HomepageController();
     private static Time deptTime = Time.valueOf(LocalTime.now());
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
@@ -36,11 +36,7 @@ public class CommonController {
      * @return {@code true} if the zip code is valid, {@code false} otherwise.
      */
     static boolean isValidZipCode(String zipCode) {
-        if(Reader.readCoordinates(zipCode) != null){
-            return true;
-        }else{
-            return false;
-        }
+        return Reader.readCoordinates(zipCode) != null;
     }
 
     /**
@@ -51,6 +47,7 @@ public class CommonController {
      * @param secondaryTxt      The secondary text label to display additional information.
      */
     static void displayWarning(int invalidInputCount, Label mainTxt, Label secondaryTxt) {
+
         switch (invalidInputCount) {
             // Cases for different counts of invalid inputs and corresponding warning messages
             case 1:
@@ -97,15 +94,7 @@ public class CommonController {
         }
     }
 
-    /**
-     * Adjusts the font size of the given label.
-     *
-     * @param label    The label to adjust font size for.
-     * @param fontSize The font size to set.
-     */
-    static void adjustFontSize(Label label, double fontSize) {
-        label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
-    }
+
 
     protected static void routeCalculation(ActionEvent event, ZipCode startZipCode, ZipCode endZipCode, Label mainTxt) {
         Stage stage = new Stage();
@@ -153,27 +142,22 @@ public class CommonController {
             if (timeText.matches("\\d{2}:\\d{2}")) {
                 timeText += ":00"; //To match the HH:mm:ss format that Time uses
             }
-            deptTime = Time.valueOf(timeText);
+           if(timeText != "") {
+               deptTime = Time.valueOf(timeText);
+           }
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid time format.");
-            setTimeErrorText(errorLabel);
+            errorLabel.setText("Invalid time format");
         }
                
     }
 
-    protected static void setTimeErrorText(Label errorLabel){
-        errorLabel.setText("Invalid time format.");
-    }
+    protected static void startRouting(ActionEvent event, Label mainTxt, TextField startTxtField, TextField endTxtField,ToggleGroup toggleGroup) {
 
-    protected static void startRouting(ActionEvent event, Label mainTxt,
-                                       TextField startTxtField, TextField endTxtField,ToggleGroup toggleGroup) {
         // Set start and end locations
         setStartLocation(startTxtField.getText());
         setEndLocation(endTxtField.getText());
         startZipCode = new ZipCode(startTxtField.getText());
         endZipCode = new ZipCode(endTxtField.getText());
-
-
 
         // Display message and initialize route calculation
         mainTxt.setText("Calculating Route...");
@@ -183,6 +167,8 @@ public class CommonController {
         if(DestinationInfo.getSelectedTransportOption().equalsIgnoreCase("bus"))setBestRoute();
         CommonController.routeCalculation(event,startZipCode,endZipCode,mainTxt);
     }
+
+
     // Method to set the start location based on the entered zip code
     protected static void setStartLocation(String zipCode) {
         startZipCode = new ZipCode(zipCode);
@@ -219,5 +205,15 @@ public class CommonController {
 
     public static Time getDeptTime() {
         return deptTime;
+    }
+
+    /**
+     * Adjusts the font size of the given label.
+     *
+     * @param label    The label to adjust font size for.
+     * @param fontSize The font size to set.
+     */
+    static void adjustFontSize(Label label, double fontSize) {
+        label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
     }
 }

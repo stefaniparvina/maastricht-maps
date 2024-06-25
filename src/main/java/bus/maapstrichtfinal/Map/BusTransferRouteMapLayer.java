@@ -137,7 +137,6 @@ public class BusTransferRouteMapLayer extends MapLayer {
                 transferEnd.getY());
         pathEndStopToZip.getPoints().addAll(endZipCodePoint.getX(), endZipCodePoint.getY(),
                 points2.get(points2.size() - 2), points2.get(points2.size() - 1));
-
     }
 
 }

@@ -41,7 +41,7 @@ public class ClosestStopFinderTest {
         when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
         when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
 
-        List<String> closestStops = ClosestStopFinder.findStops300m(50.85, 5.7);
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.3);
         assertNotNull(closestStops);
         assertEquals(2, closestStops.size());
         // assertTrue(closestStops.contains("Stop1"));
@@ -55,7 +55,7 @@ public class ClosestStopFinderTest {
         when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
         when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
 
-        List<String> closestStops = ClosestStopFinder.findStops500m(50.85, 5.7);
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.5);
         assertNotNull(closestStops);
         assertEquals(22, closestStops.size());
         // assertTrue(closestStops.contains("Stop1"));

@@ -1,44 +1,50 @@
 package bus.maapstrichtfinal.ZipCode;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import bus.maapstrichtfinal.Calculations.DatabaseConnection;
+import bus.maapstrichtfinal.MapController;
+
+import java.sql.*;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Reader {
-    // Path to the CSV file containing zip code coordinates
-    private static final String DATABASE = "src\\main\\java\\bus\\maapstrichtfinal\\Map\\data\\MassZipLatLon.csv";
 
     // HashMap to cache zip code coordinates
-    public static HashMap<String, double[]> coordinatesCache = new HashMap<>();
+    private static final HashMap<String, double[]> coordinatesCache = new HashMap<>();
 
     // Flag to check if the cache is loaded
-    public static boolean isCacheLoaded = false;
+    private static boolean isCacheLoaded = false;
+    private static final Logger LOGGER = Logger.getLogger(Reader.class.getName());
+
 
     // Method to load coordinates into cache
-    public static void loadCoordinatesCache() {
+    private static void loadCoordinatesCache() {
         if (isCacheLoaded) {
             return; // If already loaded, do nothing
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(DATABASE))) {
-            String line;
-            reader.readLine(); // Skip the header line
-            // Read each line of the CSV file
-            while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length >= 3) {
-                    double[] coordinates = new double[2];
-                    // Extract latitude and longitude from the CSV
-                    coordinates[0] = Double.parseDouble(values[1]); // Latitude
-                    coordinates[1] = Double.parseDouble(values[2]); // Longitude
-                    String zipCode = values[0].trim().toLowerCase(); // Normalize zip code
-                    coordinatesCache.put(zipCode, coordinates); // Store in cache
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            assert connection != null;
+            String QUERY = "SELECT Zip, Lat, Lon FROM zipcodes";
+            try (PreparedStatement statement = connection.prepareStatement(QUERY);
+                 ResultSet resultSet = statement.executeQuery()) {
+
+                // Read each row from the ResultSet
+                while (resultSet.next()) {
+                    String zipCode = resultSet.getString("Zip").trim().toLowerCase(); // Normalize zip code
+                    double lat = resultSet.getDouble("Lat");
+                    double lon = resultSet.getDouble("Lon");
+                    double[] coordinates = {lat, lon};
+
+                    // Store in cache
+                    coordinatesCache.put(zipCode, coordinates);
                 }
+                isCacheLoaded = true; // Set flag to true after loading
+
             }
-            isCacheLoaded = true; // Set flag to true after loading
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error loading coordinates cache.", e);
         }
     }
 
@@ -65,7 +71,7 @@ public class Reader {
                 System.out.println("Found in the API: " + zipCode);
                 return coordinates;
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "Error reading coordinates.", e);
                 return null;
             }
         }

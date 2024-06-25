@@ -47,9 +47,10 @@ public class BusDirectRouteMapLayer extends MapLayer {
         pathEndStopToZip.setStrokeWidth(2.5);
 
         // Adding all nodes to the map layer
-        getChildren().addAll(startZipCodeMarker, endZipCodeMarker, pathShape, pathStartZipToStop, pathEndStopToZip);
+        getChildren().addAll(pathShape, pathStartZipToStop, pathEndStopToZip, startZipCodeMarker, endZipCodeMarker);
     }
 
+    // Overrides the layout method to position markers and polylines based on map data.
     @Override
     protected void layoutLayer() {
         // Getting start and end zip codes from the HomepageController
@@ -64,44 +65,43 @@ public class BusDirectRouteMapLayer extends MapLayer {
         // Checking if shape points coordinates are already found
         if (shapePointsCoords.isEmpty()) {
             // Find the fastest route and its shape points coordinates
-
             List<Route> bestRoute = DestinationInfo.bestRoute;
             if (bestRoute == null){
-                startZipCode = null;
-                endZipCode = null;
-                return;
+                return; //return if there is no bestRoute
             }
-
             shapePointsCoords = BusRouteShape.findCoordsOfAllDirectRoutePoints(bestRoute.get(0));
         }
 
-        List<Double> allPoints = new ArrayList<>();
         // Convert shape points coordinates to map points
+        List<Double> allPoints = new ArrayList<>();
         for (Point2D point : shapePointsCoords) {
             Point2D shapePoint = getMapPoint(point.getX(), point.getY());
             allPoints.add(shapePoint.getX());
             allPoints.add(shapePoint.getY());
         }
 
-        // Convert start and end zip code coordinates to map points
-        Point2D startZipCodePoint = getMapPoint(startZipCode.getLatitude(), startZipCode.getLongitude());
-        Point2D endZipCodePoint = getMapPoint(endZipCode.getLatitude(), endZipCode.getLongitude());
-
         // Set positions of start and end zip code markers
-        startZipCodeMarker.setCenterX(startZipCodePoint.getX());
-        startZipCodeMarker.setCenterY(startZipCodePoint.getY());
-        endZipCodeMarker.setCenterX(endZipCodePoint.getX());
-        endZipCodeMarker.setCenterY(endZipCodePoint.getY());
+        setMarkerPositions(startZipCodeMarker, startZipCode);
+        setMarkerPositions(endZipCodeMarker, endZipCode);
 
         // Set polyline points for the bus route shape
         pathShape.getPoints().setAll(allPoints);
 
         // Set polyline points for walking path from start zip code to bus stop
+        Point2D startZipCodePoint = getMapPoint(startZipCode.getLatitude(), startZipCode.getLongitude());
         pathStartZipToStop.getPoints().setAll(startZipCodePoint.getX(), startZipCodePoint.getY(),
                 pathShape.getPoints().get(0), pathShape.getPoints().get(1));
 
         // Set polyline points for walking path from end bus stop to end zip code
+        Point2D endZipCodePoint = getMapPoint(endZipCode.getLatitude(), endZipCode.getLongitude());
         pathEndStopToZip.getPoints().setAll(endZipCodePoint.getX(), endZipCodePoint.getY(),
                 allPoints.get(allPoints.size() - 2), allPoints.get(allPoints.size() - 1));
+    }
+
+    // Method to set marker position based on ZipCode object
+    private void setMarkerPositions(Circle marker, ZipCode zipCode) {
+        Point2D mapPoint = getMapPoint(zipCode.getLatitude(), zipCode.getLongitude());
+        marker.setCenterX(mapPoint.getX());
+        marker.setCenterY(mapPoint.getY());
     }
 }

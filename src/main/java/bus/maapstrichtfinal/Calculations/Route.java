@@ -62,16 +62,8 @@ public class Route {
         return travelTime;
     }
 
-    public int getDistance() {
-        return distance;
-    }
-
-    public Time getDepartureTime() {
-        return departureTime;
-    }
-    public Time getArrivalTime(){return arrivalTime;}
-
-    public static int getTime(List<Route> routes) {
+    //Method to calculate the total time for a list of routes.+
+    public static int getTotalTime(List<Route> routes) {
         int totalTime = 0;
         for (Route route : routes) {
             totalTime += route.getTravelTime();
@@ -121,7 +113,6 @@ public class Route {
 
         return routes;
     }
-
 
     // Method to find transfer routes between two stops
     public static List<List<Route>> findTransferRoutes(String startStopId, String endStopId, Time deptTime) {
@@ -206,8 +197,8 @@ public class Route {
 
             // If still no routes found within 500m, try finding transfer routes within 500m range
             if (allRoutes.isEmpty()) {
-                List<String> startStops500m = ClosestStopFinder.findStops500m(startZipCode.getLatitude(), startZipCode.getLongitude());
-                List<String> endStops500m = ClosestStopFinder.findStops500m(endZipCode.getLatitude(), endZipCode.getLongitude());
+                List<String> startStops500m = ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.5);
+                List<String> endStops500m = ClosestStopFinder.findClosestStops(endZipCode.getLatitude(), endZipCode.getLongitude(),0.5);
 
                 for (String startStop : startStops500m) {
                     for (String endStop : endStops500m) {
@@ -225,10 +216,10 @@ public class Route {
 
     private static List<List<Route>> findRoutesWithinRange(ZipCode startZipCode, ZipCode endZipCode, int range) throws SQLException {
         List<List<Route>> routes = new ArrayList<>();
-        List<String> startStops = (range == 300) ? ClosestStopFinder.findStops300m(startZipCode.getLatitude(), startZipCode.getLongitude())
-                : ClosestStopFinder.findStops500m(startZipCode.getLatitude(), startZipCode.getLongitude());
-        List<String> endStops = (range == 300) ? ClosestStopFinder.findStops300m(endZipCode.getLatitude(), endZipCode.getLongitude())
-                : ClosestStopFinder.findStops500m(endZipCode.getLatitude(), endZipCode.getLongitude());
+        List<String> startStops = (range == 300) ? ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.3)
+                : ClosestStopFinder.findClosestStops(startZipCode.getLatitude(), startZipCode.getLongitude(),0.5);
+        List<String> endStops = (range == 300) ? ClosestStopFinder.findClosestStops(endZipCode.getLatitude(), endZipCode.getLongitude(),0.3)
+                : ClosestStopFinder.findClosestStops(endZipCode.getLatitude(), endZipCode.getLongitude(),0.5);
 
         for (String startStop : startStops) {
             for (String endStop : endStops) {

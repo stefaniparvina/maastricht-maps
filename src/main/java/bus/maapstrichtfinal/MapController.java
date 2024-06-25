@@ -1,12 +1,12 @@
 package bus.maapstrichtfinal;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import bus.maapstrichtfinal.Calculations.Distance;
 import bus.maapstrichtfinal.Calculations.TravelTime;
-import bus.maapstrichtfinal.ZipCode.ZipCode;
 import com.gluonhq.maps.MapView;
-
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,7 +96,6 @@ public class MapController {
     private Label busTxt;
 
     // Other variables for menu and panel animations, theme, and input validation
-    private int invalidInputCount;
     private boolean isMenuVisible = false;
     private boolean isDiscoverPanelVisible = true;
     private boolean isLightThemeOn = true;
@@ -108,7 +107,9 @@ public class MapController {
     private Theme themeHandler;
     private String startStopId;
     private String endStopId;
-
+    private final String startDest = DestinationInfo.getStartDestination();
+    private final String endDest = DestinationInfo.getEndDestination();
+    private static final Logger LOGGER = Logger.getLogger(MapController.class.getName());
 
 
 
@@ -116,14 +117,6 @@ public class MapController {
     @FXML
     private void beginBtnClicked(ActionEvent event) {
         CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
-    }
-    // Method to set the selected transport option
-    private void setSelectedTransportOption() {
-        if (toggleGroup.getSelectedToggle() != null) {
-            DestinationInfo.setSelectedTransportOption(((RadioButton) toggleGroup.getSelectedToggle()).getText());
-        } else {
-            DestinationInfo.setSelectedTransportOption(null);
-        }
     }
 
     // Method called when the "Discover Panel" button is clicked to toggle panel visibility
@@ -149,7 +142,7 @@ public class MapController {
             FileInitializer initializer = new FileInitializer();
             initializer.initializeFXML(stage, "contactUs");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error handling the action of clicking the contactUs button", e);
         }
     }
 
@@ -182,7 +175,7 @@ public class MapController {
             FileInitializer initializer = new FileInitializer();
             initializer.initializeFXML(stage, "homepage");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error handling the action of clicking the homepage button", e);
         }
     }
 
@@ -233,11 +226,6 @@ public class MapController {
         }
     }
 
-    private String startDest = DestinationInfo.getStartDestination();
-    private String endDest = DestinationInfo.getEndDestination();
-    //private  String startStopId = ;
-    //private String endStopId = ;
-
     /**
      * Updates the result panel text based on the chosen transport option.
      *
@@ -255,15 +243,7 @@ public class MapController {
                 break;
             case BUS:
                 if (DestinationInfo.bestRoute != null && !DestinationInfo.bestRoute.isEmpty()) {
-                    StringBuilder busText = new StringBuilder();
-                    for (Route route : DestinationInfo.bestRoute) {
-                        if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
-                            if (busText.length() > 0) {
-                                busText.append(" then bus ");  // separator between segments
-                            }
-                            busText.append(route.getRouteShortName());
-                        }
-                    }
+                    StringBuilder busText = getBusText();
                     startStopId = DestinationInfo.bestRoute.get(0).getStartStopId();
                     if(MapInitializer.isTransferRoute(DestinationInfo.bestRoute.get(0))) {
                         endStopId = DestinationInfo.bestRoute.get(1).getEndStopId();
@@ -271,7 +251,7 @@ public class MapController {
                     else{
                         endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
                     }
-                    double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
+                    double totalTime = Route.getTotalTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
                     String timeTxt = (int)(totalTime / 60) + " minutes";
                     setBusText(busText.toString(), timeTxt);
                 }
@@ -280,6 +260,18 @@ public class MapController {
                 }
                 break;
         }
+    }
+    private static StringBuilder getBusText() {
+        StringBuilder busText = new StringBuilder();
+        for (Route route : DestinationInfo.bestRoute) {
+            if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
+                if (!busText.isEmpty()) {
+                    busText.append(" then bus ");  // separator between segments
+                }
+                busText.append(route.getRouteShortName());
+            }
+        }
+        return busText;
     }
 
     /**

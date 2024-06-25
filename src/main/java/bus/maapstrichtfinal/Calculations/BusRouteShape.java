@@ -1,17 +1,19 @@
 package bus.maapstrichtfinal.Calculations;
 
-import bus.maapstrichtfinal.ZipCode.ZipCode;
 import javafx.geometry.Point2D;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class BusRouteShape {
+    private static final Logger LOGGER = Logger.getLogger(BusRouteShape.class.getName());
+
 
     // Method to find shape details for a given route
     public static int[] findShapeDetails(Route route) {
@@ -37,7 +39,7 @@ public class BusRouteShape {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding the shape details for a route.", e);
         }
         return shapeDetails;
     }
@@ -69,7 +71,7 @@ public class BusRouteShape {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error in finding all coordinates for all route points.", e);
         }
 
         try (
@@ -92,9 +94,8 @@ public class BusRouteShape {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error in finding all coordinates for all route points.", e);
         }
-
         return allPointsCoords;
     }
 }

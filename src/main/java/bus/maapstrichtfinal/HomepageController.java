@@ -14,15 +14,11 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import bus.maapstrichtfinal.GUIInfo.DestinationInfo;
 import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
 import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
 import bus.maapstrichtfinal.ThemeStrategy.Theme;
-import bus.maapstrichtfinal.ZipCode.ZipCode;
 import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
 
 /**
@@ -72,13 +68,6 @@ public class HomepageController {
     @FXML
     private Label errorLabel;
 
-    // Variables to hold location and transport information
-    private static ZipCode startZipCode;
-    private static double startLat = 0.0;
-    private static double startLong = 0.0;
-    private static ZipCode endZipCode;
-    private static double endLat = 0.0;
-    private static double endLong = 0.0;
 
     // Other variables for menu animation, theme, and input validation
     int invalidInputCount;
@@ -92,9 +81,6 @@ public class HomepageController {
     private void beginBtnClicked(ActionEvent event) {
         CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
     }
-
-
-
 
     // Method called when the "maap" button is clicked
     @FXML
