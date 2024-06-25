@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import bus.maapstrichtfinal.ZipCode.Coordinates;
 
 /*
- * Test cases that verify the correctness of the coordinates
- * and the second one checks the accuracy of the convertCoordinatesToRadians() method
+ * Test case that verifies the correctness of the coordinates
  */
 public class CoordinatesTest {
     @Test

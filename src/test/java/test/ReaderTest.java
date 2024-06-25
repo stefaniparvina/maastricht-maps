@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
-
+/*
+ * Test case that verifies the loading of coordinates cache in the Reader class
+ */
 public class ReaderTest {
 
     @BeforeClass

@@ -23,7 +23,6 @@ public class ApiTest {
 
             assertNotNull(coordinates);
 
-            //checks if coordinates array contains 2 elements (latitude and longitude)
             assertEquals(2, coordinates.length);
 
             double latitude = coordinates[0];

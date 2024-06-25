@@ -7,10 +7,12 @@ import bus.maapstrichtfinal.ZipCode.Coordinates;
 import bus.maapstrichtfinal.ZipCode.ZipCode;
 
 import static org.junit.Assert.assertEquals;
-
+/*
+ * Test case that verifies the corectness between two points
+ */
 public class DistanceTest {
 
-    private static final double DELTA = 0.01; // Delta used for asserting equality on floating point numbers
+    private static final double DELTA = 0.01; 
 
     @Test
     public void testCalculateDistanceBetweenTwoPoints() {
@@ -21,7 +23,6 @@ public class DistanceTest {
 
         double expectedDistance = 0.94;
         double actualDistance = Distance.calculateDistance("6211JL", "6211CC"); 
-        assertEquals("Distance calculation between Maastricht and Aachen should be close to expected value",
-                     expectedDistance, actualDistance, DELTA);
+        assertEquals(expectedDistance, actualDistance, DELTA);
     }
 }

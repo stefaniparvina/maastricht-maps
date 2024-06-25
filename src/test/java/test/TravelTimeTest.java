@@ -11,7 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import bus.maapstrichtfinal.Calculations.Distance;
 import bus.maapstrichtfinal.Calculations.TravelTime;
-
+/*
+ * Test case that verifies the correctness of the calculated time travelled by walking or cycling
+ */
 @ExtendWith(MockitoExtension.class)
 public class TravelTimeTest {
 

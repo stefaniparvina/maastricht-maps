@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
@@ -16,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 
 import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 import bus.maapstrichtfinal.Calculations.DatabaseConnection;
-
+/**
+ * Tests the findClosestStops method in ClosestStopFinder with mocked database interactions.
+ */
 public class ClosestStopFinderTest {
 
     @Mock
@@ -41,11 +44,10 @@ public class ClosestStopFinderTest {
         when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
         when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
 
-        List<String> closestStops = ClosestStopFinder.findStops300m(50.85, 5.7);
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.3);
         assertNotNull(closestStops);
         assertEquals(2, closestStops.size());
-        // assertTrue(closestStops.contains("Stop1"));
-        // assertTrue(closestStops.contains("Stop2"));
+        
     }
 
     @Test
@@ -55,10 +57,27 @@ public class ClosestStopFinderTest {
         when(mockResultSet.getDouble("stop_lon")).thenReturn(5.7, 5.7);
         when(mockResultSet.getString("stop_id")).thenReturn("Stop1", "Stop2");
 
-        List<String> closestStops = ClosestStopFinder.findStops500m(50.85, 5.7);
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7,0.5);
         assertNotNull(closestStops);
         assertEquals(22, closestStops.size());
-        // assertTrue(closestStops.contains("Stop1"));
-        // assertTrue(closestStops.contains("Stop2"));
+        
+    }
+
+    @Test
+    public void testFindClosestStopsNoStopsWithinRadius() throws SQLException {
+        when(mockResultSet.next()).thenReturn(false);
+
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7, 0.3);
+        assertNotNull(closestStops);
+        assertTrue(closestStops.isEmpty());
+    }
+
+    @Test
+    public void testFindClosestStopsSQLException() throws SQLException {
+        when(mockPreparedStatement.executeQuery()).thenThrow(new SQLException("Test exception"));
+
+        List<String> closestStops = ClosestStopFinder.findClosestStops(50.85, 5.7, 0.3);
+        assertNotNull(closestStops);
+        assertTrue(closestStops.isEmpty());
     }
 }

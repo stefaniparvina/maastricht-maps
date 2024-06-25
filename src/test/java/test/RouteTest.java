@@ -37,7 +37,7 @@ public class RouteTest {
 
     @Test
     public void testGetTimeMinutesAndSeconds() {
-        Route testRoute = new Route(1, "Test Route", "START", "END", 125, 10);
+        Route testRoute = new Route(1, "Test Route", "START", "END", 125, 10, null, null);
         String time = Route.getTimeMinutesAndSeconds(testRoute);
         assertEquals("2 minutes, 5 seconds", time);
     }

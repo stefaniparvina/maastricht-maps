@@ -20,7 +20,10 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
+/**
+ * This class tests the findCoordsOfAllDirectRoutePoints method in BusRouteShape
+ * by mocking database interactions and verifying the method's correctness.
+ */
 public class BusRouteShapeTest {
 
     @Mock
@@ -33,7 +36,7 @@ public class BusRouteShapeTest {
     @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this); // Initialize mocks annotated with @Mock
+        MockitoAnnotations.initMocks(this); 
 
         DatabaseConnection.setConnection(mockConnection); 
 
@@ -52,7 +55,7 @@ public class BusRouteShapeTest {
         when(mockResultSet.getDouble("shape_pt_lat")).thenReturn(50.2);
         when(mockResultSet.getDouble("shape_pt_lon")).thenReturn(58.0);
 
-        Route testRoute = new Route(1, "start_stop", "end_stop", null, 0, 0);
+        Route testRoute = new Route(1, "start_stop", "end_stop", null, 0, 0, null, null);
         List<Point2D> coords = BusRouteShape.findCoordsOfAllDirectRoutePoints(testRoute);
 
         assertNotNull(coords);
