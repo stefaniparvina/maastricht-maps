@@ -383,40 +383,153 @@
                   <Insets bottom="290.0" left="1160.0" />
                </StackPane.margin>
             </VBox>
-            <VBox fx:id="resultPanel" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="170.0" prefWidth="100.0">
+            <VBox fx:id="resultPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="350.0">
                <children>
-                  <Label fx:id="transportOptionTxt" styleClass="text-color" text="By walking,">
+                  <Button fx:id="closeResultPanelBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#discoverPanelBtnClicked" prefHeight="30.0" prefWidth="30.0">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/close.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="background-color" />
+                        <String fx:value="button" />
+                        <String fx:value="very-round-border" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets left="310.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="timeStartAndFinishTxt" styleClass="text-color" text="16:28 - 16:48">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="timeTxt" prefHeight="28.0" prefWidth="210.0" styleClass="text-color" text="20 mins">
+                     <font>
+                        <Font name="Calibri Italic" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="zipCodesTxt" styleClass="text-color" text="From 6221BR to 6229EN">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="15.0" />
+                        <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="timeTxt" styleClass="text-color" text="it takes 30 minutes">
+                  <Label fx:id="transportOptionTxt" styleClass="text-color" text="By bus">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="zipCodesTxt" styleClass="text-color" text="from 6221BR to 6229EN.">
-                     <font>
-                        <Font name="Calibri" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="busTxt" styleClass="text-color">
+                  <Label fx:id="distanceTxt" styleClass="text-color" text="Distance: 4 km">
                      <font>
                         <Font name="Calibri" size="20.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="transportTxt1" styleClass="text-color" text="Walk 13 mins" textFill="#1d05b9">
+                           <font>
+                              <Font name="Calibri" size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="transportImage1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="transportTxt2" styleClass="text-color" text="Take bus 1 from B to C" textFill="#1d05b9">
+                           <font>
+                              <Font name="Calibri" size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="transportImage2" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="transportTxt3" styleClass="text-color" text="Take bus 2 from C to D" textFill="#ab0000">
+                           <font>
+                              <Font name="Calibri" size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="transportImage3" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="transportTxt4" styleClass="text-color" text="Take bus 3 from D to E" textFill="#00650a">
+                           <font>
+                              <Font name="Calibri" size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="transportImage4" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                     <children>
+                        <Label fx:id="transportTxt5" styleClass="text-color" text="Walk from E to F" textFill="#1d05b9">
+                           <font>
+                              <Font name="Calibri" size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="transportImage5" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
                <StackPane.margin>
-                  <Insets bottom="500.0" left="15.0" right="1100.0" top="80.0" />
+                  <Insets bottom="325.0" left="15.0" right="1050.0" top="80.0" />
                </StackPane.margin>
                <styleClass>
                   <String fx:value="round-border" />
@@ -439,6 +552,22 @@
                </styleClass>
                <StackPane.margin>
                   <Insets left="1300.0" top="590.0" />
+               </StackPane.margin>
+            </Button>
+            <Button fx:id="resultPanelBtn" mnemonicParsing="false" onAction="#resultPanelBtnClicked" prefHeight="60.0" prefWidth="60.0">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/result.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="secondary-color" />
+                  <String fx:value="very-round-border" />
+               </styleClass>
+               <StackPane.margin>
+                  <Insets right="1300.0" top="590.0" />
                </StackPane.margin>
             </Button>
          </children>
