@@ -25,13 +25,12 @@ public class TravelTime {
 
         return minutes + " minutes, " + seconds + " seconds";
     }
-    public static double getWalkingTimeBusStop(String start, String stopId){
+    public static double getWalkingTimeBusStop(String startStopId, String endStopId){
 
-        double distance = Distance.calculateDistanceFromZipToStop(start, stopId);
+        double distance = Distance.calculateDistanceFromStartZipToStop(startStopId) + Distance.calculateDistanceFromEndZipToStop(endStopId);
 
         double time =  (distance / AVERAGE_SPEED) * 3600;
-        System.out.println(distance);
-        System.out.println("time is " + time);
+
         return time;
     }
 

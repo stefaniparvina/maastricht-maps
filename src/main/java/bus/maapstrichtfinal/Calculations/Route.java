@@ -176,10 +176,8 @@ public class Route {
 
                     List<Route> routeOption = new ArrayList<>();
                     routeOption.add(firstLeg);
-                    System.out.println(firstLeg.getRouteShortName());
                     routeOption.add(secondLeg);
-                    System.out.println(secondLeg.getRouteShortName());
-                    System.out.println("  ...  ");
+
 
                     // Add the routeOption to the routes list
                     routes.add(routeOption);
@@ -266,28 +264,13 @@ public class Route {
 
     // Helper method to calculate total travel time for a list of routes
     private static int getTotalTravelTime(List<Route> routes) {
-        int time = (int) (routes.stream().mapToInt(Route::getTravelTime).sum() +
-                TravelTime.getWalkingTimeBusStop(DestinationInfo.getStartDestination(), routes.get(0).getStartStopId()));
 
+        int time = (int) (routes.stream().mapToInt(Route::getTravelTime).sum());
         if (routes.size() > 1) {
-            time += (int) TravelTime.getWalkingTimeBusStop(DestinationInfo.getEndDestination(), routes.get(1).getEndStopId());
-
-            // Convert departure and arrival times to LocalTime
-            Time departureTime = routes.get(1).getDepartureTime();
-            Time arrivalTime = routes.get(0).getArrivalTime();
-
-            LocalTime departureLocalTime = departureTime.toLocalTime();
-            LocalTime arrivalLocalTime = arrivalTime.toLocalTime();
-
-            // Calculate the difference in seconds
-            long timeDifferenceInSeconds = ChronoUnit.SECONDS.between(arrivalLocalTime, departureLocalTime);
-
-            // Add the difference to time
-            time += (int) timeDifferenceInSeconds;
+            time += (int) TravelTime.getWalkingTimeBusStop(routes.get(0).getStartStopId(), routes.get(1).getEndStopId());
         } else {
-            time += (int) TravelTime.getWalkingTimeBusStop(DestinationInfo.getEndDestination(), routes.get(0).getEndStopId());
+            time += (int) TravelTime.getWalkingTimeBusStop(routes.get(0).getStartStopId(), routes.get(0).getEndStopId());
         }
-
         return time;
     }
 

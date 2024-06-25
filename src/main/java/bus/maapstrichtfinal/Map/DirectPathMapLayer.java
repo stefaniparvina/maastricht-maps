@@ -30,7 +30,7 @@ public class DirectPathMapLayer extends MapLayer {
         path.setStrokeWidth(2.5);
 
         // Add markers and path to the map layer
-        getChildren().addAll(startMarker, endMarker, path);
+        getChildren().addAll(path, startMarker, endMarker);
     }
 
     @Override

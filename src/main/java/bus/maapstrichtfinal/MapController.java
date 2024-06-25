@@ -271,7 +271,7 @@ public class MapController {
                     else{
                         endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
                     }
-                    double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startDest, startStopId) + TravelTime.getWalkingTimeBusStop(endDest, endStopId);
+                    double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
                     String timeTxt = (int)(totalTime / 60) + " minutes";
                     setBusText(busText.toString(), timeTxt);
                 }
