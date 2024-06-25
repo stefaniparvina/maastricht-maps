@@ -3,6 +3,7 @@ package bus.maapstrichtfinal;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import bus.maapstrichtfinal.Calculations.TravelTime;
 import com.gluonhq.maps.MapView;
 import javafx.animation.TranslateTransition;
@@ -69,11 +70,15 @@ public class MapController {
     @FXML
     private Button discoverPanelBtn;
     @FXML
+    private Button resultPanelBtn;
+    @FXML
     private VBox discoverPanel;
     @FXML
     private VBox resultPanel;
     @FXML
     private Button closeDiscoverPanelBtn;
+    @FXML
+    private Button closeResultPanelBtn;
     @FXML
     private BorderPane parent;
     @FXML
@@ -90,20 +95,41 @@ public class MapController {
     private TextField timeTxtField;
     @FXML
     private Label errorLabel;
-
-    // Empty if the user did not choose bus as the transportation method
     @FXML
-    private Label busTxt;
+    private Label transportTxt1;
+    @FXML
+    private Label transportTxt2;
+    @FXML
+    private Label transportTxt3;
+    @FXML
+    private Label transportTxt4;
+    @FXML
+    private Label transportTxt5;
+    @FXML
+    private Label timeStartAndFinishTxt;
+    @FXML
+    private Label distanceTxt;
+    @FXML
+    private ImageView transportImage1;
+    @FXML
+    private ImageView transportImage2;
+    @FXML
+    private ImageView transportImage3;
+    @FXML
+    private ImageView transportImage4;
+    @FXML
+    private ImageView transportImage5;
 
     // Other variables for menu and panel animations, theme, and input validation
     private boolean isMenuVisible = false;
     private boolean isDiscoverPanelVisible = true;
     private boolean isLightThemeOn = true;
-    private boolean isResultVisible = false;
+    private boolean isResultPanelVisible = false;
     private TranslateTransition menuAnimation;
     private TranslateTransition discoverPanelAnimation;
     private TranslateTransition resultPanelAnimation;
     private TranslateTransition discoverPanelBtnAnimation;
+    private TranslateTransition resultPanelBtnAnimation;
     private Theme themeHandler;
     private String startStopId;
     private String endStopId;
@@ -132,6 +158,20 @@ public class MapController {
         discoverPanelAnimation.play();
         discoverPanelBtnAnimation.play();
         isDiscoverPanelVisible = !isDiscoverPanelVisible;
+    }
+
+    @FXML
+    private void resultPanelBtnClicked(ActionEvent event) {
+        if (isResultPanelVisible) {
+            resultPanelAnimation.setToX(resultPanel.getPrefWidth() + 300);
+            resultPanelBtnAnimation.setToX(resultPanelBtn.getPrefHeight() - 60);
+        } else {
+            resultPanelAnimation.setToX(0);
+            resultPanelBtnAnimation.setToX(resultPanelBtn.getPrefHeight() + 100);
+        }
+        resultPanelAnimation.play();
+        resultPanelBtnAnimation.play();
+        isResultPanelVisible = !isResultPanelVisible;
     }
 
     // Method called when the "Contact Us" button is clicked to navigate to the
@@ -286,10 +326,10 @@ public class MapController {
      * @param distance            the distance to travel
      */
     private void setTransportText(String transportOptionText, String time, String distance) {
-        transportOptionTxt.setText(transportOptionText);
-        timeTxt.setText("it takes " + time);
-        zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-        busTxt.setText("Distance: " + distance);
+        transportOptionTxt.setText("By" + transportOptionText);
+        timeTxt.setText(time);
+        zipCodesTxt.setText("From " + startDest + " to " + endDest);
+        distanceTxt.setText("Distance: " + distance);
     }
 
     /**
@@ -304,12 +344,12 @@ public class MapController {
             transportOptionTxt.setText("By bus,");
             timeTxt.setText("it takes " + time);
             zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-            busTxt.setText("Take bus " + busNumber + ".");
+            distanceTxt.setText("Take bus " + busNumber + ".");
         } else {
             transportOptionTxt.setText("No bus available ");
             timeTxt.setText("");
             zipCodesTxt.setText("to go from " + startDest + " to " + endDest + ".");
-            busTxt.setText("");
+            distanceTxt.setText("");
         }
     }
 
@@ -352,7 +392,7 @@ public class MapController {
             mainTxt.setText("Route Calculated!");
             discoverPanel.setTranslateX(discoverPanel.getPrefWidth() + 800);
             discoverPanelBtn.setTranslateX(discoverPanelBtn.getPrefWidth() - 50);
-            isResultVisible = true;
+            isResultPanelVisible = true;
             resultPanelAnimation.setToX(0);
             resultPanelAnimation.play();
             setResultPanelText();
