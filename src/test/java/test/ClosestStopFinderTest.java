@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import bus.maapstrichtfinal.Calculations.ClosestStopFinder;
 import bus.maapstrichtfinal.Calculations.DatabaseConnection;
 /**
  * Tests the findClosestStops method in ClosestStopFinder with mocked database interactions.

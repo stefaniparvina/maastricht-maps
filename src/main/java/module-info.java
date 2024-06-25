@@ -17,4 +17,6 @@ module bus.maapstrichtfinal {
     opens bus.maapstrichtfinal.Calculations to com.google.gson, org.powermock.core;
     exports bus.maapstrichtfinal;
     exports bus.maapstrichtfinal.Calculations to com.google.gson;
+    exports bus.maapstrichtfinal.Map;
+    opens bus.maapstrichtfinal.Map to javafx.fxml, org.powermock.core;
 }

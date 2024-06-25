@@ -349,6 +349,13 @@ public class MapController {
         // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
+        if(DestinationInfo.getStartZipCode() == null || MapInitializer.Astar){
+            resultPanel.setVisible(false);
+            if(CommonController.getHeatMap()){
+                discoverPanel.setVisible(false);
+            }
+        }
+
 
         // Check if start and end locations are available and set them if so
         if(startAndEndInfoAvailable()){
