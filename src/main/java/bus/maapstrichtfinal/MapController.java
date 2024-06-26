@@ -25,6 +25,7 @@ import bus.maapstrichtfinal.ThemeStrategy.DarkTheme;
 import bus.maapstrichtfinal.ThemeStrategy.LightTheme;
 import bus.maapstrichtfinal.ThemeStrategy.Theme;
 import bus.maapstrichtfinal.GUIInfo.ThemeInfo;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Controller class for the map.fxml file.
@@ -271,7 +272,7 @@ public class MapController {
                     StringBuilder busText = new StringBuilder();
                     for (Route route : DestinationInfo.bestRoute) {
                         if (route.getRouteShortName() != null && !route.getRouteShortName().isEmpty()) {
-                            if (busText.length() > 0) {
+                            if (!busText.isEmpty()) {
                                 busText.append(" then bus ");  // separator between segments
                             }
                             busText.append(route.getRouteShortName());
@@ -284,8 +285,11 @@ public class MapController {
                     else{
                         endStopId = DestinationInfo.bestRoute.get(0).getEndStopId();
                     }
-                    double totalTime = Route.getTime(DestinationInfo.bestRoute)  + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
-                    String timeTxt = (int)(totalTime / 60) + " minutes";
+                    double totalTimeInSeconds = Route.getTime(DestinationInfo.bestRoute) + TravelTime.getWalkingTimeBusStop(startStopId, endStopId);
+                    String timeTxt = getTimeTxt(totalTimeInSeconds);
+
+                    // Print or use the timeTxt string as needed
+                    System.out.println(timeTxt);
                     setBusText(busText.toString(), timeTxt);
                 }
                 else {
@@ -293,6 +297,21 @@ public class MapController {
                 }
                 break;
         }
+    }
+
+    @NotNull
+    private static String getTimeTxt(double totalTimeInSeconds) {
+        int totalTimeInMinutes = (int) (totalTimeInSeconds / 60);
+        int hours = totalTimeInMinutes / 60;
+        int minutes = totalTimeInMinutes % 60;
+        String timeTxt;
+
+        if (hours > 0) {
+            timeTxt = hours + " hour" + (hours > 1 ? "s " : " ") + minutes + " minute" + (minutes != 1 ? "s" : "");
+        } else {
+            timeTxt = minutes + " minute" + (minutes != 1 ? "s" : "");
+        }
+        return timeTxt;
     }
 
     /**
