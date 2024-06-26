@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.CheckBox?>
 <BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="783.0" prefWidth="1400.0" stylesheets="@styles/lightMode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus.maapstrichtfinal.MapController">
    <top>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="105.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
@@ -291,6 +292,24 @@
                         </TextField>
                      </children>
                   </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label styleClass="text-color" text="A* algorithm?">
+                           <font>
+                              <Font name="Calibri" size="28.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="aStarAlgorithmCheckBox" mnemonicParsing="false" onAction="#setAlgorithmSelected">
+                           <styleClass>
+                              <String fx:value="round-border" />
+                              <String fx:value="background-color" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets left="20.0" top="8.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                     </children>
+                  </HBox>
                   <Button fx:id="beginBtn" mnemonicParsing="false" onAction="#beginBtnClicked" prefHeight="37.0" prefWidth="211.0" text="Begin your journey">
                      <font>
                         <Font name="Calibri Bold" size="20.0" />
@@ -357,7 +376,20 @@
                         <String fx:value="button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="contactUsBtn" mnemonicParsing="false" onAction="#contactUsBtnClicked" prefHeight="39.0" prefWidth="222.0">
+                  <Button fx:id="accessibilityBtn" mnemonicParsing="false" onAction="#accessibilityBtnClicked" prefHeight="43.0" prefWidth="222.0">
+                     <styleClass>
+                        <String fx:value="secondary-color" />
+                        <String fx:value="round-border" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/accessibility.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+            <Button fx:id="contactUsBtn" mnemonicParsing="false" onAction="#contactUsBtnClicked" prefHeight="39.0" prefWidth="222.0">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>

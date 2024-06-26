@@ -11,11 +11,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
@@ -94,6 +90,8 @@ public class MapController {
     // Empty if the user did not choose bus as the transportation method
     @FXML
     private Label busTxt;
+    @FXML
+    private CheckBox aStarAlgorithmCheckBox;
 
     // Other variables for menu and panel animations, theme, and input validation
     private int invalidInputCount;
@@ -109,8 +107,23 @@ public class MapController {
     private String startStopId;
     private String endStopId;
 
+    //Method to handle the click action of the accessibility button
+    @FXML
+    private void accessibilityBtnClicked(ActionEvent event){
+        CommonController.displayHeatMap(event);
+    }
 
-
+    //Method to handle when the checkbox for A* is checked/unchecked
+    @FXML
+    private void setAlgorithmSelected(ActionEvent event){
+        if(CommonController.getAStarBoolean()){
+            timeTxtField.setVisible(false);
+        }
+        else {
+            timeTxtField.setVisible(true);
+        }
+        CommonController.handleAlgorithmCheckbox();
+    }
 
     // Method called when the "Begin" button is clicked
     @FXML
@@ -349,13 +362,12 @@ public class MapController {
         // Result panel animation setup
         resultPanelAnimation = new TranslateTransition(Duration.millis(300), resultPanel);
         resultPanel.setTranslateX(resultPanel.getPrefWidth() - 800);
-        if(DestinationInfo.getStartZipCode() == null || MapInitializer.Astar){
+        if(DestinationInfo.getStartZipCode() == null || CommonController.getAStarBoolean()){
             resultPanel.setVisible(false);
             if(CommonController.getHeatMap()){
                 discoverPanel.setVisible(false);
             }
         }
-
 
         // Check if start and end locations are available and set them if so
         if(startAndEndInfoAvailable()){

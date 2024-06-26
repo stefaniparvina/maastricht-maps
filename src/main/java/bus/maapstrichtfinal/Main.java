@@ -18,7 +18,6 @@ public class Main extends Application {
         stage.setScene(new Scene(root, 1400, 783));
         stage.show();
     }
-
     public static void main(String[] args) {
         launch();
     }

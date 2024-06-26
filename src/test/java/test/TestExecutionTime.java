@@ -1,4 +1,4 @@
-package bus.maapstrichtfinal;
+package test;
 
 import java.util.List;
 

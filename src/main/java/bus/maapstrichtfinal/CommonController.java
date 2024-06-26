@@ -35,7 +35,7 @@ public class CommonController {
     private static Time deptTime = Time.valueOf(LocalTime.now());
     public static boolean heatMap = false;
     private static final Logger LOGGER = Logger.getLogger(CommonController.class.getName());
-
+    private static boolean isAStarSelected = false;
 
     /**
      * Checks if the given zip code is valid by comparing it with a CSV file.
@@ -232,6 +232,7 @@ public class CommonController {
             setHeatMap(true);
             FileInitializer initializer = new FileInitializer();
             initializer.initializeFXML(stage, "map");
+            setHeatMap(false);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error displaying the heatmap", e);
         }
@@ -245,5 +246,24 @@ public class CommonController {
      */
     static void adjustFontSize(Label label, double fontSize) {
         label.setStyle("-fx-font-size:" + fontSize + "px;"); // Set the font size for the label
+    }
+
+    //Setter for the isAStarSelected boolean
+    public static void setAStarBoolean(boolean value){
+        isAStarSelected = value;
+    }
+
+    //Getter for the isAStarSelected boolean
+    public static boolean getAStarBoolean(){
+        return isAStarSelected;
+    }
+
+    public static void handleAlgorithmCheckbox() {
+        if(CommonController.getAStarBoolean()){
+            CommonController.setAStarBoolean(false);
+        }
+        else {
+            CommonController.setAStarBoolean(true);
+        }
     }
 }

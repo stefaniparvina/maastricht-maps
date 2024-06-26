@@ -6,11 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -71,6 +67,9 @@ public class HomepageController {
     private TextField timeTxtField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private CheckBox aStarAlgorithmCheckBox;
+
 
     // Variables to hold location and transport information
     private static ZipCode startZipCode;
@@ -87,13 +86,13 @@ public class HomepageController {
     private boolean isLightThemeOn = true;
     private Theme themeHandler;
 
+
+
     // Method called when the "Begin" button is clicked
     @FXML
     private void beginBtnClicked(ActionEvent event) {
         CommonController.checkRouting(event,mainTxt, secondaryTxt,startTxtField,endTxtField,toggleGroup, timeTxtField, errorLabel);
     }
-
-
 
 
     // Method called when the "maap" button is clicked
@@ -186,5 +185,23 @@ public class HomepageController {
 
         menuAnimation = new TranslateTransition(Duration.millis(300), menu);
         menu.setTranslateX(menu.getPrefWidth() + 300);
+    }
+
+    //Method to handle the click action of the accessibility button
+    @FXML
+    private void accessibilityBtnClicked(ActionEvent event){
+        CommonController.displayHeatMap(event);
+    }
+
+    //Method to handle when the checkbox for A* is checked/unchecked
+    @FXML
+    private void setAlgorithmSelected(ActionEvent event){
+        if(CommonController.getAStarBoolean()){
+            timeTxtField.setVisible(false);
+        }
+        else {
+            timeTxtField.setVisible(true);
+        }
+        CommonController.handleAlgorithmCheckbox();
     }
 }

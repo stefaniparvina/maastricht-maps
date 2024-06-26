@@ -42,17 +42,3 @@ public class ClosestStopFinderAstar {
         return earthRadius * c; // Distance in kilometers
     }
 }
-
-
-// Main method for testing purposes
-    /*public static void main(String[] args) {
-        try {
-            List<String> closestStops1 = findStops(50.85, 5.7);
-            System.out.println(closestStops1);
-            List<String> closestStops2 = findStops(50.86, 5.8);
-            System.out.println(closestStops2);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/

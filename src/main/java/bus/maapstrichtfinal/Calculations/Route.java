@@ -80,6 +80,16 @@ public class Route {
     }
 
 
+    //Method that returns a string comprising the time of a route in minutes and seconds
+    public  static String getTimeMinutesAndSeconds(Route route){
+        int time = route.getTravelTime();
+        int seconds = time % 60;
+        int minutes = time / 60;
+        if(seconds == 0) return minutes + " minutes";
+        else return minutes + " minutes, " + seconds + " seconds";
+    }
+
+
     // Method to find direct routes between two stops
     public static List<List<Route>> findDirectRoutes(String startStopId, String endStopId, Time deptTime) {
         List<List<Route>> routes = new ArrayList<>();
