@@ -3,7 +3,8 @@
 A route planner for Maastricht that calculates routes, distance and travel time between two postal codes by **walking, cycling or bus**, shown on an interactive map.
 
 Built as a group project (Project 1-2, BSc Computer Science, Maastricht University, 2024).
-Project report: [Report (PDF)](./03-FinalReport.pdf)**
+
+Project report: [Report (PDF)](./03-FinalReport.pdf)
 
 ## Features
 - **Walking & cycling:** distance with the Haversine formula and travel time based on average speeds for Maastricht residents (5 km/h walking, 15 km/h cycling)
